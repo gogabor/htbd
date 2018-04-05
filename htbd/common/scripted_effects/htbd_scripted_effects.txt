@@ -1,0 +1,873 @@
+#####################################
+### Here, There Be Dragons Events ###
+### by Gogabor			  ###
+#####################################
+
+htbd_clear_fleet_state = {
+	remove_fleet_flag = htbd_hatching
+	remove_fleet_flag = htbd_roaming
+	remove_fleet_flag = htbd_healing
+	remove_fleet_flag = htbd_idle
+	remove_fleet_flag = htbd_travel
+	remove_fleet_flag = htbd_cooldown
+}
+
+htbd_create_country = {
+	create_species = {
+		name = "NAME_Voidwyrms"
+		class = "REP"
+		portrait = "rep17"
+		traits = {
+			trait = "trait_talented"
+			trait = "trait_quick_learners"
+			trait = "trait_nomadic"
+		}
+	}
+	create_country = {
+		name = "NAME_Voidwyrms"
+		species = last_created
+		type = htbd_horde
+		name_list = "HTBD_names"
+		flag = {
+			icon = {
+				category = "zoological"
+				file = "flag_zoological_5.dds"
+			}
+			background = {
+				category = "backgrounds"
+				file = "00_solid.dds"
+			}
+			colors={
+				"purple"
+				"red"
+				"null"
+				"null"
+			}
+		}
+	}
+	last_created_country = {
+		set_country_flag = htbd_country
+		guardian_difficulty = yes
+		save_global_event_target_as = htbd_country
+	}
+}
+
+# character pairs table:
+# curious - caution: like or dislike to travel and visit 'avoided' systems
+# apathic - mad: stay longer or shorted near stars/planets and in systems
+# clever - stupid: visit 'bad' systems or recent systems or not
+# hermit - social: tend to stay alone or with others
+
+htbd_new_character = {
+	random_list = {
+		0 = { set_fleet_stance = evasive }
+		40 = { set_fleet_stance = passive }
+		50 = { set_fleet_stance = aggressive }
+	}
+	random_list = {
+		15 = { set_fleet_flag = htbd_curious }
+		25 = { set_fleet_flag = htbd_caution }
+		60 = {}
+	}
+	random_list = {
+		10 = { set_fleet_flag = htbd_stupid }
+		20 = { set_fleet_flag = htbd_clever }
+		70 = {}
+	}
+	random_list = {
+		10 = { set_fleet_flag = htbd_mad }
+		20 = { set_fleet_flag = htbd_apathic }
+		70 = {}
+	}
+	random_list = {
+		20 = { set_fleet_flag = htbd_hermit }
+		20 = { set_fleet_flag = htbd_social }
+		60 = {}
+	}
+	set_aggro_range_measure_from = self
+	set_aggro_range = 0
+}
+
+# scope is planet
+htbd_new_fleet = {
+	create_fleet = {
+		settings = {
+			spawn_debris = no
+			is_boss = yes
+		}
+		effect = {
+			set_owner = event_target:htbd_country
+			# set_fleet_flag = dragon_fleet
+			set_location = prev
+			if = {
+				limit = { htbd_debug = yes }
+				log = "New dragon [This.GetName] was born at [Root.GetName]"
+			}
+			htbd_new_character = yes
+		}
+	}
+}
+
+htbd_new_leader = {
+	last_created_fleet = { save_event_target_as = last_fleet }
+	create_leader = {
+		type = admiral
+		species = owner_main_species
+		skill = 1
+		traits = {
+			trait = random_trait
+		}
+		effect = {
+			set_name = "[last_fleet.GetName] Ego"
+		}
+	}
+}
+
+# scope is fleet
+htbd_dragon_kid = {
+	create_ship = {
+		design = NAME_Ether_Whelp
+		prefix = no
+		upgradable = no
+	}
+}
+
+htbd_dragon_teen = {
+	create_ship = {
+		design = NAME_Ether_Wyrmling
+		prefix = no
+		upgradable = no
+	}
+}
+
+htbd_dragon_adult = {
+	create_ship = {
+		design = NAME_Ether_Dragon
+		prefix = no
+		upgradable = no
+	}
+	set_aggro_range = 100
+}
+
+htbd_dragon_grand = {
+	create_ship = {
+		design = NAME_Ether_Wyrm
+		prefix = no
+		upgradable = no
+	}
+	set_fleet_flag = dragon_mother
+	set_aggro_range = 200
+}
+
+htbd_exile_dwarf = {
+	create_fleet = {
+		settings = {
+			spawn_debris = no
+			is_boss = yes
+		}
+		effect = {
+			set_name = "[Prev.GetStarName] Shadow"
+			set_owner = event_target:htbd_country
+			set_location = prev
+			if = {
+				limit = { htbd_debug = yes }
+				log = "Dwarf dragon [This.GetName] appeared at [Root.GetName]"
+			}
+			create_ship = {
+				design = NAME_Ether_Dwarf
+				prefix = no
+				upgradable = no
+			}
+			set_fleet_flag = htbd_social
+			set_fleet_flag = htbd_caution
+			set_fleet_flag = htbd_clever
+			set_fleet_stance = passive
+			set_aggro_range = 0
+		}
+	}
+}
+
+# this = system
+htbd_stats_init = {
+	if = {
+		limit = {
+			NOT = {
+				any_country = {
+					is_country_type = default
+					has_event_chain = htbd_way_chain
+					prev = {
+						htbd_is_waypoint = yes
+					}
+				}
+			}
+		}
+		# log = "Drop [This.GetName] system stats"
+		set_variable = { which = htbd_system_like value = 1000 }
+	}
+}
+
+# This = Country
+# Prev = System
+htbd_add_waypoint = {
+	prev = { htbd_stats_init = yes }
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.1 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.1
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.2 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.2
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.3 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.3
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.4 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.4
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.5 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.5
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.6 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.6
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.7 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.7
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.8 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.8
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.9 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.9
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.10 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.10
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.11 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.11
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.12 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.12
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.13 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.13
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.14 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.14
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.15 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.15
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.16 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.16
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.17 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.17
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.18 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.18
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.19 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.19
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_point_of_interest = { poi = htbd_way_poi.20 }
+			}
+		}
+		create_point_of_interest = {
+			id = htbd_way_poi.20
+			name = htbd_way_poi_title
+			desc = htbd_way_poi_desc
+			event_chain = htbd_way_chain
+			category = htbd_way
+			location = prev
+		}
+		break = yes
+	}
+	if = {
+		limit = { htbd_debug = yes }
+		log = "Cannot add waypoint for [This.GetName]"
+	}
+}
+
+# This = System
+htbd_del_waypoint = {
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.1
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.1 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.2
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.2 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.3
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.3 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.4
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.4 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.5
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.5 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.6
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.6 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.7
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.7 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.8
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.8 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.9
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.9 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.10
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.10 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.11
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.11 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.12
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.12 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.13
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.13 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.14
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.14 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.15
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.15 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.16
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.16 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.17
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.17 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.18
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.18 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.19
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.19 }
+	}
+	if = {
+		limit = {
+			is_point_of_interest = {
+				id = htbd_way_poi.20
+				event_chain = htbd_way_chain
+				owner = prev
+			}
+		}
+		prev = { remove_point_of_interest = htbd_way_poi.20 }
+	}
+	# check system stats
+	# log = "Check [This.GetName] system stats"
+	if = {
+		limit = {
+			check_variable = { which = htbd_system_like value > 1000 }
+		}
+		if = {
+			limit = {
+				prev = { NOT = { has_country_flag = htbd_liked_systems_done } }
+			}
+			enable_special_project = {
+				name = HTBD_WAY_LIKE
+				owner = prev
+				location = event_target:way_point
+			}
+		}
+		else = {
+			if = {
+				limit = {
+					prev = { NOT = { has_country_flag = htbd_avoid_systems_done } }
+				}
+				enable_special_project = {
+					name = HTBD_WAY_AVOID
+					owner = prev
+					location = event_target:way_point
+				}
+			}
+		}
+	}
+}
+
+#this = fleet
+htbd_report_stay = {
+	solar_system = {
+		if = {
+			limit = {
+				root = { check_variable = { which = htbd_stay_level value > 20 }}
+			}
+			if = {
+				limit = { htbd_debug = yes}
+				log = "[Root.GetName] likes system [This.GetName]"
+			}
+			change_variable = { which = htbd_system_like value = 3 }
+			random_system_planet = {
+				limit = { is_star = yes }
+				save_event_target_as = way_point
+			}
+			every_country = {
+				limit = {
+					is_country_type = default
+					has_event_chain = htbd_way_chain
+					intel_level = { level > medium system = prev }
+					prev = {
+						htbd_is_waypoint = yes
+					}
+				}
+				prev = { htbd_del_waypoint = yes }
+			}
+		}
+	}
+}
+
+#this = fleet
+htbd_report_leave = {
+	solar_system = {
+		if = {
+			limit = {
+				root = { check_variable = { which = htbd_stay_level value < 3 }}
+			}
+			if = {
+				limit = { htbd_debug = yes }
+				log = "[Prev.GetName] avoids system [This.GetName]"
+			}
+			change_variable = { which = htbd_system_like value = -1 }
+			else = {
+				if = {
+					limit = { htbd_debug = yes}
+					log = "[Prev.GetName] likes system [This.GetName]"
+				}
+				change_variable = { which = htbd_system_like value = 3 }
+			}
+		}
+		random_system_planet = {
+			limit = { is_star = yes }
+			save_event_target_as = way_point
+		}
+		every_country = {
+			limit = {
+				is_country_type = default
+				has_event_chain = htbd_way_chain
+				OR = {
+					prev = { is_inside_border = prev }
+					intel_level = { level > medium system = prev }
+				}
+				count_ships = {
+					count < 2
+					limit = {
+						exists = owner
+						owner = { is_country_type = htbd_horde }
+						exists = solar_system
+						solar_system = { is_same_value = event_target:way_point.solar_system }
+					}
+				}
+				prev = {
+					htbd_is_waypoint = yes
+				}
+			}
+			prev = { htbd_del_waypoint = yes }
+		}
+	}
+}
+
+#this = fleet
+htbd_report_hatching = {
+	solar_system = {
+		every_country = {
+			limit = {
+				is_country_type = default
+				OR = {
+					prev = { is_inside_border = prev }
+					intel_level = { level > medium system = prev }
+				}
+			}
+			country_event = { id = htbd_ev.8 }
+		}
+	}
+}
+
+# Ship scope
+htbd_starbase_disable = {
+	starbase = { set_starbase_size = starbase_outpost }
+	set_disabled = yes
+}

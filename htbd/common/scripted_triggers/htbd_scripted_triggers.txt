@@ -1,0 +1,306 @@
+# Root is fleet
+# scope is solar_system
+
+htbd_debug = {
+	always = no
+}
+
+htbd_can_interrupt_fleet = {
+	NOR = {
+		has_fleet_flag = htbd_travel
+		has_fleet_flag = htbd_healing
+	}
+}
+
+# max names in name_list (84) but limit maximum by 50
+htbd_max = {
+	num_fleets > 50
+}
+
+htbd_is_dragon_fear = {
+	exists = space_owner
+	space_owner = {
+		has_edict = htbd_dragon_fear
+	}
+}
+
+# scope = system
+htbd_has_fear_station = {
+	htbd_is_dragon_fear = yes
+	OR = {
+		AND = {
+			exists = starbase
+			starbase = { has_starbase_size > starbase_starport }
+		}
+		any_planet = {
+			OR = {
+				is_planet_class = pc_habitat
+				has_building = building_fortress
+				has_building = building_capital_2
+				has_building = building_capital_3
+			}
+		}
+	}
+}
+
+# scope = system
+htbd_has_fear_aura = {
+	OR = {
+		AND = {
+			htbd_is_dragon_fear = yes
+			exists = starbase
+			starbase = { has_starbase_size = starbase_starport }
+		}
+		any_neighbor_system = {
+			ignore_hyperlanes = no
+			htbd_has_fear_station = yes
+		}
+	}
+}
+
+# dragons don't like such systems and will leave them asap
+htbd_bad_system = {
+	OR = {
+		has_star_flag = enigmatic_system
+		is_star_class = sc_black_hole
+		has_star_flag = enclave
+		AND = {
+			exists = owner
+			owner = {
+				OR = {
+					is_country_type = fallen_empire
+					is_country_type = awakened_fallen_empire
+				}
+			}
+		}
+		htbd_has_fear_station = yes
+	}
+}
+
+# dragons avoid staying in such systems
+htbd_avoid_system = {
+	OR = {
+		# has_star_flag = enclave
+		is_star_class = sc_pulsar
+		is_star_class = sc_neutron_star
+		has_star_flag = htbd_death_place
+		htbd_has_fear_aura = yes
+	}
+}
+
+htbd_good_system = {
+	NOR = {
+		htbd_bad_system = yes
+		htbd_avoid_system = yes
+		any_planet = {
+			OR = {
+				is_capital = yes
+				is_colony = yes
+			}
+		}
+	}
+}
+
+htbd_is_good_for_egg = {
+	htbd_good_system = yes
+	# too hot stars
+	NOR = {
+		is_star_class = sc_a
+		is_star_class = sc_b
+	}
+	# need molten for egg
+	any_planet = {
+		is_planet_class = pc_molten
+	}
+}
+
+# system scope
+htbd_may_travel_to = {
+	NOR = {
+		is_same_value = root.solar_system
+		has_star_flag = enigmatic_system
+		AND = {
+			exists = owner
+			owner = {
+				OR = {
+					is_country_type = fallen_empire
+					is_country_type = awakened_fallen_empire
+				}
+			}
+		}
+	}
+	OR = {
+		NOT = { has_star_flag = htbd_recent_star }
+		root = { has_fleet_flag = htbd_ignore_recent }
+		root = { has_fleet_flag = htbd_stuck }
+	}
+	OR = {
+		NOR = {
+			is_star_class = sc_black_hole
+			htbd_has_fear_station = yes
+			has_star_flag = enclave
+		}
+		root = { has_fleet_flag = htbd_stuck_stuck }
+	}
+	OR = {
+		NOT = {
+			htbd_avoid_system = yes
+		}
+		root = { has_fleet_flag = htbd_curiousity }
+		root = { has_fleet_flag = htbd_stuck }
+	}
+}
+
+# fleet
+htbd_need_hull = {
+	has_hp_percentage < 0.7
+}
+
+# fleet
+htbd_need_armor = {
+	owner = {
+		any_owned_ship = {
+			fleet = { is_same_value = root }
+			is_damaged = yes
+			#has_hp_percentage < 1.0
+		}
+	}
+}
+
+# This = system
+htbd_has_starbase_ftl_inhibitor = {
+	exists = starbase
+	starbase = { has_starbase_size >= starbase_starport }
+	exists = owner
+	owner = {
+		has_technology = "tech_ftl_inhibitor"
+	}
+}
+
+# This = system
+htbd_has_planetary_ftl_inhibitor = {
+	any_planet = {
+		OR = {
+			has_building = building_stronghold
+			has_building = building_fortress
+		}
+	}
+	exists = owner
+	owner = {
+		has_technology = "tech_ftl_inhibitor"
+	}
+}
+
+htbd_has_ftl_inhibitor = {
+	OR = {
+		htbd_has_planetary_ftl_inhibitor = yes
+		htbd_has_starbase_ftl_inhibitor = yes
+	}
+}
+
+# scope = system
+# prev = country
+htbd_is_waypoint = {
+	OR = {
+		is_point_of_interest = {
+			id = htbd_way_poi.1
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.2
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.3
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.4
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.5
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.6
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.7
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.8
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.9
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.10
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.11
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.12
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.13
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.14
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.15
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.16
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.17
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.18
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.19
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+		is_point_of_interest = {
+			id = htbd_way_poi.20
+			event_chain = htbd_way_chain
+			owner = prev
+		}
+	}
+}

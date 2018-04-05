@@ -1,0 +1,1645 @@
+#####################################
+### Here, There Be Dragons Events ###
+### by Gogabor			  ###
+#####################################
+
+namespace = htbd_ev
+
+@tier1influencereward = 6
+@tier1influencemin = 40
+@tier1influencemax = 100
+@tier2influencereward = 12
+@tier2influencemin = 80
+@tier2influencemax = 175
+@tier3influencereward = 18
+@tier3influencemin = 125
+@tier3influencemax = 250
+@tier4influencereward = 24
+@tier4influencemin = 150
+@tier4influencemax = 300
+@tier5influencereward = 36
+@tier5influencemin = 250
+@tier5influencemax = 500
+@tier6influencereward = 48
+@tier6influencemin = 300
+@tier6influencemax = 600
+
+@tier1researchreward = 6
+@tier1researchmin = 60
+@tier1researchmax = 150
+@tier2researchreward = 12
+@tier2researchmin = 90
+@tier2researchmax = 250
+@tier3researchreward = 18
+@tier3researchmin = 120
+@tier3researchmax = 350
+@tier4researchreward = 24
+@tier4researchmin = 150
+@tier4researchmax = 500
+@tier5researchreward = 48
+@tier5researchmin = 300
+@tier5researchmax = 1000
+
+# Dragon was killed.
+country_event = {
+	id = htbd_ev.2
+	hide_window = yes
+
+	is_triggered_only = yes
+	trigger = {
+		from = {
+			is_country_type = htbd_horde
+			has_country_flag = htbd_country
+		}
+	}
+
+	immediate = {
+		# dead dragon
+		fromfromfrom = {
+			htbd_report_leave = yes
+			switch = {
+				trigger = is_ship_size
+				space_dragon_kid = { root = { set_country_flag = htbd_kill_kid } }
+				space_dragon_teen = { root = { set_country_flag = htbd_kill_teen } }
+				space_dragon_adult = { root = { set_country_flag = htbd_kill_adult } }
+				space_dragon_grand = { root = { set_country_flag = htbd_kill_grand } }
+				space_dragon_dwarf = { root = { set_country_flag = htbd_kill_dwarf } }
+			}
+		}
+		# killer fleet
+		log = "[FromFromFrom.GetName] was killed by [FromFrom.GetName] fleet of [This.GetName]"
+		fromfrom = {
+			solar_system = {
+				set_timed_star_flag = { flag = htbd_death_place days = 500 }
+				random_system_planet = { save_event_target_as = body_place }
+			}
+		}
+		random_list = {
+			40 = {
+				modifier = {
+					factor = 2
+					has_country_flag = htbd_kill_grand
+				}
+				modifier = {
+					factor = 1.5
+					has_country_flag = htbd_kill_adult
+				}
+				country_event = { id = htbd_ev.201 }
+			}
+			20 = {
+				modifier = {
+					factor = 2
+					has_country_flag = htbd_kill_kid
+				}
+				country_event = { id = htbd_ev.202 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = htbd_ev.201
+	title = htbd_ev.2.name
+	desc = htbd_ev.2.desc
+	picture = GFX_evt_space_dragon
+	show_sound = event_mystic_reveal
+	location = fromfromfrom
+
+	is_triggered_only = yes
+
+	immediate = {
+	}
+
+	option = {
+		NAME = "OOPS"
+		trigger = { NOT = { exists = event_target:body_place } }
+		custom_tooltip = "This shouldn't happen, report to the mod author"
+	}
+	option = {
+		name = INTRIGUING
+		trigger = {
+			has_country_flag = htbd_kill_kid
+		}
+		add_monthly_resource_mult = {
+			resource = influence
+			value = @tier2influencereward
+			min = @tier2influencemin
+			max = @tier2influencemax
+		}
+		hidden_effect = {
+			remove_country_flag = htbd_kill_kid
+			enable_special_project = {
+				name = "HTBD_KILL_KID"
+				owner = root
+				location = event_target:body_place
+			}
+		}
+	}
+	option = {
+		name = INTERESTING
+		trigger = {
+			has_country_flag = htbd_kill_teen
+		}
+		add_monthly_resource_mult = {
+			resource = influence
+			value = @tier3influencereward
+			min = @tier3influencemin
+			max = @tier3influencemax
+		}
+		hidden_effect = {
+			remove_country_flag = htbd_kill_teen
+			enable_special_project = {
+				name = "HTBD_KILL_TEEN"
+				owner = root
+				location = event_target:body_place
+			}
+		}
+	}
+	option = {
+		name = INCREDIBLE
+		trigger = {
+			has_country_flag = htbd_kill_adult
+		}
+		add_monthly_resource_mult = {
+			resource = influence
+			value = @tier4influencereward
+			min = @tier4influencemin
+			max = @tier4influencemax
+		}
+		hidden_effect = {
+			remove_country_flag = htbd_kill_adult
+			enable_special_project = {
+				name = "HTBD_KILL_ADULT"
+				owner = root
+				location = event_target:body_place
+			}
+		}
+	}
+	option = {
+		name = SPLENDID
+		trigger = {
+			has_country_flag = htbd_kill_grand
+		}
+		add_monthly_resource_mult = {
+			resource = influence
+			value = @tier5influencereward
+			min = @tier5influencemin
+			max = @tier5influencemax
+		}
+		hidden_effect = {
+			remove_country_flag = htbd_kill_grand
+			enable_special_project = {
+				name = "HTBD_KILL_GRAND"
+				owner = root
+				location = event_target:body_place
+			}
+		}
+	}
+	option = {
+		name = SPLENDID
+		trigger = {
+			has_country_flag = htbd_kill_dwarf
+		}
+		add_monthly_resource_mult = {
+			resource = influence
+			value = @tier3influencereward
+			min = @tier3influencemin
+			max = @tier3influencemax
+		}
+		hidden_effect = {
+			remove_country_flag = htbd_kill_dwarf
+			enable_special_project = {
+				name = "HTBD_KILL_GRAND"
+				owner = root
+				location = event_target:body_place
+			}
+		}
+	}
+}
+
+country_event = {
+	id = htbd_ev.202
+	title = htbd_ev.2.name
+	desc = htbd_ev.2.desc.alt
+	picture = GFX_evt_space_dragon
+	show_sound = event_mystic_reveal
+	location = fromfromfrom
+
+	is_triggered_only = yes
+
+	immediate = {
+	}
+
+	option = {
+		name = UNFORTUNATE
+		trigger = {
+			has_country_flag = htbd_kill_kid
+		}
+		add_monthly_resource_mult = {
+			resource = influence
+			value = @tier1influencereward
+			min = @tier1influencemin
+			max = @tier1influencemax
+		}
+		hidden_effect = {
+			remove_country_flag = htbd_kill_kid
+		}
+	}
+	option = {
+		name = OK
+		trigger = {
+			has_country_flag = htbd_kill_teen
+		}
+		add_monthly_resource_mult = {
+			resource = influence
+			value = @tier2influencereward
+			min = @tier2influencemin
+			max = @tier2influencemax
+		}
+		hidden_effect = {
+			remove_country_flag = htbd_kill_teen
+		}
+	}
+	option = {
+		name = GOOD
+		trigger = {
+			has_country_flag = htbd_kill_adult
+		}
+		add_monthly_resource_mult = {
+			resource = influence
+			value = @tier3influencereward
+			min = @tier3influencemin
+			max = @tier3influencemax
+		}
+		hidden_effect = {
+			remove_country_flag = htbd_kill_adult
+		}
+	}
+	option = {
+		name = EXCELLENT
+		trigger = {
+			has_country_flag = htbd_kill_grand
+		}
+		add_monthly_resource_mult = {
+			resource = influence
+			value = @tier4influencereward
+			min = @tier4influencemin
+			max = @tier4influencemax
+		}
+		hidden_effect = {
+			remove_country_flag = htbd_kill_grand
+		}
+	}
+	option = {
+		name = EXCELLENT
+		trigger = {
+			has_country_flag = htbd_kill_dwarf
+		}
+		add_monthly_resource_mult = {
+			resource = influence
+			value = @tier3influencereward
+			min = @tier3influencemin
+			max = @tier3influencemax
+		}
+		hidden_effect = {
+			remove_country_flag = htbd_kill_dwarf
+		}
+	}
+}
+
+# Just some research points
+ship_event = {
+	id = htbd_ev.301
+	title = htbd_ev.3.name
+	desc = htbd_ev.3.desc
+	picture = GFX_evt_ship_in_orbit
+	show_sound = event_default
+	location = FROM
+	
+	is_triggered_only = yes
+
+	option = {
+		name = OK
+		owner = {
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier1researchreward
+				min = @tier1researchmin
+				max = @tier1researchmax
+			}
+		}
+	}
+}
+
+ship_event = {
+	id = htbd_ev.302
+	title = htbd_ev.3.name
+	desc = htbd_ev.3.desc
+	picture = GFX_evt_ship_in_orbit
+	show_sound = event_default
+	location = FROM
+	
+	is_triggered_only = yes
+
+	option = {
+		name = GOOD
+		owner = {
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier3researchreward
+				min = @tier3researchmin
+				max = @tier3researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+		}
+	}
+}
+
+ship_event = {
+	id = htbd_ev.303
+	title = htbd_ev.3.name
+	desc = htbd_ev.3.desc
+	picture = GFX_evt_ship_in_orbit
+	show_sound = event_default
+	location = FROM
+	
+	is_triggered_only = yes
+
+	option = {
+		name = EXCELLENT
+		owner = {
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier4researchreward
+				min = @tier4researchmin
+				max = @tier4researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier3researchreward
+				min = @tier3researchmin
+				max = @tier3researchmax
+			}
+		}
+	}
+}
+
+ship_event = {
+	id = htbd_ev.304
+	title = htbd_ev.3.name
+	desc = htbd_ev.3.desc
+	picture = GFX_evt_ship_in_orbit
+	show_sound = event_default
+	location = FROM
+	
+	is_triggered_only = yes
+
+	option = {
+		name = MARVELOUS
+		owner = {
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier4researchreward
+				min = @tier4researchmin
+				max = @tier4researchmax
+			}
+		}
+	}
+}
+
+ship_event = {
+	id = htbd_ev.401
+	title = htbd_ev.4.name
+	desc = htbd_ev.4.desc
+	picture = GFX_evt_space_dragon
+	show_sound = event_mystic_reveal
+	location = FROM
+	
+	is_triggered_only = yes
+
+	option = {
+		name = INCREDIBLE
+		owner = {
+			add_research_option = tech_energy_lance_1
+			add_tech_progress = {
+				tech = tech_energy_lance_1
+				progress = 0.1
+			}
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier1researchreward
+				min = @tier1researchmin
+				max = @tier1researchmax
+			}
+		}
+	}
+}
+
+ship_event = {
+	id = htbd_ev.402
+	title = htbd_ev.4.name
+	desc = htbd_ev.4.desc
+	picture = GFX_evt_space_dragon
+	show_sound = event_mystic_reveal
+	location = FROM
+	
+	is_triggered_only = yes
+
+	option = {
+		name = AMAZING
+		owner = {
+			if = {
+				limit = { NOT = { has_technology = tech_energy_lance_1 } }
+				add_research_option = tech_energy_lance_1
+				add_tech_progress = {
+					tech = tech_energy_lance_1
+					progress = 0.25
+				}
+				else = {
+					add_research_option = tech_energy_lance_2
+					add_tech_progress = {
+						tech = tech_energy_lance_2
+						progress = 0.15
+					}
+				}
+			}
+
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+		}
+	}
+}
+
+ship_event = {
+	id = htbd_ev.403
+	title = htbd_ev.403.name
+	desc = htbd_ev.403.desc
+	picture = GFX_evt_space_dragon
+	show_sound = event_mystic_reveal
+	location = FROM
+	
+	is_triggered_only = yes
+
+	option = {
+		name = FASCINATING
+		owner = {
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier3researchreward
+				min = @tier3researchmin
+				max = @tier3researchmax
+			}
+			# if we have no any lance tech start with them
+			if = {
+				limit = { NOT = { has_technology = tech_energy_lance_1 } }
+				add_research_option = tech_energy_lance_1
+				add_tech_progress = {
+					tech = tech_energy_lance_1
+					progress = 0.30
+				}
+				else = {
+					if = {
+						limit = { NOT = { has_technology = tech_energy_lance_2 } }
+						add_research_option = tech_energy_lance_2
+						add_tech_progress = {
+							tech = tech_energy_lance_2
+							progress = 0.25
+						}
+						else = {
+							add_research_option = tech_dragon_breath
+							add_tech_progress = {
+								tech = tech_dragon_breath
+								progress = 0.2
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+ship_event = {
+	id = htbd_ev.5
+	title = htbd_ev.5.name
+	desc = htbd_ev.5.desc
+	picture = GFX_evt_space_dragon
+	show_sound = event_mystic_reveal
+	location = FROM
+	
+	is_triggered_only = yes
+
+	option = {
+		name = AMAZING
+		owner = {
+			add_research_option = tech_dragon_armor
+			add_tech_progress = {
+				tech = tech_dragon_armor
+				progress = 0.2
+			}
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+		}
+	}
+}
+
+ship_event = {
+	id = htbd_ev.6
+	title = htbd_ev.6.name
+	desc = htbd_ev.6.desc
+	picture = GFX_evt_space_dragon
+	show_sound = event_mystic_reveal
+	location = FROM
+	
+	is_triggered_only = yes
+
+	option = {
+		name = ASTOUNDING
+		owner = {
+			add_research_option = tech_dragon_pd
+			add_tech_progress = {
+				tech = tech_dragon_pd
+				progress = 0.2
+			}
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+		}
+	}
+}
+
+################################ The Way of The Dragon ##########################
+
+# Detect fleet
+# This = Country
+# From = Fleet
+country_event = {
+	id = htbd_ev.1
+	title = htbd_ev.1.name
+	picture = GFX_evt_space_dragon
+	location = from
+	show_sound = event_yellow_alert
+	is_triggered_only = yes
+
+	desc = {
+		text = htbd_ev.1.desc.1
+		trigger = {
+			NOT = { has_country_flag = htbd_encounter }
+			from = {
+				OR = {
+					is_ship_size = space_dragon_kid
+					is_ship_size = space_dragon_dwarf
+				}
+			}
+		}
+	}
+	desc = {
+		text = htbd_ev.1.desc.2
+		trigger = {
+			NOT = { has_country_flag = htbd_encounter }
+			from = { is_ship_size = space_dragon_teen }
+		}
+	}
+	desc = {
+		text = htbd_ev.1.desc.3
+		trigger = {
+			NOT = { has_country_flag = htbd_encounter }
+			from = { is_ship_size = space_dragon_adult }
+		}
+	}
+	desc = {
+		text = htbd_ev.1.desc.4
+		trigger = {
+			NOT = { has_country_flag = htbd_encounter }
+			from = { is_ship_size = space_dragon_grand }
+		}
+	}
+	desc = {
+		text = htbd_ev.1.desc.1.alt
+		trigger = {
+			has_country_flag = htbd_encounter
+			from = {
+				OR = {
+					is_ship_size = space_dragon_kid
+					is_ship_size = space_dragon_dwarf
+				}
+			}
+		}
+	}
+	desc = {
+		text = htbd_ev.1.desc.2.alt
+		trigger = {
+			has_country_flag = htbd_encounter
+			from = { is_ship_size = space_dragon_teen }
+		}
+	}
+	desc = {
+		text = htbd_ev.1.desc.3.alt
+		trigger = {
+			has_country_flag = htbd_encounter
+			from = { is_ship_size = space_dragon_adult }
+		}
+	}
+	desc = {
+		text = htbd_ev.1.desc.4.alt
+		trigger = {
+			has_country_flag = htbd_encounter
+			from = { is_ship_size = space_dragon_grand }
+		}
+	}
+
+	trigger = {
+		FROM = {
+			exists = owner
+			owner = {
+				is_country_type = htbd_horde
+				has_country_flag = htbd_country
+			}
+		}
+		NOT = { has_country_flag = htbd_double_dragon }
+		OR = {
+			AND = {
+				NOT = { has_country_flag = htbd_saw_kid }
+				from = {
+					OR = {
+						is_ship_size = space_dragon_kid
+						is_ship_size = space_dragon_dwarf
+					}
+				}
+			}
+			AND = {
+				NOT = { has_country_flag = htbd_saw_teen }
+				from = { is_ship_size = space_dragon_teen }
+			}
+			AND = {
+				NOT = { has_country_flag = htbd_saw_adult }
+				from = { is_ship_size = space_dragon_adult }
+			}
+			AND = {
+				NOT = { has_country_flag = htbd_saw_grand }
+				from = { is_ship_size = space_dragon_grand }
+			}
+		}
+		is_country_type = default
+	}
+
+	immediate = {
+		every_country = {
+			limit = { has_country_flag = htbd_country }
+			establish_communications_no_message = root
+		}
+	}
+	option = {
+		name = INTERESTING
+		trigger = {
+			NOT = { has_country_flag = htbd_saw_kid }
+			from = {
+				OR = {
+					is_ship_size = space_dragon_kid
+					is_ship_size = space_dragon_dwarf
+				}
+			}
+		}
+		set_country_flag = htbd_saw_kid
+	}
+	option = {
+		name = AMAZING
+		trigger = {
+			NOT = { has_country_flag = htbd_saw_teen }
+			from = { is_ship_size = space_dragon_teen }
+		}
+		set_country_flag = htbd_saw_teen
+	}
+	option = {
+		name = FASCINATING
+		trigger = {
+			NOT = { has_country_flag = htbd_saw_adult }
+			from = { is_ship_size = space_dragon_adult }
+		}
+		set_country_flag = htbd_saw_adult
+	}
+	option = {
+		name = ASTOUNDING
+		trigger = {
+			NOT = { has_country_flag = htbd_saw_grand }
+			from = { is_ship_size = space_dragon_grand }
+		}
+		set_country_flag = htbd_saw_grand
+	}
+	after = {
+		if = {
+			limit = {
+				NOT = { has_country_flag = htbd_encounter }
+			}
+			set_country_flag = htbd_encounter
+			else = {
+				set_country_flag = htbd_double_dragon
+			}
+		}
+		hidden_effect = { country_event = { id = htbd_ev.10 } }
+	}
+}
+
+country_event = {
+	id = htbd_ev.10
+	title = htbd_ev.10.name
+	desc = htbd_ev.10.desc
+	picture = GFX_evt_space_dragon
+	show_sound = event_mystic_reveal
+	location = FROMFROM
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = htbd_encounter
+		NOT = { has_country_flag = htbd_way_of_dragon }
+		NOT = { has_country_flag = htbd_way_of_dragon_done}
+	}
+
+	immediate = {
+
+	}
+	option = {
+		name = "htbd_ev.10.a"
+		hidden_effect = {
+			# log = "Begin way event chain for [Root.GetName]"
+			begin_event_chain = {
+				event_chain = htbd_way_chain
+				target = ROOT
+			}
+			set_country_flag = htbd_way_of_dragon
+			### go through all systems in border or in sensor range
+			### and mark as waypoints
+			every_planet = {
+				limit = {
+					is_star = yes
+					solar_system = {
+						any_ship_in_system = {
+							exists = owner
+							owner = {
+								is_country_type = htbd_horde
+							}
+						}
+						OR = {
+							is_inside_border = root
+							root = { intel_level = { level > medium system = prev } }
+						}
+						root = {
+							prev = { htbd_is_waypoint = no }
+						}
+					}
+				}
+				solar_system = {
+					root = {
+						htbd_add_waypoint = yes
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = NOTIME
+	}
+}
+
+# Detect dragon fleet in some system
+# Scope = Country
+# From = Fleet
+country_event = {
+	id = htbd_ev.11
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_country_type = default
+		has_country_flag = htbd_way_of_dragon
+		from = {
+			exists = owner
+			owner = { is_country_type = htbd_horde }
+			exists = solar_system
+			solar_system = {
+				NOT = { has_star_flag = htbd_recent }
+				root = {
+					prev = { htbd_is_waypoint = no }
+				}
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = { htbd_debug = yes }
+			log = "11: [This.GetName] detects fleet [From.GetName] in [From.System.GetName] system"
+		}
+		from = {
+			solar_system = {
+				root = { htbd_add_waypoint = yes }
+			}
+		}
+	}
+}
+
+# Dragon fleet entering system 
+# Scope = Fleet
+# From = System
+fleet_event = {
+	id = htbd_ev.12
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		owner = { is_country_type = htbd_horde }
+		any_country = {
+			is_country_type = default
+			intel_level = { level > medium system = from }
+			has_country_flag = htbd_way_of_dragon
+			from = {
+				NOT = { has_star_flag = htbd_recent }
+				htbd_is_waypoint = no
+			}
+		}
+	}
+
+	immediate = {
+		every_country = {
+			limit = {
+				is_country_type = default
+				intel_level = { level > medium system = from }
+				has_country_flag = htbd_way_of_dragon
+				from = {
+					NOT = { has_star_flag = htbd_recent }
+					htbd_is_waypoint = no
+				}
+			}
+			if = {
+				limit = { htbd_debug = yes }
+				log = "12: [This.GetName] detects [Root.GetName] entering [From.GetName]"
+			}
+			from = {
+				prev = { htbd_add_waypoint = yes }
+			}
+		}
+	}
+}
+
+# Dragon fleet entering system (first encounter)
+# Scope = Fleet
+# From = System
+fleet_event = {
+	id = htbd_ev.13
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		owner = { is_country_type = htbd_horde }
+		any_country = {
+			is_country_type = default
+			intel_level = { level > medium system = from }
+			NOT = { has_country_flag = htbd_encounter }
+		}
+	}
+
+	immediate = {
+		every_country = {
+			limit = {
+				is_country_type = default
+				intel_level = { level > medium system = from }
+				NOT = { has_country_flag = htbd_encounter }
+			}
+			if = {
+				limit = { htbd_debug = yes }
+				log = "13: [Root.GetName] enters [This.GetName] territory at [From.GetName]"
+			}
+			country_event = { id = htbd_ev.1 }
+		}
+	}
+}
+
+# Scope = Ship
+# From = System
+# FromFrom = Country
+ship_event = {
+	id = htbd_ev.7
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		owner = {
+			is_country_type = default
+			has_event_chain = htbd_way_chain
+		}
+		NOT = {
+			from = {
+				any_ship_in_system = {
+					exists = owner
+					owner = { is_country_type = htbd_horde }
+				}
+			}
+		}
+		owner = {
+			from = {
+				htbd_is_waypoint = yes
+			}
+		}
+	}
+
+	immediate = {
+		# log = "[This.Owner.GetName] ship enters waypoint at [From.GetName]"
+		from = {
+			random_system_planet = {
+				limit = { is_star = yes }
+				save_event_target_as = way_point
+			}
+		}
+		owner = { from = { htbd_del_waypoint = yes } }
+	}
+}
+
+country_event = {
+	id = htbd_ev.71
+	title = htbd_ev.71.name
+	is_triggered_only = yes
+	picture = GFX_evt_physics_research
+
+	desc = {
+		trigger = {
+			NOT = {
+				has_completed_event_chain_counter = {
+					event_chain = "htbd_way_chain" 
+					counter = "htbd_liked_systems" 
+				}
+			}
+		}
+		text = htbd_ev.7.desc.point
+	}
+	desc = {
+		trigger = {
+			NOT = { has_country_flag = htbd_avoid_systems_done }
+			has_completed_event_chain_counter = {
+				event_chain = "htbd_way_chain" 
+				counter = "htbd_liked_systems" 
+			}
+		}
+		text = htbd_ev.71.desc
+	}
+	desc = {
+		trigger = {
+			has_country_flag = htbd_avoid_systems_done
+			has_completed_event_chain_counter = {
+				event_chain = "htbd_way_chain" 
+				counter = "htbd_liked_systems" 
+			}
+		}
+		text = htbd_ev.71.desc.done
+	}
+	trigger = {
+		NOT = { 
+			has_country_flag = htbd_liked_systems_done
+		}
+	}
+	immediate = {
+		capital_scope = { save_event_target_as = pc_home }
+	}
+	option = {
+		name = OK
+		trigger = {
+			NOT = {
+				has_completed_event_chain_counter = {
+					event_chain = "htbd_way_chain" 
+					counter = "htbd_liked_systems" 
+				}
+			}
+		}
+	}
+	option = {
+		name = "INTERESTING"
+		trigger = {
+			NOT = { has_country_flag = htbd_avoid_systems_done }
+			has_completed_event_chain_counter = {
+				event_chain = "htbd_way_chain" 
+				counter = "htbd_liked_systems" 
+			}
+		}
+		hidden_effect = {
+			set_country_flag = htbd_liked_systems_done
+			abort_special_project = {
+				type = HTBD_WAY_LIKE
+			}
+		}
+	}
+	option = {
+		name = "FASCINATING"
+		trigger = {
+			has_country_flag = htbd_avoid_systems_done
+			has_completed_event_chain_counter = {
+				event_chain = "htbd_way_chain" 
+				counter = "htbd_liked_systems" 
+			}
+		}
+		hidden_effect = {
+			remove_country_flag = htbd_avoid_systems_done
+			remove_country_flag = htbd_way_of_dragon
+			end_event_chain = htbd_way_chain
+			abort_special_project = {
+				type = HTBD_WAY_LIKE
+			}
+			set_country_flag = htbd_way_of_dragon_done
+		}
+	}
+}
+
+country_event = {
+	id = htbd_ev.72
+	title = htbd_ev.72.name
+	is_triggered_only = yes
+	picture = GFX_evt_physics_research
+
+	desc = {
+		trigger = {
+			NOT = {
+				has_completed_event_chain_counter = {
+					event_chain = "htbd_way_chain" 
+					counter = "htbd_avoid_systems" 
+				}
+			}
+		}
+		text = htbd_ev.7.desc.point
+	}
+	desc = {
+		trigger = {
+			NOT = { has_country_flag = htbd_liked_systems_done }
+			has_completed_event_chain_counter = {
+				event_chain = "htbd_way_chain" 
+				counter = "htbd_avoid_systems" 
+			}
+		}
+		text = htbd_ev.72.desc
+	}
+	desc = {
+		trigger = {
+			has_country_flag = htbd_liked_systems_done
+			has_completed_event_chain_counter = {
+				event_chain = "htbd_way_chain" 
+				counter = "htbd_avoid_systems" 
+			}
+		}
+		text = htbd_ev.72.desc.done
+	}
+	trigger = {
+		NOT = { 
+			has_country_flag = htbd_avoid_systems_done
+		}
+	}
+	immediate = {
+	}
+	option = {
+		name = OK
+		trigger = {
+			NOT = {
+				has_completed_event_chain_counter = {
+					event_chain = "htbd_way_chain" 
+					counter = "htbd_avoid_systems" 
+				}
+			}
+		}
+	}
+	option = {
+		name = "INTERESTING"
+		trigger = {
+			NOT = { has_country_flag = htbd_liked_systems_done }
+			has_completed_event_chain_counter = {
+				event_chain = "htbd_way_chain" 
+				counter = "htbd_avoid_systems" 
+			}
+		}
+		hidden_effect = {
+			set_country_flag = htbd_avoid_systems_done
+			abort_special_project = {
+				type = HTBD_WAY_AVOID
+			}
+		}
+	}
+	option = {
+		name = "FASCINATING"
+		trigger = {
+			has_country_flag = htbd_liked_systems_done
+			has_completed_event_chain_counter = {
+				event_chain = "htbd_way_chain" 
+				counter = "htbd_avoid_systems" 
+			}
+		}
+		hidden_effect = {
+			remove_country_flag = htbd_liked_systems_done
+			remove_country_flag = htbd_way_of_dragon
+			end_event_chain = htbd_way_chain
+			abort_special_project = {
+				type = HTBD_WAY_AVOID
+			}
+			set_country_flag = htbd_way_of_dragon_done
+		}
+	}
+}
+
+country_event = {
+	id = htbd_ev.75
+	title = htbd_ev.75.name
+	picture = GFX_evt_space_dragon
+	desc = htbd_ev.75.desc
+
+	trigger = {
+		is_country_type = default
+		exists = capital_scope
+		has_country_flag = htbd_way_of_dragon_done
+		NOT = { has_country_flag = htbd_dragon_fear_start }
+		NOT = { has_country_flag = htbd_dragon_fear }
+	}
+
+	immediate = {
+		set_country_flag = htbd_dragon_fear_start
+		if = {
+			limit = { htbd_debug = yes }
+			log = "71: enable FEAR project for [Root.GetName] at [pc_home.GetName]"
+		}
+		capital_scope = { save_event_target_as = pc_home }
+		enable_special_project = {
+			name = "HTBD_DRAGON_FEAR"
+			owner = root
+			location = event_target:pc_home
+		}
+	}
+
+	option = {
+		name = "BREAKTHROUGH"
+		tooltip = {
+			enable_special_project = {
+				name = "HTBD_DRAGON_FEAR"
+				location = event_target:pc_home
+				owner = ROOT
+			}
+		}
+	}
+}
+
+# Project complete
+country_event = {
+	id = htbd_ev.73
+	title = htbd_ev.73.name
+	desc = htbd_ev.73.desc
+	picture = GFX_evt_space_station
+	show_sound = event_mystic_reveal
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = htbd_dragon_fear_start
+	}
+
+	immediate = {
+		set_country_flag = htbd_dragon_fear
+		remove_country_flag = htbd_dragon_fear_start
+	}
+	option = {
+		name = "AMAZING"
+	}
+}
+
+# Detect dragon fleet in some system
+# Scope = Country
+# From = Fleet
+country_event = {
+	id = htbd_ev.8
+	title = "htbd_ev.8.name"
+	desc = "htbd_ev.8.desc"
+	picture = GFX_evt_space_dragon
+	is_triggered_only = yes
+	location = from
+
+	trigger = {
+		is_country_type = default
+		has_country_flag = htbd_way_of_dragon_done
+		NOT = { has_country_flag = htbd_dragonborn_started }
+		from = {
+			exists = owner
+			owner = { is_country_type = htbd_horde }
+			has_fleet_flag = htbd_hatching
+			exists = solar_system
+			solar_system = {
+				any_planet = {
+					has_planet_flag = egg_incubated
+					has_anomaly = no
+				}
+			}
+		}
+	}
+
+	immediate = {
+		# log = "8: [This.GetName] found [From.GetName] is hatching in [From.System.GetName] system"
+		set_country_flag = htbd_dragonborn_started
+		from = {
+			solar_system = {
+				random_system_planet = {
+					limit = { has_planet_flag = egg_incubated }
+					enable_special_project = {
+						name = "HTBD_DRAGON_PLANET"
+						location = this
+						owner = root
+						# after project is done, scan all planet we know
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = "INTERESTING"
+	}
+}
+
+# Survey planet with an Egg
+# Scope = ship
+# From = planet
+ship_event = {
+	id = htbd_ev.81
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		owner = {
+			is_country_type = default
+			has_country_flag = htbd_dragonborn_done
+		}
+		from = {
+			has_planet_flag = egg_incubated
+			has_anomaly = no
+		}
+	}
+
+	immediate = {
+		from = { add_anomaly = "HTBD_EGG_CATEGORY" }
+	}
+}
+
+# End of EGG planet project
+# From = ship
+country_event = {
+	id = htbd_ev.82
+	title = "htbd_ev.82.name"
+	desc = "htbd_ev.82.desc"
+	picture = GFX_evt_molten
+	is_triggered_only = yes
+	location = from
+
+	trigger = {
+		is_country_type = default
+		has_country_flag = htbd_dragonborn_done
+	}
+
+	immediate = {
+		# log = "82: [This.GetName] can detect dragon Eggs"
+		fromfrom = {
+			set_planet_flag = htbd_egg_check_@prev
+			enable_special_project = {
+				name = "HTBD_EGG_PLANET"
+				location = this
+				owner = root
+			}
+		}
+	}
+	option = {
+		name = "EXCELLENT"
+	}
+}
+
+# Country has potential planet with EGG found (surveyed already)
+country_event = {
+	id = htbd_ev.83
+	title = "htbd_ev.83.name"
+	desc = "htbd_ev.83.desc"
+	picture = GFX_evt_molten
+	location = event_target:egg_planet
+
+	is_triggered_only = yes
+
+	trigger = {
+		is_country_type = default
+		has_country_flag = htbd_dragonborn_done
+		any_system = {
+			any_planet = {
+				is_surveyed = { who = root status = yes }
+				has_planet_flag = egg_incubated
+				NOT = { has_planet_flag = htbd_hidden_egg }
+				NOT = { has_planet_flag = htbd_egg_check_@root }
+			}
+			root = { intel_level = { level > high system = prev } }
+		}
+	}
+
+	immediate = {
+		random_planet = {
+			limit = {
+				is_surveyed = { who = root status = yes }
+				has_planet_flag = egg_incubated
+				NOT = { has_planet_flag = htbd_hidden_egg }
+				NOT = { has_planet_flag = htbd_egg_check_@root }
+				solar_system = {
+					root = { intel_level = { level > high system = prev } }
+				}
+			}
+			save_event_target_as = egg_planet
+			# log = "Adding project for [ROOT.GetName] at [This.GetName]"
+			set_planet_flag = htbd_egg_check_@root
+			enable_special_project = {
+				name = "HTBD_EGG_PLANET"
+				location = this
+				owner = root
+			}
+		}
+	}
+	option = {
+		name = "EXCELLENT"
+	}
+}
+
+ship_event = {
+	id = htbd_ev.92
+	title = "htbd_ev.9.name"
+	desc = "htbd_ev.9.desc"
+	picture = GFX_evt_molten
+	is_triggered_only = yes
+	location = fromfrom
+
+	trigger = {
+		owner = {
+			is_country_type = default
+			has_country_flag = htbd_dragonborn_done
+			exists = capital_scope
+		}
+	}
+	immediate = {
+		# log = "92: [This.GetName] found EGG in [From.System.GetName] system"
+		owner = {
+			capital_scope = { save_event_target_as = pc_home }
+			fromfrom = { remove_planet_flag = htbd_egg_check_@prev }
+		}
+	}
+	option = {
+		name = htbd_ev.9.a
+		custom_tooltip = htbd_ev.9.a.tooltip
+		owner = {
+			enable_special_project = {
+				name = "HTBD_DRAGON_INCUBATION"
+				location = event_target:pc_home
+				owner = this
+			}
+		}
+		hidden_effect = {
+			fromfrom = { remove_planet_flag = egg_incubated }
+		}
+	}
+	option = {
+		name = htbd_ev.9.b
+		custom_tooltip = htbd_ev.9.b.tooltip
+		owner = { add_influence = 300 }
+		hidden_effect = {
+			fromfrom = { remove_planet_flag = egg_incubated }
+		}
+	}
+	option = {
+		name = htbd_ev.9.c
+		custom_tooltip = htbd_ev.9.c.tooltip
+		owner = { add_unity = 1000 }
+		hidden_effect = {
+			fromfrom = { set_planet_flag = htbd_hidden_egg }
+		}
+	}
+}
+
+ship_event = {
+	id = htbd_ev.91
+	title = "htbd_ev.91.name"
+	desc = "htbd_ev.91.desc"
+	picture = GFX_evt_molten
+	is_triggered_only = yes
+
+	trigger = {
+		owner = {
+			is_country_type = default
+			has_country_flag = htbd_dragonborn_done
+		}
+	}
+
+	immediate = {
+		fromfrom = {
+			if = {
+				limit = { has_planet_flag = egg_incubated }
+				set_planet_flag = htbd_hidden_egg
+			}
+		}
+		owner = { fromfrom = { remove_planet_flag = htbd_egg_check_@prev } }
+	}
+
+	option = {
+		name = "htbd_ev.91.a.name"
+	}
+}
+
+ship_event = {
+	id = htbd_ev.9
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		owner = {
+			is_country_type = default
+			has_country_flag = htbd_dragonborn_done
+			exists = capital_scope
+		}
+	}
+	immediate = {
+		if = {
+			limit = {
+				from = { has_planet_flag = egg_incubated }
+			}
+			ship_event = { id = htbd_ev.92 }
+			else = {
+				ship_event = { id = htbd_ev.91 }
+			}
+		}
+	}
+}
+
+# Egg incubated
+planet_event = {
+	id = htbd_ev.93
+	title = htbd_ev.93.name
+	desc = htbd_ev.93.desc
+	picture = GFX_evt_space_dragon
+	location = root
+	show_sound = event_mystic_reveal
+
+	is_triggered_only = yes
+
+	immediate = {
+		create_fleet = {
+			name = "Ether Hatchling"
+			settings = { 
+				can_upgrade = no 
+				#can_change_composition = no 
+				#can_change_leader = no 
+				#uses_naval_capacity = no
+				spawn_debris = no
+			}
+			effect = {
+				set_owner = root.owner
+				create_ship = {
+					design = NAME_Ether_Dwarf
+					name = "Dark Matter"
+					prefix = no
+					upgradable = no
+				}
+				set_location = root
+			}
+		}
+	}
+
+	option = {
+		name = htbd_ev.93.a
+		custom_tooltip = htbd_ev.93.a.tooltip
+	}
+}
+
+planet_event = {
+	id = htbd_ev.95
+	title = htbd_ev.95.name
+	desc = htbd_ev.95.desc
+	picture = GFX_evt_space_dragon
+	location = root
+	show_sound = event_red_alert
+
+	is_triggered_only = yes
+
+	immediate = {
+		create_fleet = {
+			settings = { 
+				can_upgrade = no 
+				spawn_debris = no
+				is_boss = yes
+			}
+			effect = {
+				set_name = "[Root.GetName] Beast"
+				set_owner = event_target:htbd_country
+				create_ship = {
+					design = NAME_Ether_Dwarf
+					prefix = no
+					upgradable = no
+				}
+				set_location = root
+				set_fleet_flag = htbd_idle
+			}
+		}
+	}
+
+	option = {
+		name = htbd_ev.95.a
+		custom_tooltip = htbd_ev.95.a.tooltip
+	}
+}
+
+country_event = {
+	id = htbd_ev.94
+	title = htbd_ev.94.name
+	desc = htbd_ev.94.desc
+	picture = GFX_evt_throne_room
+	location = capital_scope
+	show_sound = event_swarm
+
+	is_triggered_only = yes
+
+	option = {
+		name = UNFORTUNATE
+
+		add_monthly_resource_mult = {
+			resource = society_research
+			value = @tier4researchreward
+			min = @tier4researchmin
+			max = @tier4researchmax
+		}
+		add_monthly_resource_mult = {
+			resource = engineering_research
+			value = @tier3researchreward
+			min = @tier3researchmin
+			max = @tier3researchmax
+		}
+	}
+}
+
+# This = Disabled Ship
+# From = Disabler Ship
+ship_event = {
+	id = htbd_ev.101
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		exists = starbase
+		starbase = {
+			has_starbase_size >= starbase_starport
+		}
+	}
+
+	immediate = {
+		event_target:htbd_country = {
+			if = {
+				limit = {
+					any_owned_fleet = {
+						exists = solar_system
+						solar_system = { is_same_value = root.fleet.solar_system }
+					}
+				}
+				root = {
+					htbd_starbase_disable = yes
+					# log = "[this.GetName] is disabled at [fleet.solar_system.GetName]"
+				}
+				every_owned_fleet = {
+					limit = {
+						has_fleet_flag = htbd_attack_starbase
+						exists = solar_system
+						solar_system = {
+							is_same_value = root.fleet.solar_system
+						}
+					}
+					remove_fleet_flag = htbd_attack_starbase
+					set_fleet_flag = htbd_idle
+				}
+			}
+		}
+	}
+}
+

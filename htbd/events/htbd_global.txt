@@ -1,0 +1,613 @@
+#####################################
+### Here, There Be Dragons Events ###
+### by Gogabor			  ###
+#####################################
+
+namespace = htbd_gl
+
+@incubation_time = 5000
+
+# Create dragon/country at game start
+event = {
+	id = htbd_gl.1
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		has_leviathans = yes
+	}
+
+	immediate = {
+		htbd_create_country = yes
+		# htbd_debug_setup = yes
+		event_target:htbd_country = {
+			add_modifier = {
+				modifier = htbd_power
+				days = -1
+			}
+			country_event = { id = htbd_gl.11 }
+		}
+
+		every_country = {
+			limit = {
+				OR = {
+					is_country_type = default
+					is_country_type = fallen_empire
+					is_country_type = dormant_marauders
+					is_country_type = awakened_marauders
+					is_pirate = yes
+				}
+			}
+			establish_communications_no_message = root
+		}
+	}
+}
+
+# Create dragon/country at game start
+country_event = {
+	id = htbd_gl.11
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_leviathans = yes
+		is_country_type = htbd_horde
+	}
+
+	immediate = {
+		while = {
+			limit = {
+				OR = {
+					AND = {
+						any_system = {
+							always = yes
+							count = 750
+						}
+						num_fleets < 4
+					}
+					AND = {
+						any_system = {
+							always = yes
+							count = 550
+						}
+						num_fleets < 3
+					}
+					AND = {
+						any_system = {
+							always = yes
+							count = 350
+						}
+						num_fleets < 2
+					}
+					AND = {
+						any_system = {
+							always = yes
+							count = 150
+						}
+						num_fleets < 1
+					}
+				}
+			}
+			random_system = {
+				limit = {
+					NOR = {
+						exists = owner
+						has_star_flag = guardian
+						has_star_flag = empire_cluster
+						has_star_flag = enclave
+						has_star_flag = hostile_system
+						is_fe_cluster = yes
+						is_star_class = sc_black_hole
+						is_star_class = sc_pulsar
+						is_star_class = sc_neutron_star
+						any_planet = { is_capital = yes }
+					}
+					NOT = {
+						any_ship_in_system = {
+							fleet = {
+								owner = { is_country_type = htbd_horde }
+							}
+						}
+					}
+					any_planet = {
+						is_planet_class = pc_molten
+						NOT = { has_planet_flag = egg_incubated }
+					}
+				}
+				random_system_planet = {
+					limit = {
+						is_planet_class = pc_molten
+						NOT = { has_planet_flag = egg_incubated }
+					}
+					random_list = {
+						30 = {
+							modifier = {
+								factor = 2
+								root = {
+									num_fleets < 1
+								}
+							}
+							htbd_new_fleet = yes
+							last_created_fleet = {
+								htbd_dragon_grand = yes
+								set_fleet_flag = htbd_idle
+								log = "Wyrm [this.GetName] in [prev.GetName]"
+							}
+						}
+						40 = {
+							htbd_new_fleet = yes
+							last_created_fleet = {
+								htbd_dragon_adult = yes
+								set_fleet_flag = htbd_idle
+								log = "Dragon [this.GetName] in [prev.GetName]"
+							}
+						}
+						20 = {
+							htbd_new_fleet = yes
+							last_created_fleet = {
+								htbd_dragon_teen = yes
+								set_fleet_flag = htbd_idle
+								log = "Teen [this.GetName] in [prev.GetName]"
+							}
+						}
+						10 = {
+							modifier = {
+								factor = 0.1
+
+								any_system = {
+									any_planet = {
+										has_planet_flag = egg_incubated
+										count = 2
+									}
+								}
+							}
+							modifier = {
+								factor = 1.5
+								solar_system = {
+									any_planet = { is_planet_class = pc_asteroid }
+								}
+							}
+							log = "Egg at [This.GetName]"
+							set_planet_flag = egg_incubated
+						}
+					}
+				}
+			}
+			random_system = {
+				limit = {
+					NOR = {
+						exists = owner
+						has_star_flag = guardian
+						has_star_flag = empire_cluster
+						has_star_flag = enclave
+						has_star_flag = hostile_system
+						is_fe_cluster = yes
+						any_planet = { is_capital = yes }
+					}
+					OR = {
+						has_star_flag = ruined_ring_system
+						has_star_flag = ruined_sentry_system
+						has_star_flag = ruined_nexus_system
+						has_star_flag = ruined_dyson_system
+						any_planet = {
+							is_planet_class = pc_nuked
+						}
+					}
+				}
+				random_system_planet = {
+					htbd_exile_dwarf = yes
+					last_created_fleet = {
+						set_fleet_flag = htbd_idle
+						log = "Old project in [prev.GetName]"
+					}
+				}
+			}
+		}
+	}
+}
+
+# re-create dragons if all killed early (e.g. by Fallen)
+event = {
+	id = htbd_gl.2
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_leviathans = yes
+		any_country = {
+			is_country_type = htbd_horde
+			num_fleets < 1
+		}
+		NOT = {
+			any_system = {
+				any_planet = {
+					has_planet_flag = egg_incubated
+				}
+			}
+		}
+		years_passed < 200
+	}
+
+	immediate = {
+		random_system = {
+			limit = {
+				NOR = {
+					exists = owner
+					has_star_flag = guardian
+					has_star_flag = enclave
+					has_star_flag = hostile_system
+					is_fe_cluster = yes
+					is_star_class = sc_black_hole
+					is_star_class = sc_pulsar
+					is_star_class = sc_neutron_star
+				}
+				any_planet = {
+					is_planet_class = pc_molten
+				}
+			}
+			random_system_planet = {
+				limit = { is_planet_class = pc_molten }
+				set_planet_flag = egg_incubated
+				set_planet_flag = htbd_hidden_egg
+				# log = "Place Egg at [This.GetName] in [Prev.GetName] system"
+			}
+		}
+	}
+}
+
+# if planet with an Egg occured
+planet_event = {
+	id = htbd_gl.15
+	hide_window = yes
+	
+	trigger = {
+		has_planet_flag = egg_incubated
+	}
+	
+	mean_time_to_happen = {
+		days = @incubation_time
+		
+		modifier = {
+			factor = 0.8
+			solar_system = { is_star_class = sc_f }
+		}
+		modifier = {
+			factor = 1.2
+			solar_system = { is_star_class = sc_k }
+		}
+		modifier = {
+			factor = 1.5
+			solar_system = { is_star_class = sc_m }
+		}
+	}
+	
+	immediate = {
+		planet_event = { id = htbd_gl.16 }
+	}
+}
+
+# New dragon is born
+planet_event = {
+	id = htbd_gl.16
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		has_planet_flag = egg_incubated
+		has_anomaly = no
+	}
+	
+	immediate = {
+		remove_planet_flag = egg_incubated
+		remove_planet_flag = htbd_hidden_egg
+		htbd_new_fleet = yes
+		# htbd_new_leader = yes
+		last_created_fleet = {
+			#assign_leader = last_created_leader
+			htbd_dragon_kid = yes
+			fleet_event = { id = htbd.13 }
+		}
+	}
+}
+
+# Notify countries about Egg planets if applicable
+event = {
+	id = htbd_gl.3
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		any_country = {
+			is_country_type = default
+			has_country_flag = htbd_dragonborn_done
+		}
+		any_system = {
+			any_planet = {
+				has_planet_flag = egg_incubated
+				NOT = { has_planet_flag = htbd_hidden_egg }
+			}
+		}
+	}
+
+	immediate = {
+		every_country = {
+			limit = {
+				is_country_type = default
+				has_country_flag = htbd_dragonborn_done
+			}
+			random = {
+				chance = 15
+				country_event = { id = htbd_ev.83 }
+			}
+		}
+	}
+}
+
+# Hunt for dragons
+event = {
+	id = htbd_gl.7
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		event_target:htbd_country = {
+			NOT = { has_country_flag = htbd_dragon_hunt }
+			num_fleets > 40
+		}
+	}
+
+	immediate = {
+		event_target:htbd_country = {
+			set_timed_country_flag = { flag = htbd_dragon_hunt days = 1500 }
+		}
+		log = "Dragon Hunt was started"
+	}
+}
+
+country_event = {
+	id = htbd_gl.70
+	hide_window = yes
+	#is_triggered_only = yes
+
+	trigger = {
+		event_target:htbd_country = {
+			has_country_flag = htbd_dragon_hunt
+			num_fleets > 15
+		}
+		OR = {
+			is_country_type = fallen_empire
+			is_country_type = awakened_fallen_empire
+		}
+		is_at_war = no
+		NOT = { 
+			any_owned_fleet = { has_fleet_flag = htbd_hunter }
+		}
+		any_owned_fleet = {
+			NOT = { is_ship_class = shipclass_starbase }
+			fleet_power > 20000
+		}
+	}
+
+	immediate = {
+		random_country = {
+			limit = {
+				OR = {
+					is_country_type = fallen_empire
+					is_country_type = awakened_fallen_empire
+				}
+				is_at_war = no
+				NOT = { 
+					any_owned_fleet = { has_fleet_flag = htbd_hunter }
+				}
+			}
+			random_owned_fleet = {
+				limit = {
+					NOT = {
+						is_ship_class = shipclass_starbase
+					}
+					is_fleet_idle = yes
+					fleet_power > 20000
+				}
+				log = "[This.GetName] is a hunter"
+				set_fleet_flag = htbd_hunter
+				fleet_event = { id = htbd_gl.71 }
+			}
+		}
+	}
+}
+
+fleet_event = {
+	id = htbd_gl.71
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_fleet_flag = htbd_hunter
+		NOT = { has_fleet_flag = htbd_hunting }
+	}
+
+	immediate = {
+		set_fleet_flag = htbd_hunting
+		queue_actions = {
+			repeat = {
+				while = {
+					id = htbd_gl.71.while.1
+
+					has_hp_percentage > 0.5
+					has_fleet_flag = htbd_hunter
+				}
+				find_closest_system = {
+					trigger = {
+						id = htbd_gl.71.trigger.1
+
+						any_ship_in_system = {
+							OR = {
+								is_ship_size = space_dragon_grand
+								is_ship_size = space_dragon_adult
+							}
+						}
+						NOT = { has_star_flag = htbd_stop }
+					}
+					found_system = {
+						move_to = this
+						effect = {
+							id = htbd_gl.71.effect.1
+
+							if = {
+								limit = {
+									root.solar_system = {
+										is_same_value = prev
+									}
+								}
+								log = "[Root.GetName] arrived at [This.GetName]"
+								else = {
+									# log = "[Root.GetName] can't move to [This.GetName]"
+									set_timed_star_flag = { flag = htbd_stop years = 3 }
+								}
+							}
+						}
+					}
+					failed = {
+						# can't find big dragons, stop hunting
+						effect = {
+							id = htbd_gl.71.effect.2
+
+							log = "[Root.GetName] stops hunting (no big dragons)"
+							event_target:htbd_country = { remove_country_flag = htbd_dragon_hunt }
+							root = {
+								remove_fleet_flag = htbd_hunter
+								remove_fleet_flag = htbd_hunting
+								clear_fleet_actions = this
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+fleet_event = {
+	id = htbd_gl.72
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_fleet_flag = htbd_hunting
+		event_target:htbd_country = {
+			OR = {
+				NOT = { has_country_flag = htbd_dragon_hunt }
+				num_fleets < 15
+			}
+		}
+	}
+
+	immediate = {
+		set_fleet_flag = htbd_hunting
+		log = "[Root.GetName] stops hunting (time or amount)"
+		event_target:htbd_country = { remove_country_flag = htbd_dragon_hunt }
+		remove_fleet_flag = htbd_hunter
+		remove_fleet_flag = htbd_hunting
+		clear_orders = yes
+		clear_fleet_actions = this
+	}
+}
+
+# debug event, just creates new dragon being issued from console
+planet_event = {
+	id = htbd_gl.42
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		htbd_new_fleet = yes
+		last_created_fleet = {
+			htbd_dragon_grand = yes
+			fleet_event = { id = htbd.13 }
+		}
+	}
+}
+
+# debug info
+event = {
+	id = htbd_gl.100
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_leviathans = yes
+		any_country = {
+			is_country_type = htbd_horde
+		}
+		htbd_debug = yes
+	}
+
+	immediate = {
+		every_country = {
+			limit = { is_country_type = htbd_horde }
+			every_owned_fleet = {
+				log = "-------------"
+				log = "[This.GetName], "
+				switch = {
+					trigger = is_ship_size
+					space_dragon_kid = { log = "	Kid" }
+					space_dragon_teen = { log = "	Teen"}
+					space_dragon_adult = { log = "	Adult" }
+					space_dragon_grand = { log = "	Grandpa" }
+					space_dragon_dwarf = { log = "	Dwarf" }
+				}
+				if = { limit = { has_fleet_flag = htbd_curious }
+					log = "	curious"
+				}
+				if = { limit = { has_fleet_flag = htbd_caution }
+					log = "	caution"
+				}
+				if = { limit = { has_fleet_flag = htbd_stupid } log = "	stupid" }
+				if = { limit = { has_fleet_flag = htbd_clever } log = "	clever" }
+				if = { limit = { has_fleet_flag = htbd_mad } log = "	mad" }
+				if = { limit = { has_fleet_flag = htbd_apathic } log = "	apathic" }
+				if = { limit = { has_fleet_flag = htbd_hermit } log = "	hermit" }
+				if = { limit = { has_fleet_flag = htbd_social } log = "	social" }
+				if = { limit = { has_fleet_flag = htbd_hatching }
+					log = "	is hatching in [This.System.GetName]"
+				}
+				if = { limit = { has_fleet_flag = htbd_roaming }
+					log = "	is roaming in [This.System.GetName]"
+				}
+				if = { limit = { has_fleet_flag = htbd_travel }
+					log = "	is traveling"
+				}
+			}
+		}
+		every_country = {
+			limit = {
+				OR = {
+					is_country_type = default
+					is_ai = no
+				}
+				NOR = {
+					is_country_type = htbd_horde
+				}
+			}
+			log = "HTBD stats for [This.GetName] --------------------"
+			if = {
+				limit = { has_country_flag = htbd_dragon_fear }
+				log = "--- has FEAR researched!"
+			}
+			if = {
+				limit = { has_edict = htbd_dragon_fear }
+				log = "--- has FEAR enabled!"
+			}
+			#save_event_target_as = this
+			every_ship = {
+				limit = {
+					exists = owner
+					owner = { is_country_type = htbd_horde }
+					is_inside_border = prev
+				}
+				log = "---> [fleet.GetName] is in borders"
+			}
+		}
+	}
+}

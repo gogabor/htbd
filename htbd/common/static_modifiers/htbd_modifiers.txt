@@ -1,0 +1,13 @@
+htbd_hull_restore = {
+	ship_hull_regen_add_perc = 0.5
+}
+
+htbd_armor_restore = {
+	ship_armor_regen_add_perc = 0.5
+}
+
+htbd_power = {
+	ship_hull_regen_add_perc = 0.05
+	ship_armor_regen_add_perc = 0.02
+}
+

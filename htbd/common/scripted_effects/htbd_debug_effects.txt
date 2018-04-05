@@ -1,0 +1,187 @@
+#####################################
+### Here, There Be Dragons Events ###
+### by Gogabor			  ###
+#####################################
+# Checks the ship/fleet/planet/leader/pop/system's galaxy map distance to target in absolute units
+# distance = { source = <target> min = 50 max = 120 type=<hyperlane/euclidean> uses_bypass=<yes/no> bypass_empire=<empire> min_jumps = 2 max_jumps = 10 }
+
+# This = fleet
+htbd_travel_debug = {
+	log = "[This.GetName] wants to leave [solar_system.GetName]"
+	solar_system = {
+		if = {
+			limit = {
+				exists = owner
+			}
+			owner = { log = "Owner is [This.GetName]" }
+		}
+		if = {
+			limit = { exists = starbase }
+			log = "Has starbase!"
+		}
+		if = {
+			limit = {
+				htbd_has_ftl_inhibitor = yes
+			}
+			log = "[This.GetName] has an inhibitor!"
+		}
+		log = "can move by hyperlanes to:"
+		every_neighbor_system = {
+			ignore_hyperlanes = no
+			limit = {
+				always = yes
+			}
+			if = {
+				limit = { has_star_flag = htbd_recent_star }
+				log = "	[This.GetName] (recent)"
+				else = {
+					log = "	[This.GetName]"
+				}
+			}
+			if = {
+				limit = { htbd_has_fear_station = yes }
+				log = "		-> FEAR"
+				else = {
+					if = {
+						limit = { htbd_has_fear_aura = yes }
+						log = "		-> FEAR AURA"
+					}
+				}
+			}
+			if = {
+				limit = { htbd_bad_system = yes }
+				log = "		-> BAD"
+			}
+			if = {
+				limit = { htbd_avoid_system = yes }
+				log = "		-> AVOID"
+			}
+		}
+		log = "by distance:"
+		every_system = {
+			#ignore_hyperlanes = yes
+			limit = {
+				distance = { source = prev type=hyperlane min_jumps = 1 max_jumps = 1 }
+			}
+			if = {
+				limit = { has_star_flag = htbd_recent_star }
+				log = "	[This.GetName] (recent)"
+				else = {
+					log = "	[This.GetName]"
+				}
+			}
+			if = {
+				limit = { htbd_has_fear_station = yes }
+				log = "		-> FEAR"
+				else = {
+					if = {
+						limit = { htbd_has_fear_aura = yes }
+						log = "		-> FEAR AURA"
+					}
+				}
+			}
+			if = {
+				limit = { htbd_bad_system = yes }
+				log = "		-> BAD"
+			}
+			if = {
+				limit = { htbd_avoid_system = yes }
+				log = "		-> AVOID"
+			}
+		}
+		if = {
+			limit = { has_natural_wormhole = yes }
+			closest_system = {
+				min_steps = 1
+				max_steps = 1
+				limit = {
+					has_natural_wormhole = yes
+				}
+				log = "Has natural wormhole to [This.GetName]"
+				if = {
+					limit = { has_star_flag = htbd_recent_star }
+					log = "		-> RECENT"
+				}
+				if = {
+					limit = { htbd_has_fear_station = yes }
+					log = "		-> FEAR"
+					else = {
+						if = {
+							limit = { htbd_has_fear_aura = yes }
+							log = "		-> FEAR AURA"
+						}
+					}
+				}
+				if = {
+					limit = { htbd_bad_system = yes }
+					log = "		-> BAD"
+				}
+				if = {
+					limit = { htbd_avoid_system = yes }
+					log = "		-> AVOID"
+				}
+			}
+		}
+	}
+}
+
+# create dragon and dreadnout to debug battles
+htbd_debug_setup = {
+	# devel: to test iteration with dragons
+	every_country = {
+		limit = {
+			is_ai = no
+		}
+		save_event_target_as = my_country
+		capital_scope = {
+			solar_system = {
+				random_system_planet = {
+					create_fleet = {
+						name = "Dragon Slayer"
+						effect = {
+							set_owner = event_target:my_country
+							create_ship = {
+								name = "Dread"
+								design = "NAME_Relic"
+								graphical_culture = "npf_01"
+								upgradable = no
+							}
+							set_location = prev
+						}
+					}
+				}
+				closest_system = {
+					limit = {
+						NOT = { any_planet = { is_capital = yes } }
+						any_planet = { is_planet_class = pc_molten }
+					}
+					random_system_planet = {
+						htbd_new_fleet = yes
+						last_created_fleet = {
+							htbd_dragon_teen = yes
+							set_fleet_flag = htbd_idle
+						}
+					}
+				}
+				random_rim_system = {
+					limit = {
+						NOT = { any_planet = { is_capital = yes } }
+						NOT = {
+							any_ship_in_system = {
+								owner = { is_country_type = htbd_horde }
+							}
+						}
+						any_planet = { is_planet_class = pc_molten }
+					}
+					random_system_planet = {
+						htbd_new_fleet = yes
+						last_created_fleet = {
+							htbd_dragon_adult = yes
+							set_fleet_flag = htbd_idle
+						}
+					}
+				}
+			}
+		}
+	}
+}

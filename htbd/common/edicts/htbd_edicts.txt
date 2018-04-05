@@ -1,0 +1,51 @@
+
+@Cost = 1000
+
+@EdictDuration = 3600
+
+country_edict = {
+	name = "htbd_dragon_fear"
+	length = @EdictDuration
+	cost = { energy = @Cost }
+
+	modifier = {
+		pop_happiness = 0.05
+		damage_vs_country_type_htbd_horde_mult = 0.1
+	}
+	
+	potential = {
+		has_country_flag = htbd_dragon_fear
+	}
+
+	allow = {
+	}
+	
+	ai_weight = {
+		weight = 1
+		modifier = {
+			factor = 0.5
+			OR = {
+				has_ethic = ethic_xenophile
+				has_ethic = ethic_fanatic_xenophile
+			}
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				has_ethic = ethic_militarist
+				has_ethic = ethic_fanatic_militarist
+			}
+		}
+		modifier = {
+			factor = 5
+			count_ships = {
+				limit = {
+					exists = owner
+					owner = { is_country_type = htbd_horde }
+					is_inside_border = prev
+				}
+				count > 5
+			}
+		}
+	}
+}
