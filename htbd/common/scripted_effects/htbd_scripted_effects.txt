@@ -52,6 +52,40 @@ htbd_create_country = {
 	}
 }
 
+# this = country
+htbd_set_neutral_countries = {
+	# Enclave, Sphere and Xanophile Fallen calm dragons down
+	every_country = {
+		if = {
+			limit = {
+				OR = {
+					is_country_type = enclave
+					is_country_type = guardian_sphere
+					AND = {
+						OR = {
+							is_country_type = fallen_empire
+							is_country_type = awakened_fallen_empire
+						}
+						OR = {
+							has_ethic = ethic_pacifist
+							has_ethic = ethic_fanatic_pacifist
+							has_ethic = ethic_xenophile
+							has_ethic = ethic_fanatic_xenophile
+						}
+					}
+				}
+			}
+			set_faction_hostility = {
+				target = event_target:htbd_country
+				set_hostile = no
+				set_neutral = yes
+				set_friendly = no
+			}
+			set_country_flag = htbd_dragon_scent
+		}
+	}
+}
+
 # character pairs table:
 # curious - caution: like or dislike to travel and visit 'avoided' systems
 # apathic - mad: stay longer or shorted near stars/planets and in systems

@@ -7,8 +7,10 @@ htbd_horde = {
 	has_complete_sensor = yes
 	needs_survey = no
 	share_communications = no
-	# attack_unarmed_orbital_stations = yes
 	is_space_critter = yes
+	blocks_piracy = yes
+
+	# attack_unarmed_orbital_stations = yes
 	# destroys_starbases = yes
 
 	ai = {

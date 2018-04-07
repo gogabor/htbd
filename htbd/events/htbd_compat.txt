@@ -72,6 +72,21 @@ event = {
 	}
 }
 
+# compatibility for save games and friendly countries
+country_event = {
+	id = htbd_comp.31
+	hide_window = yes
+
+	trigger = {
+		has_leviathans = yes
+		is_country_type = htbd_horde
+		NOT = { any_country = { has_country_flag = htbd_dragon_scent } }
+	}
+	immediate = {
+		htbd_set_neutral_countries = yes
+	}
+}
+
 # Check for invalid dragon states and fix it 
 event = {
 	id = htbd_comp.4
@@ -89,6 +104,7 @@ event = {
 			# fix stuck dragons
 			every_owned_fleet = {
 				limit = {
+					is_in_combat = no
 					OR = {
 						has_fleet_flag = htbd_travel
 						has_fleet_flag = htbd_healing

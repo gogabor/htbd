@@ -29,18 +29,11 @@ event = {
 			country_event = { id = htbd_gl.11 }
 		}
 
+		# establish communications with all countries and make some neutral
 		every_country = {
-			limit = {
-				OR = {
-					is_country_type = default
-					is_country_type = fallen_empire
-					is_country_type = dormant_marauders
-					is_country_type = awakened_marauders
-					is_pirate = yes
-				}
-			}
-			establish_communications_no_message = root
+			establish_communications_no_message = event_target:htbd_country
 		}
+		htbd_set_neutral_countries = yes
 	}
 }
 
@@ -379,6 +372,7 @@ country_event = {
 			is_country_type = fallen_empire
 			is_country_type = awakened_fallen_empire
 		}
+		NOT = { has_country_flag = htbd_dragon_scent }
 		is_at_war = no
 		NOT = { 
 			any_owned_fleet = { has_fleet_flag = htbd_hunter }
@@ -397,6 +391,7 @@ country_event = {
 					is_country_type = awakened_fallen_empire
 				}
 				is_at_war = no
+				NOT = { has_country_flag = htbd_dragon_scent }
 				NOT = { 
 					any_owned_fleet = { has_fleet_flag = htbd_hunter }
 				}

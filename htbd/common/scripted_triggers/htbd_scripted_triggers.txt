@@ -20,7 +20,20 @@ htbd_max = {
 htbd_is_dragon_fear = {
 	exists = space_owner
 	space_owner = {
-		has_edict = htbd_dragon_fear
+		# some countries have permanent fear effect, e.g. fallen, marauders, etc.
+		OR = {
+			has_edict = htbd_dragon_fear
+			is_country_type = guardian_fortress
+			AND = {
+				OR = {
+					is_country_type = fallen_empire
+					is_country_type = awakened_fallen_empire
+					is_country_type = dormant_marauders
+					is_country_type = awakened_marauders
+				}
+				NOT = { has_country_flag = htbd_dragon_scent }
+			}
+		}
 	}
 }
 
@@ -40,6 +53,7 @@ htbd_has_fear_station = {
 				has_building = building_capital_3
 			}
 		}
+		has_star_flag = enigmatic_system
 	}
 }
 
@@ -61,18 +75,7 @@ htbd_has_fear_aura = {
 # dragons don't like such systems and will leave them asap
 htbd_bad_system = {
 	OR = {
-		has_star_flag = enigmatic_system
 		is_star_class = sc_black_hole
-		has_star_flag = enclave
-		AND = {
-			exists = owner
-			owner = {
-				OR = {
-					is_country_type = fallen_empire
-					is_country_type = awakened_fallen_empire
-				}
-			}
-		}
 		htbd_has_fear_station = yes
 	}
 }
@@ -80,7 +83,6 @@ htbd_bad_system = {
 # dragons avoid staying in such systems
 htbd_avoid_system = {
 	OR = {
-		# has_star_flag = enclave
 		is_star_class = sc_pulsar
 		is_star_class = sc_neutron_star
 		has_star_flag = htbd_death_place
@@ -116,18 +118,8 @@ htbd_is_good_for_egg = {
 
 # system scope
 htbd_may_travel_to = {
-	NOR = {
+	NOT = {
 		is_same_value = root.solar_system
-		has_star_flag = enigmatic_system
-		AND = {
-			exists = owner
-			owner = {
-				OR = {
-					is_country_type = fallen_empire
-					is_country_type = awakened_fallen_empire
-				}
-			}
-		}
 	}
 	OR = {
 		NOT = { has_star_flag = htbd_recent_star }
@@ -135,17 +127,12 @@ htbd_may_travel_to = {
 		root = { has_fleet_flag = htbd_stuck }
 	}
 	OR = {
-		NOR = {
-			is_star_class = sc_black_hole
-			htbd_has_fear_station = yes
-			has_star_flag = enclave
-		}
+		NOT = { htbd_bad_system = yes }
+		root = { has_fleet_flag = htbd_mad }
 		root = { has_fleet_flag = htbd_stuck_stuck }
 	}
 	OR = {
-		NOT = {
-			htbd_avoid_system = yes
-		}
+		NOT = { htbd_avoid_system = yes }
 		root = { has_fleet_flag = htbd_curiousity }
 		root = { has_fleet_flag = htbd_stuck }
 	}
