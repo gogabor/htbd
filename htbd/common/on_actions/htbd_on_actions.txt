@@ -21,8 +21,7 @@ on_yearly_pulse = {
 on_monthly_pulse = {
 	events = {
 		htbd_gl.3
-		htbd_comp.2
-		htbd_comp.3
+		htbd_gl.12
 		htbd_comp.4
 		htbd_gl.7
 	}

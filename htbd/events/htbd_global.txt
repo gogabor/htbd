@@ -6,6 +6,8 @@
 namespace = htbd_gl
 
 @incubation_time = 5000
+# change together with one in htbd_compat.txt
+@mod_version = 202
 
 # Create dragon/country at game start
 event = {
@@ -19,25 +21,15 @@ event = {
 	}
 
 	immediate = {
-		htbd_create_country = yes
 		# htbd_debug_setup = yes
+		htbd_create_country = yes
 		event_target:htbd_country = {
-			add_modifier = {
-				modifier = htbd_power
-				days = -1
-			}
 			country_event = { id = htbd_gl.11 }
 		}
-
-		# establish communications with all countries and make some neutral
-		every_country = {
-			establish_communications_no_message = event_target:htbd_country
-		}
-		htbd_set_neutral_countries = yes
 	}
 }
 
-# Create dragon/country at game start
+# Populate game with dragons when country is created
 country_event = {
 	id = htbd_gl.11
 	hide_window = yes
@@ -49,6 +41,20 @@ country_event = {
 	}
 
 	immediate = {
+		set_variable = { which = htbd_version value = @mod_version }
+
+		add_modifier = {
+			modifier = htbd_power
+			days = -1
+		}
+
+		# establish communications with all countries and make some neutral
+		every_country = {
+			establish_communications_no_message = root
+		}
+		htbd_set_neutral_countries = yes
+
+		# add dragons depending on amount of stars
 		while = {
 			limit = {
 				OR = {
@@ -167,36 +173,93 @@ country_event = {
 					}
 				}
 			}
-			random_system = {
-				limit = {
-					NOR = {
-						exists = owner
-						has_star_flag = guardian
-						has_star_flag = empire_cluster
-						has_star_flag = enclave
-						has_star_flag = hostile_system
-						is_fe_cluster = yes
-						any_planet = { is_capital = yes }
-					}
-					OR = {
-						has_star_flag = ruined_ring_system
-						has_star_flag = ruined_sentry_system
-						has_star_flag = ruined_nexus_system
-						has_star_flag = ruined_dyson_system
-						any_planet = {
-							is_planet_class = pc_nuked
-						}
-					}
+		}
+		# Add an 'old failed experiment' - Ether Dwarf into the game
+		random_system = {
+			limit = {
+				NOR = {
+					exists = owner
+					has_star_flag = guardian
+					has_star_flag = empire_cluster
+					has_star_flag = enclave
+					has_star_flag = hostile_system
+					is_fe_cluster = yes
+					any_planet = { is_capital = yes }
 				}
-				random_system_planet = {
-					htbd_exile_dwarf = yes
-					last_created_fleet = {
-						set_fleet_flag = htbd_idle
-						log = "Old project in [prev.GetName]"
+				OR = {
+					has_star_flag = ruined_ring_system
+					has_star_flag = ruined_sentry_system
+					has_star_flag = ruined_nexus_system
+					has_star_flag = ruined_dyson_system
+					any_planet = {
+						is_planet_class = pc_nuked
 					}
 				}
 			}
+			random_system_planet = {
+				htbd_exile_dwarf = yes
+				last_created_fleet = {
+					set_fleet_flag = htbd_idle
+					log = "Old project in [prev.GetName]"
+				}
+			}
 		}
+	}
+}
+
+# Savegame compatibility, create country if none
+event = {
+	id = htbd_gl.12
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		has_leviathans = yes
+		NOT = {
+			any_country = { is_country_type = htbd_horde }
+		}
+	}
+	immediate = {
+		log = "HTBD: create country for just enabled mod"
+		htbd_create_country = yes
+		event_target:htbd_country = {
+			country_event = { id = htbd_gl.11 }
+		}
+	}
+}
+
+# Savegames compatibility between different mod versions
+country_event = {
+	id = htbd_gl.13
+	hide_window = yes
+	fire_only_once = yes
+
+	trigger = {
+		has_leviathans = yes
+		is_country_type = htbd_horde
+		check_variable = { which = htbd_version value < @mod_version }
+	}
+	immediate = {
+		# check all modifiers are enabled
+		if = {
+			limit = {
+				NOT = { has_modifier = htbd_power }
+			}
+			log = "HTBD: add 'Dragon Power' modifier"
+			add_modifier = { modifier = htbd_power days = -1 }
+		}
+		# version 202 added countries neutrality
+		if = {
+			limit = {
+				check_variable = { which = htbd_version value < 202 }
+			}
+			log = "HTBD: add neutral countries"
+			htbd_set_neutral_countries = yes
+		}
+
+		# set new version for the current game finally
+		set_variable = { which = htbd_version value = @mod_version }
 	}
 }
 

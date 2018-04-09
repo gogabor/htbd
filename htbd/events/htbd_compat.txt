@@ -1,4 +1,5 @@
 namespace = htbd_comp
+
 country_event = {
 	id = htbd_comp.1
 	hide_window = yes
@@ -29,61 +30,6 @@ country_event = {
 			set_country_flag = guardian_dragon_defeated
 			country_event = { id = NSC_guardian_ether_drake.2 }
 		}
-	}
-}
-
-# Save games, create country if none
-event = {
-	id = htbd_comp.2
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		has_leviathans = yes
-		NOT = {
-			any_country = { is_country_type = htbd_horde }
-		}
-	}
-	immediate = {
-		htbd_create_country = yes
-		event_target:htbd_country = {
-			country_event = { id = htbd_gl.11 }
-		}
-	}
-}
-
-# Save games, add modifiers
-event = {
-	id = htbd_comp.3
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		has_leviathans = yes
-		any_country = {
-			is_country_type = htbd_horde
-			NOT = { has_modifier = htbd_power }
-		}
-	}
-	immediate = {
-		event_target:htbd_country = {
-			add_modifier = { modifier = htbd_power days = -1 }
-		}
-	}
-}
-
-# compatibility for save games and friendly countries
-country_event = {
-	id = htbd_comp.31
-	hide_window = yes
-
-	trigger = {
-		has_leviathans = yes
-		is_country_type = htbd_horde
-		NOT = { any_country = { has_country_flag = htbd_dragon_scent } }
-	}
-	immediate = {
-		htbd_set_neutral_countries = yes
 	}
 }
 
