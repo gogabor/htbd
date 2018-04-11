@@ -1358,6 +1358,10 @@ country_event = {
 				NOT = { has_planet_flag = htbd_egg_check_@root }
 			}
 			root = { intel_level = { level > high system = prev } }
+			NAND = {
+				exists = space_owner
+				space_owner = { has_closed_borders = root }
+			}
 		}
 	}
 
@@ -1370,20 +1374,39 @@ country_event = {
 				NOT = { has_planet_flag = htbd_egg_check_@root }
 				solar_system = {
 					root = { intel_level = { level > high system = prev } }
+					NAND = {
+						exists = space_owner
+						space_owner = { has_closed_borders = root }
+					}
 				}
 			}
 			save_event_target_as = egg_planet
 			# log = "Adding project for [ROOT.GetName] at [This.GetName]"
-			set_planet_flag = htbd_egg_check_@root
-			enable_special_project = {
-				name = "HTBD_EGG_PLANET"
-				location = this
-				owner = root
+
+		}
+	}
+	option = {
+		name = htbd_ev.83.a
+		custom_tooltip = htbd_ev.83.a.tooltip
+		hidden_effect = {
+			event_target:egg_planet = {
+				set_planet_flag = htbd_egg_check_@root
+				enable_special_project = {
+					name = "HTBD_EGG_PLANET"
+					location = this
+					owner = root
+				}
 			}
 		}
 	}
 	option = {
-		name = "EXCELLENT"
+		name = htbd_ev.83.b
+		custom_tooltip = htbd_ev.83.b.tooltip
+		hidden_effect = {
+			event_target:egg_planet = {
+				set_planet_flag = htbd_hidden_egg
+			}
+		}
 	}
 }
 

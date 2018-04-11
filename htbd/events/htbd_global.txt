@@ -392,9 +392,23 @@ event = {
 				is_country_type = default
 				has_country_flag = htbd_dragonborn_done
 			}
-			random = {
-				chance = 15
-				country_event = { id = htbd_ev.83 }
+			random_list = {
+				5 = {
+					modifier = {
+						factor = 5
+
+						any_system = {
+							any_planet = {
+								has_planet_flag = egg_incubated
+								NOT = { has_planet_flag = htbd_hidden_egg }
+								NOT = { has_planet_flag = htbd_egg_check_@prevprev }
+								is_inside_border = prevprev
+							}
+						}
+					}
+					country_event = { id = htbd_ev.83 days = 3 random = 14 }
+				}
+				80 = {}
 			}
 		}
 	}
