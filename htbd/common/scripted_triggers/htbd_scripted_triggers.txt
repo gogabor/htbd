@@ -5,6 +5,58 @@ htbd_debug = {
 	always = no
 }
 
+htbd_not_recent_planet = {
+	NAND = {
+		has_planet_flag = htbd_recent
+		# if all planets are with recent flag, ignore that flag
+		solar_system = {
+			any_planet = {
+				NOT = { has_planet_flag = htbd_recent }
+			}
+		}
+	}
+}
+
+htbd_preferable_planet = {
+	OR = {
+		has_planet_flag = egg_incubated
+		AND = {
+			is_star = yes
+			NOR = {
+				is_planet_class = pc_black_hole
+				is_planet_class = pc_neutron_star
+				is_planet_class = pc_pulsar
+			}
+		}
+		is_planet_class = pc_asteroid
+		is_planet_class = pc_gas_giant
+		is_planet_class = pc_molten
+	}
+}
+
+# fleet
+htbd_idontcare = {
+	has_fleet_flag = htbd_curious
+	has_fleet_flag = htbd_stupid
+	has_fleet_flag = htbd_mad
+}
+
+htbd_unpleasant_planet = {
+	OR = {
+		AND = {
+			is_star = yes
+			OR = {
+				is_planet_class = pc_black_hole
+				is_planet_class = pc_neutron_star
+				is_planet_class = pc_pulsar
+			}
+		}
+		is_planet_class = pc_frozen
+		is_capital = yes
+		is_colony = yes
+	}
+}
+
 htbd_can_interrupt_fleet = {
 	NOR = {
 		has_fleet_flag = htbd_travel
@@ -122,7 +174,7 @@ htbd_may_travel_to = {
 		is_same_value = root.solar_system
 	}
 	OR = {
-		NOT = { has_star_flag = htbd_recent_star }
+		NOT = { has_star_flag = htbd_recent_star_@root }
 		root = { has_fleet_flag = htbd_ignore_recent }
 		root = { has_fleet_flag = htbd_stuck }
 	}

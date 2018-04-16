@@ -9,12 +9,6 @@ namespace = htbd
 @decision_period = 450
 # keep action after change, days
 @decision_cooldown = 200
-#days at each planet
-@planet_stay = 30
-@planet_stay_long = 50
-@planet_stay_short = 10
-@planet_stay_rnd = 20
-@recent_planet = 200
 
 @recent_star = 3000
 @recent_good_star = 2000
@@ -336,42 +330,44 @@ fleet_event = {
 				find_random_planet = {
 					trigger = {
 						id = htbd.12.trigger.2
-						NOR = {
-							has_planet_flag = egg_incubated
-							has_planet_flag = htbd_recent
-						}
-						OR = {
-							is_star = yes
-							is_planet_class = pc_gas_giant
-							is_planet_class = pc_asteroid
-							is_planet_class = pc_molten
-						}
+						NOT = { is_same_value = root.orbit }
+						htbd_not_recent_planet = yes
+						htbd_preferable_planet = yes
 					}
 					found_planet = {
 						move_to = this
 						orbit_planet = this
-						wait = { duration = 20 random = 20 }
+						wait = { duration = @planet_stay_long random = @planet_stay_rnd }
 						effect = {
 							id = htbd.12.effect.2
-							set_timed_planet_flag = { flag = htbd_recent days = @recent_planet }
+							set_timed_planet_flag = { flag = htbd_recent days = @recent_good_planet }
 						}
 					}
 				}
-				find_closest_planet = {
+				find_random_planet = {
 					trigger = {
 						id = htbd.12.trigger.3
-						has_planet_flag = egg_incubated
+						NOT = { is_same_value = root.orbit }
+						htbd_not_recent_planet = yes
+						OR = {
+							htbd_unpleasant_planet = no
+							root = { htbd_idontcare = yes }
+						}
 					}
 					found_planet = {
 						move_to = this
 						orbit_planet = this
 						wait = { duration = @planet_stay random = @planet_stay_rnd }
+						effect = {
+							id = htbd.12.effect.4
+							set_timed_planet_flag = { flag = htbd_recent days = @recent_planet }
+						}
 					}
 				}
 				effect = {
 					id = htbd.12.effect.3
 					# count how many cycles it stays inside system
-					change_variable = { which = htbd_stay_level value = 1 }
+					change_variable = { which = htbd_stay_level value = 2 }
 				}
 			}
 			effect = {
@@ -409,7 +405,7 @@ fleet_event = {
 		clear_fleet_actions = this
 
 		if = {
-			limit = { htbd_debug = yes}
+			limit = { htbd_debug = yes }
 			log = "[Root.GetName] is roaming in [root.solar_system.GetName]"
 		}
 		queue_actions = {
@@ -421,11 +417,29 @@ fleet_event = {
 				find_random_planet = {
 					trigger = {
 						id = htbd.13.trigger.2
-						NOR = {
-							has_planet_flag = htbd_recent
-							is_planet_class = pc_frozen
-							is_capital = yes
-							is_colony = yes
+						NOT = { is_same_value = root.orbit }
+						htbd_not_recent_planet = yes
+						htbd_preferable_planet = yes
+					}
+					found_planet = {
+						move_to = this
+						orbit_planet = this
+						wait = { duration = @planet_stay_long random = @planet_stay_rnd }
+						effect = {
+							id = htbd.13.effect.1
+							# log = "1: [Root.GetName] is orbiting [This.GetName]"
+							set_timed_planet_flag = { flag = htbd_recent days = @recent_good_planet }
+						}
+					}
+				}
+				find_random_planet = {
+					trigger = {
+						id = htbd.13.trigger.3
+						NOT = { is_same_value = root.orbit }
+						htbd_not_recent_planet = yes
+						OR = {
+							htbd_unpleasant_planet = no
+							root = { htbd_idontcare = yes }
 						}
 					}
 					found_planet = {
@@ -433,7 +447,8 @@ fleet_event = {
 						orbit_planet = this
 						wait = { duration = @planet_stay random = @planet_stay_rnd }
 						effect = {
-							id = htbd.13.effect.1
+							id = htbd.13.effect.4
+							# log = "4: [Root.GetName] is orbiting [This.GetName]"
 							set_timed_planet_flag = { flag = htbd_recent days = @recent_planet }
 						}
 					}
@@ -441,7 +456,7 @@ fleet_event = {
 				effect = {
 					id = htbd.13.effect.3
 					# count how many cycles it stays inside system
-					change_variable = { which = htbd_stay_level value = 1 }
+					change_variable = { which = htbd_stay_level value = 2 }
 				}
 			}
 		}
@@ -591,16 +606,16 @@ fleet_event = {
 		set_fleet_flag = htbd_travel
 		solar_system = {
 			if = {
-				limit = { NOT = { has_star_flag = htbd_recent_star } }
+				limit = { NOT = { has_star_flag = htbd_recent_star_@root } }
 				if = {
 					limit = { htbd_good_system = yes }
 					set_timed_star_flag = {
-						flag = htbd_recent_star
+						flag = htbd_recent_star_@root
 						days = @recent_good_star
 					}
 					else = {
 						set_timed_star_flag = {
-							flag = htbd_recent_star
+							flag = htbd_recent_star_@root
 							days = @recent_star
 						}
 					}

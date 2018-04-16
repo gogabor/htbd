@@ -1,0 +1,8 @@
+@planet_stay = 10
+@planet_stay_long = 30
+@planet_stay_rnd = 20
+
+@recent_good_planet = 100
+@recent_planet = 200
+
+

@@ -32,7 +32,7 @@ htbd_travel_debug = {
 				always = yes
 			}
 			if = {
-				limit = { has_star_flag = htbd_recent_star }
+				limit = { has_star_flag = htbd_recent_star_@prevprev }
 				log = "	[This.GetName] (recent)"
 				else = {
 					log = "	[This.GetName]"
@@ -64,7 +64,7 @@ htbd_travel_debug = {
 				distance = { source = prev type=hyperlane min_jumps = 1 max_jumps = 1 }
 			}
 			if = {
-				limit = { has_star_flag = htbd_recent_star }
+				limit = { has_star_flag = htbd_recent_star_@prevprev }
 				log = "	[This.GetName] (recent)"
 				else = {
 					log = "	[This.GetName]"
@@ -99,7 +99,7 @@ htbd_travel_debug = {
 				}
 				log = "Has natural wormhole to [This.GetName]"
 				if = {
-					limit = { has_star_flag = htbd_recent_star }
+					limit = { has_star_flag = htbd_recent_star_@prevprev }
 					log = "		-> RECENT"
 				}
 				if = {
