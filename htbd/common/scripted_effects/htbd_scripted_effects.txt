@@ -61,6 +61,7 @@ htbd_set_neutral_countries = {
 				OR = {
 					is_country_type = enclave
 					is_country_type = guardian_sphere
+					is_country_type = guardian_dragon
 					AND = {
 						OR = {
 							is_country_type = fallen_empire
@@ -902,6 +903,6 @@ htbd_report_hatching = {
 
 # Ship scope
 htbd_starbase_disable = {
-	starbase = { set_starbase_size = starbase_outpost }
+	#starbase = { set_starbase_size = starbase_outpost }
 	set_disabled = yes
 }
