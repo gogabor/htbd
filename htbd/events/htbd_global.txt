@@ -601,6 +601,52 @@ planet_event = {
 	}
 }
 
+# there is no way to issue effect when edict ENDs, so make that via event
+# first dragons become neutral when 'Dragon Friend' edict ends
+country_event = {
+	id = htbd_gl.5
+	hide_window = yes
+
+	trigger = {
+		htbd_friend_way_is_done = yes
+		NOT = { is_hostile = event_target:htbd_country }
+		NOT = { has_country_flag = htbd_dragon_scent }
+		has_country_flag = htbd_dragon_trust
+	}
+	immediate = {
+		set_faction_hostility = {
+			target = event_target:htbd_country
+			set_hostile = no
+			set_neutral = yes
+			set_friendly = no
+		}
+	}
+}
+
+# After a while dragons become hostile if edict wasn't prolonged ( in about 3 years )
+country_event = {
+	id = htbd_gl.51
+	hide_window = yes
+
+	trigger = {
+		htbd_friend_way_is_done = yes
+		NOT = { is_hostile = event_target:htbd_country }
+		NOT = { has_country_flag = htbd_dragon_scent }
+		NOT = { has_country_flag = htbd_dragon_trust }
+	}
+	immediate = {
+		set_faction_hostility = {
+			target = event_target:htbd_country
+			set_hostile = yes
+			set_neutral = no
+			set_friendly = no
+		}
+	}
+}
+
+
+
+
 # debug info
 event = {
 	id = htbd_gl.100

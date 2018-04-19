@@ -146,10 +146,14 @@ htbd_good_system = {
 	NOR = {
 		htbd_bad_system = yes
 		htbd_avoid_system = yes
-		any_planet = {
-			OR = {
-				is_capital = yes
-				is_colony = yes
+		AND = {
+			exists = space_owner
+			space_owner = { NOT = { has_country_flag = htbd_dragon_scent } }
+			any_planet = {
+				OR = {
+					is_capital = yes
+					is_colony = yes
+				}
 			}
 		}
 	}
@@ -340,6 +344,49 @@ htbd_is_waypoint = {
 			id = htbd_way_poi.20
 			event_chain = htbd_way_chain
 			owner = prev
+		}
+	}
+}
+
+htbd_friend_civics = {
+	OR = {
+		has_valid_civic = civic_syncretic_evolution
+		has_valid_civic = civic_machine_servitor
+
+		has_ethic = ethic_fanatic_xenophile
+	}
+}
+
+htbd_foe_civics = {
+	OR = {
+		has_valid_civic = civic_fanatic_purifiers
+		has_valid_civic = civic_hive_devouring_swarm
+		has_valid_civic = civic_machine_terminator
+
+		has_ethic = ethic_fanatic_xenophobe
+	}
+}
+
+htbd_friend_way_is_done = {
+	OR = {
+		has_country_flag = htbd_way_of_dragon_done
+		AND = {
+			has_country_flag = htbd_liked_systems_done
+			NOT = {
+				check_variable = { which = htbd_avoid_systems value < @htbd_min_opposite_systems }
+			}
+		}
+	}
+}
+
+htbd_foe_way_is_done = {
+	OR = {
+		has_country_flag = htbd_way_of_dragon_done
+		AND = {
+			has_country_flag = htbd_avoid_systems_done
+			NOT = {
+				check_variable = { which = htbd_liked_systems value < @htbd_min_opposite_systems }
+			}
 		}
 	}
 }

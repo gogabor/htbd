@@ -3,10 +3,10 @@ htbd_way_chain = {
 	picture = GFX_evt_space_dragon
 	counter = {
 		htbd_liked_systems = {
-			max = 3
+			max = @htbd_max_liked_systems
 		}
 		htbd_avoid_systems = {
-			max = 5
+			max = @htbd_max_avoid_systems
 		}
 	}
 }

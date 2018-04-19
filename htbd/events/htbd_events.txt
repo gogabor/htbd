@@ -796,6 +796,11 @@ country_event = {
 				target = ROOT
 			}
 			set_country_flag = htbd_way_of_dragon
+			# there is no way to know event_chain counter value but
+			# only check if it is complete. I want to check values as well
+			# so duplicate them with country variables
+			set_variable = { which = htbd_liked_systems value = 0 }
+			set_variable = { which = htbd_avoid_systems value = 0 }
 			### go through all systems in border or in sensor range
 			### and mark as waypoints
 			every_planet = {
@@ -1026,7 +1031,7 @@ country_event = {
 		}
 	}
 	immediate = {
-		capital_scope = { save_event_target_as = pc_home }
+		change_variable = { which = htbd_liked_systems value = 1 }
 	}
 	option = {
 		name = OK
@@ -1044,8 +1049,8 @@ country_event = {
 		trigger = {
 			NOT = { has_country_flag = htbd_avoid_systems_done }
 			has_completed_event_chain_counter = {
-				event_chain = "htbd_way_chain" 
-				counter = "htbd_liked_systems" 
+				event_chain = "htbd_way_chain"
+				counter = "htbd_liked_systems"
 			}
 		}
 		hidden_effect = {
@@ -1060,12 +1065,11 @@ country_event = {
 		trigger = {
 			has_country_flag = htbd_avoid_systems_done
 			has_completed_event_chain_counter = {
-				event_chain = "htbd_way_chain" 
-				counter = "htbd_liked_systems" 
+				event_chain = "htbd_way_chain"
+				counter = "htbd_liked_systems"
 			}
 		}
 		hidden_effect = {
-			remove_country_flag = htbd_avoid_systems_done
 			remove_country_flag = htbd_way_of_dragon
 			end_event_chain = htbd_way_chain
 			abort_special_project = {
@@ -1119,14 +1123,15 @@ country_event = {
 		}
 	}
 	immediate = {
+		change_variable = { which = htbd_avoid_systems value = 1 }
 	}
 	option = {
 		name = OK
 		trigger = {
 			NOT = {
 				has_completed_event_chain_counter = {
-					event_chain = "htbd_way_chain" 
-					counter = "htbd_avoid_systems" 
+					event_chain = "htbd_way_chain"
+					counter = "htbd_avoid_systems"
 				}
 			}
 		}
@@ -1136,8 +1141,8 @@ country_event = {
 		trigger = {
 			NOT = { has_country_flag = htbd_liked_systems_done }
 			has_completed_event_chain_counter = {
-				event_chain = "htbd_way_chain" 
-				counter = "htbd_avoid_systems" 
+				event_chain = "htbd_way_chain"
+				counter = "htbd_avoid_systems"
 			}
 		}
 		hidden_effect = {
@@ -1152,12 +1157,11 @@ country_event = {
 		trigger = {
 			has_country_flag = htbd_liked_systems_done
 			has_completed_event_chain_counter = {
-				event_chain = "htbd_way_chain" 
-				counter = "htbd_avoid_systems" 
+				event_chain = "htbd_way_chain"
+				counter = "htbd_avoid_systems"
 			}
 		}
 		hidden_effect = {
-			remove_country_flag = htbd_liked_systems_done
 			remove_country_flag = htbd_way_of_dragon
 			end_event_chain = htbd_way_chain
 			abort_special_project = {
@@ -1165,6 +1169,69 @@ country_event = {
 			}
 			set_country_flag = htbd_way_of_dragon_done
 		}
+	}
+}
+
+country_event = {
+	id = htbd_ev.74
+	title = htbd_ev.74.name
+	picture = GFX_evt_space_dragon
+	desc = htbd_ev.74.desc
+
+	trigger = {
+		is_country_type = default
+		exists = capital_scope
+		htbd_friend_way_is_done = yes
+		NOT = { has_country_flag = htbd_dragon_friend_start }
+		NOT = { has_country_flag = htbd_dragon_friend }
+	}
+
+	immediate = {
+		set_country_flag = htbd_dragon_friend_start
+		capital_scope = { save_event_target_as = pc_home }
+		if = {
+			limit = { htbd_debug = yes }
+			log = "74: enable FRIEND project for [Root.GetName] at [pc_home.GetName]"
+		}
+		enable_special_project = {
+			name = "HTBD_DRAGON_FRIEND"
+			owner = root
+			location = event_target:pc_home
+		}
+	}
+
+	option = {
+		name = "BREAKTHROUGH"
+		tooltip = {
+			enable_special_project = {
+				name = "HTBD_DRAGON_FRIEND"
+				location = event_target:pc_home
+				owner = ROOT
+			}
+		}
+	}
+}
+
+# Project complete
+country_event = {
+	id = htbd_ev.76
+	title = htbd_ev.76.name
+	desc = htbd_ev.76.desc
+	picture = GFX_evt_animal_wildlife
+	show_sound = event_mystic_reveal
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = htbd_dragon_friend_start
+	}
+
+	immediate = {
+		set_country_flag = htbd_dragon_friend
+		remove_country_flag = htbd_dragon_friend_start
+	}
+	option = {
+		name = "AMAZING"
 	}
 }
 
@@ -1177,7 +1244,7 @@ country_event = {
 	trigger = {
 		is_country_type = default
 		exists = capital_scope
-		has_country_flag = htbd_way_of_dragon_done
+		htbd_foe_way_is_done = yes
 		NOT = { has_country_flag = htbd_dragon_fear_start }
 		NOT = { has_country_flag = htbd_dragon_fear }
 	}
@@ -1186,7 +1253,7 @@ country_event = {
 		set_country_flag = htbd_dragon_fear_start
 		if = {
 			limit = { htbd_debug = yes }
-			log = "71: enable FEAR project for [Root.GetName] at [pc_home.GetName]"
+			log = "75: enable FEAR project for [Root.GetName] at [pc_home.GetName]"
 		}
 		capital_scope = { save_event_target_as = pc_home }
 		enable_special_project = {
@@ -1435,6 +1502,31 @@ ship_event = {
 	option = {
 		name = htbd_ev.9.a
 		custom_tooltip = htbd_ev.9.a.tooltip
+
+		ai_chance = {
+			factor = 60
+			modifier = {
+				factor = 0
+				owner = {
+					OR = {
+						has_ethic = ethic_fanatic_xenophile
+						htbd_foe_civics = yes
+					}
+				}
+			}
+		}
+
+		trigger = {
+			owner = {
+				NOR = {
+					# too kind to interfere
+					has_ethic = ethic_fanatic_xenophile
+					# too hateful to be interested in that
+					htbd_foe_civics = yes
+				}
+			}
+		}
+
 		owner = {
 			enable_special_project = {
 				name = "HTBD_DRAGON_INCUBATION"
@@ -1449,6 +1541,27 @@ ship_event = {
 	option = {
 		name = htbd_ev.9.b
 		custom_tooltip = htbd_ev.9.b.tooltip
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 0
+				owner = {
+					OR = {
+						owner = { has_edict = htbd_dragon_friend }
+						htbd_friend_civics = yes
+					}
+				}
+			}
+		}
+		trigger = {
+			owner = {
+				NOR = {
+					# cannot do harm
+					owner = { has_edict = htbd_dragon_friend }
+					htbd_friend_civics = yes
+				}
+			}
+		}
 		owner = { add_influence = 300 }
 		hidden_effect = {
 			fromfrom = { remove_planet_flag = egg_incubated }
@@ -1457,6 +1570,27 @@ ship_event = {
 	option = {
 		name = htbd_ev.9.c
 		custom_tooltip = htbd_ev.9.c.tooltip
+		ai_chance = {
+			factor = 30
+			modifier = {
+				factor = 0
+				owner = {
+					OR = {
+						has_ethic = ethic_fanatic_militarist
+						htbd_foe_civics = yes
+					}
+				}
+			}
+		}
+		trigger = {
+			owner = {
+				NOR = {
+					# no way to leave it in peace
+					has_ethic = ethic_fanatic_militarist
+					htbd_foe_civics = yes
+				}
+			}
+		}
 		owner = { add_unity = 1000 }
 		hidden_effect = {
 			fromfrom = { set_planet_flag = htbd_hidden_egg }

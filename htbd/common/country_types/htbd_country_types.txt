@@ -23,6 +23,7 @@ htbd_horde = {
 		needs_colony = no
 		auto_delete = no
 		space_creatures = yes
+		hostile_when_attacked = yes
 	}
 	modules = {
 		exclusive_diplomacy_module = {} # Nothing is allowed, but we need this for relationships.

@@ -281,6 +281,23 @@ special_project = {
 }
 
 special_project = {
+	key = "HTBD_DRAGON_FRIEND"
+	cost = 1000
+	tech_department = society_technology
+	timelimit = -1
+	picture = GFX_evt_fleet_good
+	icon = "gfx/interface/icons/situation_log/situation_log_tick.dds"
+	location = no
+	sound = no
+
+	event_scope = planet_event
+
+	on_success = {
+		owner = { country_event = { id = htbd_ev.76 } }
+	}
+}
+
+special_project = {
 	key = "HTBD_DRAGON_PLANET"
 	cost = 0
 	days_to_research = 250

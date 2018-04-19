@@ -5,4 +5,14 @@
 @recent_good_planet = 100
 @recent_planet = 200
 
+@htbd_max_liked_systems = 5
+@htbd_max_avoid_systems = 6
 
+@htbd_max_liked_systems_friend = 3
+@htbd_max_avoid_systems_friend = 7
+
+@htbd_max_liked_systems_foe = 6
+@htbd_max_avoid_systems_foe = 4
+
+# how many systems of opposite type must be investigated
+@htbd_min_opposite_systems = 3
