@@ -1075,6 +1075,7 @@ country_event = {
 			abort_special_project = {
 				type = HTBD_WAY_LIKE
 			}
+			set_country_flag = htbd_liked_systems_done
 			set_country_flag = htbd_way_of_dragon_done
 		}
 	}
@@ -1167,6 +1168,7 @@ country_event = {
 			abort_special_project = {
 				type = HTBD_WAY_AVOID
 			}
+			set_country_flag = htbd_avoid_systems_done
 			set_country_flag = htbd_way_of_dragon_done
 		}
 	}

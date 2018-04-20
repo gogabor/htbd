@@ -16,3 +16,7 @@
 
 # how many systems of opposite type must be investigated
 @htbd_min_opposite_systems = 3
+
+@htbd_edict_duration = 3600
+@htbd_edict_cost = 2000
+@htbd_trust_duration = 1000
