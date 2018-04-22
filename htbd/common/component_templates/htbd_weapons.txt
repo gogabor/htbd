@@ -5,8 +5,6 @@ weapon_component_template = {
 	entity = "invisible_turret_entity"
 	type = point_defence
 
-	hidden = yes
-
 	icon = "GFX_ship_part_space_cloud_weapon_1"
 	icon_frame = 1
 	#color = { 0.1 1.0 0.1 1 }
@@ -42,8 +40,6 @@ weapon_component_template = {
 	size = extra_large
 	entity = "invisible_turret_entity"
 	type = instant
-
-	hidden = yes
 
 	icon = "GFX_ship_part_htbd_xl"
 	icon_frame = 1
