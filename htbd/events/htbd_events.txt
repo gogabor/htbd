@@ -789,8 +789,14 @@ country_event = {
 	}
 	option = {
 		name = "htbd_ev.10.a"
+		ai_chance = {
+			factor = 100
+		}
 		hidden_effect = {
-			# log = "Begin way event chain for [Root.GetName]"
+			if = {
+				limit = { htbd_debug = yes }
+				log = "Begin way event chain for [Root.GetName]"
+			}
 			begin_event_chain = {
 				event_chain = htbd_way_chain
 				target = ROOT
@@ -832,6 +838,19 @@ country_event = {
 	}
 	option = {
 		name = NOTIME
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 50
+				htbd_foe_civics = yes
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = { htbd_debug = yes }
+				log = "Skip way event chain for [Root.GetName]"
+			}
+		}
 	}
 }
 
@@ -1457,7 +1476,31 @@ country_event = {
 	option = {
 		name = htbd_ev.83.a
 		custom_tooltip = htbd_ev.83.a.tooltip
+		ai_chance = {
+			factor = 100
+			modifier = {
+				factor = 0.1
+				OR = {
+					htbd_friend_civics = yes
+				}
+			}
+			modifier = {
+				factor = 0.5
+				OR = {
+					any_owned_fleet = {
+						count > 2
+						is_ship_size = htbd_dragon_dwarf
+					}
+				}
+			}
+		}
 		hidden_effect = {
+			if = {
+				limit = {
+					htbd_debug = yes
+				}
+				log = "83: Investigate [egg_planet.GetName] for an EGG by [Root.GetName]"
+			}
 			event_target:egg_planet = {
 				set_planet_flag = htbd_egg_check_@root
 				enable_special_project = {
@@ -1471,7 +1514,22 @@ country_event = {
 	option = {
 		name = htbd_ev.83.b
 		custom_tooltip = htbd_ev.83.b.tooltip
+		ai_chance = {
+			factor = 20
+			modifier = {
+				factor = 2
+				OR = {
+					has_ethic = ethic_fanatic_xenophile
+				}
+			}
+		}
 		hidden_effect = {
+			if = {
+				limit = {
+					htbd_debug = yes
+				}
+				log = "83: Ignore [egg_planet.GetName] for an EGG by [Root.GetName]"
+			}
 			event_target:egg_planet = {
 				set_planet_flag = htbd_hidden_egg
 			}
@@ -1537,6 +1595,12 @@ ship_event = {
 			}
 		}
 		hidden_effect = {
+			if = {
+				limit = {
+					htbd_debug = yes
+				}
+				log = "92: take Egg from [fromfrom.GetName] by [owner.GetName]"
+			}
 			fromfrom = { remove_planet_flag = egg_incubated }
 		}
 	}
@@ -1566,6 +1630,12 @@ ship_event = {
 		}
 		owner = { add_influence = 300 }
 		hidden_effect = {
+			if = {
+				limit = {
+					htbd_debug = yes
+				}
+				log = "92: destroy Egg at [fromfrom.GetName] by [owner.GetName]"
+			}
 			fromfrom = { remove_planet_flag = egg_incubated }
 		}
 	}
@@ -1595,6 +1665,12 @@ ship_event = {
 		}
 		owner = { add_unity = 1000 }
 		hidden_effect = {
+			if = {
+				limit = {
+					htbd_debug = yes
+				}
+				log = "92: hide Egg at [fromfrom.GetName] by [owner.GetName]"
+			}
 			fromfrom = { set_planet_flag = htbd_hidden_egg }
 		}
 	}

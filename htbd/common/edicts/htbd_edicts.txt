@@ -7,6 +7,7 @@ country_edict = {
 	modifier = {
 		pop_happiness = 0.05
 		damage_vs_country_type_htbd_horde_mult = 0.1
+		country_resource_energy_mult = -0.10
 	}
 	
 	potential = {
@@ -57,7 +58,7 @@ country_edict = {
 					owner = { is_country_type = htbd_horde }
 					is_inside_border = prev
 				}
-				count > 2
+				count > 1
 			}
 		}
 	}
@@ -70,6 +71,8 @@ country_edict = {
 
 	modifier = {
 		pop_happiness = 0.05
+		country_resource_influence_mult = -0.05
+		country_resource_energy_mult = -0.05
 	}
 
 	potential = {
@@ -128,7 +131,7 @@ country_edict = {
 					owner = { is_country_type = htbd_horde }
 					is_inside_border = prev
 				}
-				count > 2
+				count > 1
 			}
 		}
 	}
