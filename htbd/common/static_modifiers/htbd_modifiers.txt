@@ -11,3 +11,14 @@ htbd_power = {
 	ship_armor_regen_add_perc = 0.02
 }
 
+htbd_ai_fear = {
+	pop_happiness = 0.05
+	damage_vs_country_type_htbd_horde_mult = 0.1
+	country_resource_energy_mult = -0.10
+}
+
+htbd_ai_friend = {
+	pop_happiness = 0.05
+	country_resource_influence_mult = -0.05
+	country_resource_energy_mult = -0.05
+}

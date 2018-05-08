@@ -69,12 +69,26 @@ htbd_max = {
 	num_fleets > 50
 }
 
+htbd_has_fear_edict = {
+	OR = {
+		has_edict = htbd_dragon_fear
+		has_country_flag = htbd_fear_edict
+	}
+}
+
+htbd_has_friend_edict = {
+	OR = {
+		has_edict = htbd_dragon_friend
+		has_country_flag = htbd_friend_edict
+	}
+}
+
 htbd_is_dragon_fear = {
 	exists = space_owner
 	space_owner = {
 		# some countries have permanent fear effect, e.g. fallen, marauders, etc.
 		OR = {
-			has_edict = htbd_dragon_fear
+			htbd_has_fear_edict = yes
 			is_country_type = guardian_fortress
 			AND = {
 				OR = {

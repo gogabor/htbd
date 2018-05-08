@@ -24,6 +24,7 @@ on_monthly_pulse = {
 		htbd_gl.12
 		htbd_comp.4
 		htbd_gl.7
+		htbd_ai.1
 	}
 }
 

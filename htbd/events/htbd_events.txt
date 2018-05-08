@@ -764,7 +764,7 @@ country_event = {
 				set_country_flag = htbd_double_dragon
 			}
 		}
-		hidden_effect = { country_event = { id = htbd_ev.10 } }
+		hidden_effect = { country_event = { id = htbd_ev.10 days = 3 random = 1 } }
 	}
 }
 
@@ -1489,7 +1489,7 @@ country_event = {
 				OR = {
 					any_owned_fleet = {
 						count > 2
-						is_ship_size = htbd_dragon_dwarf
+						is_ship_size = space_dragon_dwarf
 					}
 				}
 			}

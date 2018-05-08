@@ -28,23 +28,24 @@ country_edict = {
 	}
 
 	ai_weight = {
-		weight = 1
+		weight = 10
+
 		modifier = {
-			factor = 0.5
+			factor = 0.2
 			OR = {
 				has_ethic = ethic_xenophile
 				has_ethic = ethic_fanatic_pacifist
 			}
 		}
 		modifier = {
-			factor = 2
+			factor = 1
 			OR = {
 				has_ethic = ethic_militarist
 				has_ethic = ethic_fanatic_militarist
 			}
 		}
 		modifier = {
-			factor = 4
+			factor = 3
 			OR = {
 				has_ethic = ethic_fanatic_xenophobe
 				has_ethic = ethic_xenophobe
@@ -58,7 +59,7 @@ country_edict = {
 					owner = { is_country_type = htbd_horde }
 					is_inside_border = prev
 				}
-				count > 1
+				count > 0
 			}
 		}
 	}
@@ -101,16 +102,17 @@ country_edict = {
 	}
 
 	ai_weight = {
-		weight = 1
+		weight = 10
+
 		modifier = {
-			factor = 0.5
+			factor = 0.2
 			OR = {
 				has_ethic = ethic_xenophobe
 				has_ethic = ethic_fanatic_militarist
 			}
 		}
 		modifier = {
-			factor = 2
+			factor = 1
 			OR = {
 				has_ethic = ethic_pacifist
 				has_ethic = ethic_fanatic_pacifist
@@ -131,7 +133,7 @@ country_edict = {
 					owner = { is_country_type = htbd_horde }
 					is_inside_border = prev
 				}
-				count > 1
+				count > 0
 			}
 		}
 	}

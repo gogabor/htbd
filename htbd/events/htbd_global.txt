@@ -608,8 +608,8 @@ country_event = {
 	hide_window = yes
 
 	trigger = {
-		htbd_friend_way_is_done = yes
-		NOT = { has_edict = htbd_dragon_friend }
+		has_country_flag = htbd_dragon_friend
+		htbd_has_friend_edict = no
 		has_country_flag = htbd_dragon_scent
 	}
 	immediate = {
@@ -630,9 +630,9 @@ country_event = {
 	hide_window = yes
 
 	trigger = {
-		htbd_friend_way_is_done = yes
+		has_country_flag = htbd_dragon_friend
 		NOT = { is_hostile = event_target:htbd_country }
-		NOT = { has_edict = htbd_dragon_friend }
+		htbd_has_friend_edict = no
 		NOT = {	has_country_flag = htbd_dragon_scent }
 		NOT = { has_country_flag = htbd_dragon_trust }
 	}
@@ -709,12 +709,20 @@ event = {
 			}
 			log = "HTBD stats for [This.GetName] --------------------"
 			if = {
-				limit = { has_country_flag = htbd_dragon_fear }
+				limit = { htbd_foe_way_is_done = yes }
 				log = "--- has FEAR researched!"
 			}
 			if = {
-				limit = { has_edict = htbd_dragon_fear }
+				limit = { htbd_has_fear_edict = yes }
 				log = "--- has FEAR enabled!"
+			}
+			if = {
+				limit = { htbd_friend_way_is_done = yes }
+				log = "--- has FRIEND researched!"
+			}
+			if = {
+				limit = { htbd_has_friend_edict = yes }
+				log = "--- has FRIEND enabled!"
 			}
 			#save_event_target_as = this
 			every_ship = {
