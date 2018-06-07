@@ -377,15 +377,15 @@ special_project = {
 
 	on_success = {
 		random_list = {
-			50 = {
+			70 = {
 				# success, dwarf dragon
 				planet_event = { id = htbd_ev.93 }
 			}
-			20 = {
+			10 = {
 				# no luck, no dragon
 				owner = { country_event = { id = htbd_ev.94 } }
 			}
-			30 = {
+			20 = {
 				# bad luck, hostile dragon, need update for new ship size in behavior code
 				planet_event = { id = htbd_ev.95 }
 			}

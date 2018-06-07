@@ -308,8 +308,7 @@ fleet_event = {
 fleet_event = {
 	id = htbd.12
 	hide_window = yes
-	title = "Hatching"
-	desc = "Hatching"
+
 	is_triggered_only = yes
 
 	immediate = {
@@ -387,8 +386,7 @@ fleet_event = {
 fleet_event = {
 	id = htbd.13
 	hide_window = yes
-	title = "Roaming"
-	desc = "Roaming"
+
 	is_triggered_only = yes
 
 	trigger = {
@@ -467,8 +465,6 @@ fleet_event = {
 fleet_event = {
 	id = htbd.131
 	hide_window = yes
-	title = "Healing"
-	desc = "Healing"
 
 	trigger = {
 		owner = { is_country_type = htbd_horde }
@@ -530,8 +526,6 @@ fleet_event = {
 fleet_event = {
 	id = htbd.132
 	hide_window = yes
-	title = "Armor restoring"
-	desc = "Armor restoring"
 
 	trigger = {
 		owner = { is_country_type = htbd_horde }

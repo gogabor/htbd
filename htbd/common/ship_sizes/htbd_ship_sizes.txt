@@ -2,11 +2,11 @@
 @battleship_combat_rotation = 0.02
 
 @speed_crawl = 30
-@speed_very_slow = 60
-@speed_slow = 80
-@speed_default = 100
-@speed_fast = 120
-@speed_very_fast = 170
+@speed_very_slow = 80
+@speed_slow = 100
+@speed_default = 120
+@speed_fast = 140
+@speed_very_fast = 160
 
 # Baby Drake
 space_dragon_kid = {
@@ -75,7 +75,7 @@ space_dragon_adult = {
 	#graphical_culture = {  "guardian_01" }
 	graphical_culture = no
 	can_be_inspected = no
-	max_speed = @speed_very_fast
+	max_speed = @speed_fast
 	acceleration = 0.6
 	rotation_speed = 0.6
 	collision_radius = 6
@@ -104,8 +104,8 @@ space_dragon_grand = {
 	#graphical_culture = {  "guardian_01" }
 	graphical_culture = no
 	can_be_inspected = no
-	max_speed = @speed_fast
-	acceleration = 0.4
+	max_speed = @speed_default
+	acceleration = 0.5
 	rotation_speed = 0.50
 	collision_radius = 7
 	modifier = {
@@ -134,7 +134,7 @@ space_dragon_dwarf = {
 	#graphical_culture = {  "guardian_01" }
 	graphical_culture = no
 	can_be_inspected = no
-	max_speed = @speed_fast
+	max_speed = @speed_very_fast
 	acceleration = 0.8
 	rotation_speed = 0.8
 	collision_radius = 5

@@ -10,8 +10,8 @@ htbd_horde = {
 	is_space_critter = yes
 	blocks_piracy = yes
 
-	# attack_unarmed_orbital_stations = yes
-	# destroys_starbases = yes
+	attack_unarmed_orbital_stations = no
+	destroys_starbases = no
 
 	ai = {
 		enabled = no

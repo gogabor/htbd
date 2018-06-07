@@ -1,11 +1,12 @@
 ##
 # Dragon Egg category to mark possible Egg planets.
 #
-anomaly_category = {
-	key = "HTBD_EGG_CATEGORY"
+HTBD_EGG_CATEGORY = {
 	desc = "htbd_egg_category_desc"
 	picture = GFX_evt_space_dragon
-	level = 5
+	level = 7
+
+	should_ai_use = yes
 
 	spawn_chance = {
 		modifier = {
@@ -20,32 +21,12 @@ anomaly_category = {
 				}
 			}
 		}
-
-		modifier = {
-			factor = 0
-			NOT = { has_planet_flag = egg_incubated }
-		}
 	}
 
 	on_success = {
-	}
-
-	on_fail = {
-		ship_event = { id = htbd_ev.91 }
-	}
-
-	on_critical_fail = {
+		1 = {
+			max_once = no
+			anomaly_event = htbd_ev.9
+		}
 	}
 }
-
-anomaly = {
-	event = htbd_ev.9
-	category = "HTBD_EGG_CATEGORY"
-
-	weight = 1
-
-	potential = {
-		always = yes
-	}
-}
-

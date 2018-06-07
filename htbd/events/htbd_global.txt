@@ -101,6 +101,7 @@ country_event = {
 						is_star_class = sc_pulsar
 						is_star_class = sc_neutron_star
 						any_planet = { is_capital = yes }
+						is_bottleneck_system = yes
 					}
 					NOT = {
 						any_ship_in_system = {
