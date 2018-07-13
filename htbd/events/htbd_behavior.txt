@@ -191,7 +191,7 @@ fleet_event = {
 				}
 				modifier = {
 					factor = 5
-					is_ship_size = space_dragon_grand
+					has_fleet_flag = dragon_mother
 					NOT = { has_fleet_flag = htbd_no_egg }
 				}
 				modifier = {
@@ -299,6 +299,52 @@ fleet_event = {
 					fleet_event = { id = htbd.13 }
 				}
 			}
+			200 = {
+				modifier = {
+					factor = 0
+					OR = {
+						has_hp_percentage < 0.7
+						is_ship_size = space_dragon_kid
+						NOT = { has_fleet_flag = htbd_stuck_stuck }
+						solar_system = {
+							OR = {
+								htbd_has_ftl_inhibitor = yes
+								htbd_bad_system = yes
+								has_star_flag = htbd_pass_stay
+								has_natural_wormhole = yes
+							}
+						}
+					}
+				}
+				if = {
+					limit = {
+						exists = orbit
+						orbit = { is_star = yes }
+					}
+					fleet_event = { id = htbd.141 }
+					else = {
+						remove_fleet_flag = htbd_idle
+						set_fleet_flag = htbd_travel
+						solar_system = {
+						random_system_planet = {
+							limit = { is_star = yes }
+							root = {
+								queue_actions = {
+									move_to = prev
+									orbit_planet = prev
+									effect = {
+										id = htbd.11.effect.4
+										remove_fleet_flag = htbd_travel
+										remove_fleet_flag = htbd_cooldown
+										set_fleet_flag = htbd_idle
+									}
+								}
+							}
+						}
+						}
+					}
+				}
+			}
 		}
 	}
 }
@@ -315,6 +361,8 @@ fleet_event = {
 		htbd_report_hatching = yes
 		set_aggro_range = 500
 		remove_fleet_flag = htbd_idle
+		remove_fleet_flag = htbd_stuck
+		remove_fleet_flag = htbd_stuck_stuck
 		clear_fleet_actions = this
 		queue_actions = {
 			repeat = {
@@ -532,6 +580,7 @@ fleet_event = {
 		htbd_can_interrupt_fleet = yes
 		htbd_need_hull = no
 		htbd_need_armor = yes
+		exists = solar_system
 		solar_system = {
 			any_planet = {
 				is_asteroid = yes
@@ -661,25 +710,67 @@ fleet_event = {
 		solar_system = {
 			save_event_target_as = htbd_ftl_system
 			if = {
-				limit = { has_natural_wormhole = yes }
+				limit = {
+					OR = {
+						has_natural_wormhole = yes
+						has_star_flag = htbd_pass_stay
+					}
+				}
 				closest_system = {
 					min_steps = 1
 					max_steps = 1
 					limit = {
-						has_natural_wormhole = yes
+						OR = {
+							has_natural_wormhole = yes
+							AND = {
+								prev = { has_star_flag = htbd_pass_to }
+								has_star_flag = htbd_pass_from
+							}
+							AND = {
+								prev = { has_star_flag = htbd_pass_from }
+								has_star_flag = htbd_pass_to
+							}
+						}
 						htbd_may_travel_to = yes
 					}
 					if = {
 						limit = { htbd_debug = yes }
-						log = "[Root.GetName] travels by wormhole to [This.GetName]!"
+						log = "[Root.GetName] may travel by wormhole to [This.GetName]!"
 					}
 					save_event_target_as = htbd_ftl_system
 				}
+				# closest_system doesn't check ether holes yet
+				if = {
+					limit = {
+						is_same_value = event_target:htbd_ftl_system
+						has_star_flag = htbd_pass_stay
+					}
+					random_system = {
+						limit = {
+							OR = {
+								AND = {
+									prev = { has_star_flag = htbd_pass_to }
+									has_star_flag = htbd_pass_from
+								}
+								AND = {
+									prev = { has_star_flag = htbd_pass_from }
+									has_star_flag = htbd_pass_to
+								}
+							}
+							htbd_may_travel_to = yes
+						}
+						if = {
+							limit = { htbd_debug = yes }
+							log = "[Root.GetName] may travel by ether hole to [This.GetName]!"
+						}
+						save_event_target_as = htbd_ftl_system
+					}
+				}
 			}
-			# was wormhole used?
+			# wormholes weren't used, take random neighbor system
 			if = {
 				limit = {
-					this = { is_same_value = event_target:htbd_ftl_system }
+					is_same_value = event_target:htbd_ftl_system
 				}
 				random_neighbor_system = {
 					ignore_hyperlanes = no
@@ -742,9 +833,6 @@ fleet_event = {
 					limit = { htbd_debug = yes }
 					log = "[Root.GetName] is stuck at [Root.GetStarName]"
 				}
-				remove_fleet_flag = htbd_travel
-				remove_fleet_flag = htbd_cooldown
-				set_fleet_flag = htbd_idle
 				if = {
 					limit = { has_fleet_flag = htbd_stuck }
 					set_fleet_flag = htbd_stuck_stuck
@@ -752,7 +840,167 @@ fleet_event = {
 						set_fleet_flag = htbd_stuck
 					}
 				}
+				remove_fleet_flag = htbd_travel
+				remove_fleet_flag = htbd_cooldown
+				set_fleet_flag = htbd_idle
 			}
+		}
+	}
+}
+
+# Emergency travel, trying to escape from stuck situation
+fleet_event = {
+	id = htbd.141
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		htbd_clear_fleet_state = yes
+		set_fleet_flag = htbd_travel
+		clear_fleet_actions = this
+		solar_system = { save_event_target_as = htbd_emrg_from }
+		random_system = {
+			limit = {
+				NOR = {
+					distance = {
+						source = event_target:htbd_emrg_from
+						type=hyperlane
+						min_jumps = 1 max_jumps = 4
+					}
+					has_star_flag = htbd_recent_star_@prevprev
+					has_natural_wormhole = yes
+					has_star_flag = htbd_pass_stay
+					htbd_bad_system = yes
+					has_star_flag = hostile_system
+					AND = {
+						htbd_has_ftl_inhibitor = yes
+						owner = { htbd_has_friend_edict = no }
+					}
+				}
+				distance = {
+					source = event_target:htbd_emrg_from
+					min_distance > 30
+					max_distance < 150
+					type = euclidean
+				}
+				calc_true_if = {
+					amount = 2
+					htbd_good_system = yes
+					NOT = { exists = owner }
+					AND = {
+						exists = owner
+						owner = { has_country_flag = htbd_dragon_scent }
+					}
+					htbd_avoid_system = no
+					is_bottleneck_system = no
+				}
+			}
+			save_event_target_as = htbd_emrg_to
+		}
+
+		if = {
+			limit = { exists = event_target:htbd_emrg_to }
+			log = "Emergency jump from [htbd_emrg_from.GetName] to [htbd_emrg_to.GetName]"
+			event_target:htbd_emrg_from = {
+				event_target:htbd_emrg_to = {
+					prev = {
+						spawn_megastructure = {
+							type = htbd_hole
+							orbit_angle = 0
+							orbit_distance = 15
+							location = root.location
+							owner = root.owner
+						}
+						htbd_set_pass_timer = yes
+						set_star_flag = htbd_pass_from
+					}
+					spawn_megastructure = {
+						type = htbd_hole
+						orbit_angle = 170
+						orbit_distance = 15
+						location = root.location
+						owner = root.owner
+					}
+					htbd_set_pass_timer = yes
+					set_star_flag = htbd_pass_to
+				}
+			}
+			# dragon get's armor and hull damage
+			owner = {
+				every_owned_ship = {
+					limit = { fleet = { is_same_value = root } }
+					# reduce_hp_percent doesn't work at all, reduce asolute values to be about 25-30%
+					switch = {
+						trigger = is_ship_size
+						space_dragon_dwarf = { reduce_hp = 4000 }
+						space_dragon_teen = { reduce_hp = 5000 }
+						space_dragon_adult = { reduce_hp = 10000 }
+						space_dragon_grand = { reduce_hp = 15000 }
+					}
+				}
+			}
+			# log = "notify all countries about ether hole creation at [htbd_emrg_from.GetName]"
+			solar_system = {
+				# just because of intel_level accepts only prev/this/root...
+				every_country = {
+					limit = {
+						is_country_type = default
+						OR = {
+							intel_level = { level > medium system = prev }
+							prev = { is_inside_border = prev }
+						}
+					}
+					country_event = { id = htbd_ev.112 }
+				}
+			}
+			remove_fleet_flag = htbd_stuck_stuck
+			clear_fleet_actions = this
+			queue_actions = {
+				find_closest_system = {
+					trigger = {
+						id = htbd.141.trigger.1
+						is_same_value = event_target:htbd_emrg_to
+					}
+					found_system = {
+						move_to = event_target:htbd_emrg_to
+						wait = { duration = 30 }
+						effect = {
+							id = htbd.141.effect.1
+							root = {
+								remove_fleet_flag = htbd_travel
+								remove_fleet_flag = htbd_cooldown
+								set_fleet_flag = htbd_idle
+							}
+						}
+					}
+				}
+			}
+			else = {
+				remove_fleet_flag = htbd_travel
+				remove_fleet_flag = htbd_cooldown
+				set_fleet_flag = htbd_idle
+			}
+		}
+	}
+}
+
+# on entering emergency jump hole
+# Scope = Fleet
+# From = System to
+# FROMFROM = system from
+fleet_event = {
+	id = htbd.142
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		owner = { is_country_type = htbd_horde }
+	}
+
+	immediate = {
+		if = {
+			limit = { htbd_debug = yes }
+			log = "[root.GetName] is jumping from [fromfrom.GetName] to [from.GetName]"
 		}
 	}
 }
@@ -778,14 +1026,14 @@ fleet_event = {
 		}
 		clear_fleet_actions = this
 		htbd_clear_fleet_state = yes
-		remove_fleet_flag = htbd_stuck
-		remove_fleet_flag = htbd_stuck_stuck
 		remove_fleet_flag = htbd_ignore_recent
 		remove_fleet_flag = htbd_curiousity
 		if = {
 			limit = {
-				from = { htbd_has_starbase_ftl_inhibitor = no }
+				from = { htbd_may_travel_from = yes }
+				NOT = { has_fleet_flag = htbd_stuck_stuck }
 			}
+			remove_fleet_flag = htbd_stuck
 			set_fleet_flag = htbd_cooldown
 			# just stop it now and don't let go to the star
 			queue_actions = {
@@ -800,11 +1048,11 @@ fleet_event = {
 				}
 			}
 			else = {
-				# log = "[From.GetName] has an inhibitor"
+				# log = "[From.GetName] can't leave this system easily"
 				# just clear fleet actions and let it go to the star
 				remove_fleet_flag = htbd_cooldown
 				set_fleet_flag = htbd_idle
-				clear_fleet_actions = this
+				#clear_fleet_actions = this
 			}
 		}
 	}
@@ -969,12 +1217,13 @@ country_event = {
 				htbd_can_interrupt_fleet = yes
 				distance = {
 					source = fromfrom
-					min_distance = 0
-					max_distance = 150
+					type = hyperlane
+					min_jumps = 1
+					max_jumps = 4
 				}
 			}
 			random_list = {
-			5 = {
+			15 = {
 				modifier = {
 					factor = 3
 					fromfrom = { is_ship_size = space_dragon_kid }
@@ -987,16 +1236,17 @@ country_event = {
 					factor = 2
 					distance = {
 						source = fromfrom
-						min_distance = 0
-						max_distance = 50
+						type = hyperlane
+						min_jumps = 1
+						max_jumps = 2
 					}
 				}
 				modifier = {
 					factor = 0.5
 					distance = {
 						source = fromfrom
-						min_distance = 150
-						max_distance = 200
+						min_jumps = 3
+						max_jumps = 4
 					}
 				}
 

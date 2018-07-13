@@ -23,3 +23,7 @@
 
 @htbd_edict_duration = 3600
 @htbd_trust_duration = 1000
+
+@htbd_pass_time_long = 3000
+@htbd_pass_time = 2000
+@htbd_pass_time_short = 1000

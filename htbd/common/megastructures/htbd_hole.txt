@@ -1,0 +1,19 @@
+# Dragon wormhole
+
+htbd_hole = {
+	entity = "htbd_wormhole_entity"
+	construction_entity = "htbd_wormhole_entity"
+	portrait = "GFX_htbd_hole_background"
+	#"gfx/interface/planetview/htbd_hole.dds"
+	place_entity_on_planet_plane = no
+	build_outside_gravity_well = no
+	show_galactic_map_icon = no
+
+	potential = {
+		always = no
+	}
+
+	construction_blocks_others = no
+
+	bypass_type = htbd_pass
+}

@@ -5,6 +5,38 @@ htbd_debug = {
 	always = no
 }
 
+htbd_is_inhibited = {
+	AND = {
+		htbd_has_ftl_inhibitor = yes
+		owner = { NOT = { has_country_flag = htbd_dragon_scent } }
+	}
+}
+
+# system scope
+htbd_may_travel_from = {
+	htbd_is_inhibited = no
+	any_system = {
+		OR = {
+			distance = { source = prev type=hyperlane min_jumps = 1 max_jumps = 1 }
+			has_natural_wormhole = yes
+			AND = {
+				prev = { has_star_flag = htbd_pass_to }
+				has_star_flag = htbd_pass_from
+			}
+			AND = {
+				prev = { has_star_flag = htbd_pass_from }
+				has_star_flag = htbd_pass_to
+			}
+		}
+		NOR = {
+			has_star_flag = htbd_recent_star_@root
+			htbd_bad_system = yes
+			htbd_avoid_system = yes
+			htbd_is_inhibited = yes
+		}
+	}
+}
+
 htbd_not_recent_planet = {
 	NAND = {
 		has_planet_flag = htbd_recent
@@ -162,8 +194,8 @@ htbd_good_system = {
 		htbd_avoid_system = yes
 		is_bottleneck_system = yes
 		AND = {
-			exists = space_owner
-			space_owner = { NOT = { has_country_flag = htbd_dragon_scent } }
+			exists = owner
+			owner = { NOT = { has_country_flag = htbd_dragon_scent } }
 			any_planet = {
 				OR = {
 					is_capital = yes
@@ -195,17 +227,17 @@ htbd_may_travel_to = {
 	OR = {
 		NOT = { has_star_flag = htbd_recent_star_@root }
 		root = { has_fleet_flag = htbd_ignore_recent }
-		root = { has_fleet_flag = htbd_stuck }
+		#root = { has_fleet_flag = htbd_stuck }
 	}
 	OR = {
 		NOT = { htbd_bad_system = yes }
 		root = { has_fleet_flag = htbd_mad }
-		root = { has_fleet_flag = htbd_stuck_stuck }
+		#root = { has_fleet_flag = htbd_stuck_stuck }
 	}
 	OR = {
 		NOT = { htbd_avoid_system = yes }
 		root = { has_fleet_flag = htbd_curiousity }
-		root = { has_fleet_flag = htbd_stuck }
+		#root = { has_fleet_flag = htbd_stuck }
 	}
 }
 

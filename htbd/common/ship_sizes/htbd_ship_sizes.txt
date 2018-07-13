@@ -143,7 +143,7 @@ space_dragon_dwarf = {
 		ship_armor_add = 8000
 		ship_upkeep_mult = -1
 	}
-	max_hitpoints = 12000
+	max_hitpoints = 15000
 	size_multiplier = 16
 	fleet_slot_size = 16
 	section_slots = { "mid" = { locator = "part1" } }

@@ -1795,7 +1795,9 @@ planet_event = {
 					prefix = no
 					upgradable = no
 				}
+				htbd_new_character = yes
 				set_location = root
+				set_fleet_flag = dragon_mother
 				set_fleet_flag = htbd_idle
 			}
 		}
@@ -1878,3 +1880,116 @@ ship_event = {
 	}
 }
 
+# Scope = Ship
+# From = System
+# FromFrom = Country
+ship_event = {
+	id = htbd_ev.110
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		from = { has_star_flag = htbd_pass_stay }
+		NOT = { owner = { has_country_flag = htbd_pass_seen } }
+	}
+	immediate = {
+		fromfrom = {
+			country_event = { id = htbd_ev.111 }
+		}
+	}
+}
+
+country_event = {
+	id = htbd_ev.111
+	title = htbd_ev.111.name
+	desc = {
+		text = htbd_ev.111.desc.1
+		trigger = {
+			NOT = { has_seen_any_bypass = wormhole }
+			fromfrom = {
+				NOT = {
+					any_ship_in_system = {
+						owner = { is_country_type = htbd_horde }
+					}
+				}
+			}
+		}
+	}
+	desc = {
+		text = htbd_ev.111.desc.2
+		trigger = {
+			has_seen_any_bypass = wormhole
+			fromfrom = {
+				NOT = {
+					any_ship_in_system = {
+						owner = { is_country_type = htbd_horde }
+					}
+				}
+			}
+		}
+	}
+	desc = {
+		text = htbd_ev.111.desc.3
+		trigger = {
+			NOT = { has_seen_any_bypass = wormhole }
+			fromfrom = {
+				any_ship_in_system = {
+					owner = { is_country_type = htbd_horde }
+				}
+			}
+		}
+	}
+	desc = {
+		text = htbd_ev.111.desc.4
+		trigger = {
+			has_seen_any_bypass = wormhole
+			fromfrom = {
+				any_ship_in_system = {
+					owner = { is_country_type = htbd_horde }
+				}
+			}
+		}
+	}
+	picture = GFX_evt_wormhole
+	show_sound = space_cloud_idle
+	location = fromfrom
+
+	is_triggered_only = yes
+	trigger = {
+		always = yes
+	}
+
+	immediate = {
+		# log = "111: [this.GetName] has seen ether hole first time in [FromFrom.System.GetName] system"
+		set_country_flag = htbd_pass_seen
+	}
+
+	option = {
+		name = ASTOUNDING
+	}
+}
+
+# from = fleet (dragon)
+# this = country
+country_event = {
+	id = htbd_ev.112
+	title = htbd_ev.112.name
+	desc = htbd_ev.112.desc
+	picture = GFX_evt_space_dragon
+	show_sound = space_cloud_idle
+	location = from.solar_system
+
+	is_triggered_only = yes
+	trigger = {
+		NOT = { has_country_flag = htbd_pass_origin_known }
+	}
+
+	immediate = {
+		# log = "112: [this.GetName] has seen how [from.GetName] created Ether hole in [From.System.GetName] system"
+		set_country_flag = htbd_pass_origin_known
+	}
+
+	option = {
+		name = FASCINATING
+	}
+}

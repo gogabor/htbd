@@ -52,6 +52,28 @@ htbd_create_country = {
 	}
 }
 
+# scope: system
+# root: fleet
+htbd_set_pass_timer = {
+	if = {
+		limit = {
+			root = { is_ship_size = space_dragon_grand }
+		}
+		set_timed_star_flag = { flag = htbd_pass_stay days = @htbd_pass_time_long }
+		else = {
+			if = {
+				limit = {
+					root = { is_ship_size = space_dragon_teen }
+				}
+				set_timed_star_flag = { flag = htbd_pass_stay days = @htbd_pass_time_short }
+				else = {
+					set_timed_star_flag = { flag = htbd_pass_stay days = @htbd_pass_time }
+				}
+			}
+		}
+	}
+}
+
 # this = country
 htbd_set_neutral_countries = {
 	# Enclave, Sphere and Xanophile Fallen calm dragons down
@@ -221,6 +243,7 @@ htbd_exile_dwarf = {
 			set_fleet_flag = htbd_clever
 			set_fleet_stance = passive
 			set_aggro_range = 0
+			set_fleet_flag = dragon_mother
 		}
 	}
 }

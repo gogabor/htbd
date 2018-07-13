@@ -5,6 +5,66 @@
 # Checks the ship/fleet/planet/leader/pop/system's galaxy map distance to target in absolute units
 # distance = { source = <target> min = 50 max = 120 type=<hyperlane/euclidean> uses_bypass=<yes/no> bypass_empire=<empire> min_jumps = 2 max_jumps = 10 }
 
+htbd_system_stats = {
+	if = {
+		limit = {
+			NOT = { exists = owner }
+		}
+		log = "[This.GetName] has no owner"
+		else = {
+			log = "[This.GetName] is owned by [This.Owner.GetName]"
+			if = {
+				limit = {
+					owner = { htbd_has_friend_edict = yes }
+				}
+				log = "		-> FRIEND"
+			}
+		}
+	}
+	if = {
+		limit = { has_star_flag = htbd_recent_star_@prevprev }
+		log = "		-> RECENT"
+	}
+	if = {
+		limit = { htbd_has_fear_station = yes }
+		log = "		-> FEAR"
+		else = {
+			if = {
+				limit = { htbd_has_fear_aura = yes }
+				log = "		-> FEAR AURA"
+			}
+		}
+	}
+	if = {
+		limit = { htbd_good_system = yes }
+		log = "		-> GOOD"
+	}
+	if = {
+		limit = { htbd_bad_system = yes }
+		log = "		-> BAD"
+	}
+	if = {
+		limit = { htbd_avoid_system = yes }
+		log = "		-> AVOID"
+	}
+	if = {
+		limit = { has_star_flag = hostile_system }
+		log = "		-> hostile"
+	}
+	if = {
+		limit = { is_bottleneck_system = yes }
+		log = "		-> bottleneck"
+	}
+	if = {
+		limit = { htbd_has_ftl_inhibitor = yes }
+		log = "		-> has an inhibitor!"
+	}
+	if = {
+		limit = { has_star_flag = htbd_pass_stay }
+		log = "		-> ETHER HOLE"
+	}
+}
+
 # This = fleet
 htbd_travel_debug = {
 	log = "[This.GetName] wants to leave [solar_system.GetName]"
@@ -25,101 +85,78 @@ htbd_travel_debug = {
 			}
 			log = "[This.GetName] has an inhibitor!"
 		}
-		log = "can move by hyperlanes to:"
+		log = "---------- by HYPERLANES to:"
 		every_neighbor_system = {
 			ignore_hyperlanes = no
 			limit = {
 				always = yes
 			}
-			if = {
-				limit = { has_star_flag = htbd_recent_star_@prevprev }
-				log = "	[This.GetName] (recent)"
-				else = {
-					log = "	[This.GetName]"
-				}
-			}
-			if = {
-				limit = { htbd_has_fear_station = yes }
-				log = "		-> FEAR"
-				else = {
-					if = {
-						limit = { htbd_has_fear_aura = yes }
-						log = "		-> FEAR AURA"
-					}
-				}
-			}
-			if = {
-				limit = { htbd_bad_system = yes }
-				log = "		-> BAD"
-			}
-			if = {
-				limit = { htbd_avoid_system = yes }
-				log = "		-> AVOID"
-			}
+			htbd_system_stats = yes
 		}
-		log = "by distance:"
-		every_system = {
-			#ignore_hyperlanes = yes
+		log = "---------- by NEIGHBORs (neighbors, excluding less than 3 HL):"
+		every_neighbor_system = {
+			ignore_hyperlanes = yes
 			limit = {
-				distance = { source = prev type=hyperlane min_jumps = 1 max_jumps = 1 }
+				NOT = { distance = { source = prev type = hyperlane min_jumps = 1 max_jumps = 3 } }
 			}
-			if = {
-				limit = { has_star_flag = htbd_recent_star_@prevprev }
-				log = "	[This.GetName] (recent)"
-				else = {
-					log = "	[This.GetName]"
-				}
+			htbd_system_stats = yes
+		}
+		log = "---------- by PURE DISTANCE 1 - 100:"
+		every_system = {
+			limit = {
+				NOT = { distance = { source = prev type = hyperlane min_jumps = 1 max_jumps = 3 } }
+				distance = { source = prev type=euclidean min_distance > 1 max_distance < 100 }
 			}
-			if = {
-				limit = { htbd_has_fear_station = yes }
-				log = "		-> FEAR"
-				else = {
-					if = {
-						limit = { htbd_has_fear_aura = yes }
-						log = "		-> FEAR AURA"
-					}
-				}
-			}
-			if = {
-				limit = { htbd_bad_system = yes }
-				log = "		-> BAD"
-			}
-			if = {
-				limit = { htbd_avoid_system = yes }
-				log = "		-> AVOID"
-			}
+			htbd_system_stats = yes
 		}
 		if = {
-			limit = { has_natural_wormhole = yes }
+			limit = {
+				OR = {
+					has_natural_wormhole = yes
+					has_star_flag = htbd_pass_stay
+				}
+			}
+			log = "---------- by WORMHOLES:"
 			closest_system = {
 				min_steps = 1
 				max_steps = 1
 				limit = {
-					has_natural_wormhole = yes
-				}
-				log = "Has natural wormhole to [This.GetName]"
-				if = {
-					limit = { has_star_flag = htbd_recent_star_@prevprev }
-					log = "		-> RECENT"
-				}
-				if = {
-					limit = { htbd_has_fear_station = yes }
-					log = "		-> FEAR"
-					else = {
-						if = {
-							limit = { htbd_has_fear_aura = yes }
-							log = "		-> FEAR AURA"
+					OR = {
+						has_natural_wormhole = yes
+						AND = {
+							prev = { has_star_flag = htbd_pass_to }
+							has_star_flag = htbd_pass_from
+						}
+						AND = {
+							prev = { has_star_flag = htbd_pass_from }
+							has_star_flag = htbd_pass_to
 						}
 					}
 				}
-				if = {
-					limit = { htbd_bad_system = yes }
-					log = "		-> BAD"
+				log = "Has wormhole to [This.GetName]"
+				htbd_system_stats = yes
+			}
+		}
+		if = {
+			limit = {
+				has_star_flag = htbd_pass_stay
+			}
+			log = "---------- by ETHER HOLES:"
+			every_system = {
+				limit = {
+					OR = {
+						AND = {
+							prev = { has_star_flag = htbd_pass_to }
+							has_star_flag = htbd_pass_from
+						}
+						AND = {
+							prev = { has_star_flag = htbd_pass_from }
+							has_star_flag = htbd_pass_to
+						}
+					}
 				}
-				if = {
-					limit = { htbd_avoid_system = yes }
-					log = "		-> AVOID"
-				}
+				log = "Has ether hole to [This.GetName]"
+				htbd_system_stats = yes
 			}
 		}
 	}

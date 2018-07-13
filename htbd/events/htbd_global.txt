@@ -647,6 +647,32 @@ country_event = {
 	}
 }
 
+country_event = {
+	id = htbd_gl.60
+	hide_window = yes
+
+	trigger = {
+		is_country_type = htbd_horde
+		any_owned_megastructure = {
+			is_megastructure_type = htbd_hole
+			solar_system = { NOT = { has_star_flag = htbd_pass_stay } }
+		}
+	}
+	immediate = {
+		every_owned_megastructure = {
+			limit = {
+				is_megastructure_type = htbd_hole
+				solar_system = { NOT = { has_star_flag = htbd_pass_stay } }
+			}
+			solar_system = {
+				remove_star_flag = htbd_pass_to
+				remove_star_flag = htbd_pass_from
+			}
+			remove_megastructure = this
+		}
+	}
+}
+
 # debug info
 event = {
 	id = htbd_gl.100
@@ -724,6 +750,14 @@ event = {
 			if = {
 				limit = { htbd_has_friend_edict = yes }
 				log = "--- has FRIEND enabled!"
+			}
+			if = {
+				limit = { has_country_flag = htbd_pass_seen }
+				log = "--- found Ether Hole!"
+			}
+			if = {
+				limit = { has_country_flag = htbd_pass_origin_known }
+				log = "--- discover Ether Hole origin!"
 			}
 			#save_event_target_as = this
 			every_ship = {
