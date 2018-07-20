@@ -92,17 +92,23 @@ tech_htbd_hole_physic = {
 			}
 		}
 		modifier = {
-			factor = 1.2
+			factor = 1.5
 			has_country_flag = htbd_dragon_scent
+		}
+		modifier = {
+			factor = 1.2
+			has_country_flag = htbd_dragon_fear
 		}
 		modifier = {
 			factor = 2
 			has_country_flag = htbd_pass_origin_known
 		}
 		modifier = {
-			factor = 1.5
-			any_system_within_border = {
-				has_star_flag = htbd_pass_stay
+			factor = 0.5
+			NOT = {
+				any_system_within_border = {
+					has_star_flag = htbd_pass_stay
+				}
 			}
 		}
 	}

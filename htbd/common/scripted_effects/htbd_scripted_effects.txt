@@ -37,10 +37,10 @@ htbd_create_country = {
 				category = "backgrounds"
 				file = "00_solid.dds"
 			}
-			colors={
-				"purple"
-				"red"
-				"null"
+			colors = {
+				"black"
+				"orange"
+				"gray"
 				"null"
 			}
 		}
