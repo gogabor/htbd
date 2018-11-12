@@ -40,7 +40,7 @@ htbd_create_country = {
 			colors = {
 				"black"
 				"orange"
-				"gray"
+				"null"
 				"null"
 			}
 		}
@@ -800,32 +800,28 @@ htbd_del_waypoint = {
 		prev = { remove_point_of_interest = htbd_way_poi.20 }
 	}
 	# check system stats
-	# log = "Check [This.GetName] system stats"
+	# log = "Check [This.GetName] system stats for [Prev.GetName]"
 	if = {
 		limit = {
 			check_variable = { which = htbd_system_like value > 1000 }
+			prev = { NOT = { has_country_flag = htbd_liked_systems_done } }
 		}
-		if = {
-			limit = {
-				prev = { NOT = { has_country_flag = htbd_liked_systems_done } }
-			}
-			enable_special_project = {
-				name = HTBD_WAY_LIKE
-				owner = prev
-				location = event_target:way_point
-			}
+		enable_special_project = {
+			name = HTBD_WAY_LIKE
+			owner = prev
+			location = event_target:way_point
 		}
-		else = {
-			if = {
-				limit = {
-					prev = { NOT = { has_country_flag = htbd_avoid_systems_done } }
-				}
-				enable_special_project = {
-					name = HTBD_WAY_AVOID
-					owner = prev
-					location = event_target:way_point
-				}
-			}
+	}
+
+	if = {
+		limit = {
+			check_variable = { which = htbd_system_like value < 1001 }
+			prev = { NOT = { has_country_flag = htbd_avoid_systems_done } }
+		}
+		enable_special_project = {
+			name = HTBD_WAY_AVOID
+			owner = prev
+			location = event_target:way_point
 		}
 	}
 }
@@ -841,7 +837,7 @@ htbd_report_stay = {
 				limit = { htbd_debug = yes}
 				log = "[Root.GetName] likes system [This.GetName]"
 			}
-			change_variable = { which = htbd_system_like value = 3 }
+			change_variable = { which = htbd_system_like value = 2 }
 			random_system_planet = {
 				limit = { is_star = yes }
 				save_event_target_as = way_point
@@ -872,13 +868,13 @@ htbd_report_leave = {
 				limit = { htbd_debug = yes }
 				log = "[Prev.GetName] avoids system [This.GetName]"
 			}
-			change_variable = { which = htbd_system_like value = -1 }
+			change_variable = { which = htbd_system_like value = -2 }
 			else = {
 				if = {
 					limit = { htbd_debug = yes}
 					log = "[Prev.GetName] likes system [This.GetName]"
 				}
-				change_variable = { which = htbd_system_like value = 3 }
+				change_variable = { which = htbd_system_like value = 2 }
 			}
 		}
 		random_system_planet = {
@@ -893,19 +889,20 @@ htbd_report_leave = {
 					prev = { is_inside_border = prev }
 					intel_level = { level > medium system = prev }
 				}
-				count_ships = {
-					count < 2
-					limit = {
-						exists = owner
-						owner = { is_country_type = htbd_horde }
-						exists = solar_system
-						solar_system = { is_same_value = event_target:way_point.solar_system }
-					}
-				}
 				prev = {
+					count_ships = {
+						count < 2
+						limit = {
+							exists = owner
+							owner = { is_country_type = htbd_horde }
+							exists = solar_system
+							solar_system = { is_same_value = prev }
+						}
+					}
 					htbd_is_waypoint = yes
 				}
 			}
+            # log = "Delete waypoint for [This.GetName]"
 			prev = { htbd_del_waypoint = yes }
 		}
 	}

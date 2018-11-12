@@ -870,7 +870,7 @@ country_event = {
 			owner = { is_country_type = htbd_horde }
 			exists = solar_system
 			solar_system = {
-				NOT = { has_star_flag = htbd_recent }
+				NOT = { has_star_flag = htbd_recent_star_@prev }
 				root = {
 					prev = { htbd_is_waypoint = no }
 				}
@@ -903,10 +903,11 @@ fleet_event = {
 		owner = { is_country_type = htbd_horde }
 		any_country = {
 			is_country_type = default
-			intel_level = { level > medium system = from }
+            # intel_level accepts only prev/root/this
+			from = { prev = { intel_level = { level > medium system = prev } } }
 			has_country_flag = htbd_way_of_dragon
 			from = {
-				NOT = { has_star_flag = htbd_recent }
+				NOT = { has_star_flag = htbd_recent_star_@root }
 				htbd_is_waypoint = no
 			}
 		}
@@ -916,10 +917,10 @@ fleet_event = {
 		every_country = {
 			limit = {
 				is_country_type = default
-				intel_level = { level > medium system = from }
+				from = { prev = { intel_level = { level > medium system = prev } } }
 				has_country_flag = htbd_way_of_dragon
 				from = {
-					NOT = { has_star_flag = htbd_recent }
+					NOT = { has_star_flag = htbd_recent_star_@root }
 					htbd_is_waypoint = no
 				}
 			}
@@ -946,7 +947,7 @@ fleet_event = {
 		owner = { is_country_type = htbd_horde }
 		any_country = {
 			is_country_type = default
-			intel_level = { level > medium system = from }
+			from = { prev = { intel_level = { level > medium system = prev } } }
 			NOT = { has_country_flag = htbd_encounter }
 		}
 	}
@@ -955,7 +956,7 @@ fleet_event = {
 		every_country = {
 			limit = {
 				is_country_type = default
-				intel_level = { level > medium system = from }
+				from = { prev = { intel_level = { level > medium system = prev } } }
 				NOT = { has_country_flag = htbd_encounter }
 			}
 			if = {
@@ -1974,7 +1975,18 @@ country_event = {
 country_event = {
 	id = htbd_ev.112
 	title = htbd_ev.112.name
-	desc = htbd_ev.112.desc
+	desc = {
+		text = htbd_ev.112.desc.1
+		trigger = {
+			has_seen_any_bypass = wormhole
+		}
+	}
+	desc = {
+		text = htbd_ev.112.desc.2
+		trigger = {
+			NOT = { has_seen_any_bypass = wormhole }
+		}
+	}
 	picture = GFX_evt_space_dragon
 	show_sound = space_cloud_idle
 	location = from.solar_system
@@ -1987,6 +1999,10 @@ country_event = {
 	immediate = {
 		# log = "112: [this.GetName] has seen how [from.GetName] created Ether hole in [From.System.GetName] system"
 		set_country_flag = htbd_pass_origin_known
+        if = {
+            limit = { NOT = { has_seen_any_bypass = wormhole } }
+            set_country_flag = htbd_pass_seen
+        }
 	}
 
 	option = {

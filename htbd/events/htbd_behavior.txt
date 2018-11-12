@@ -879,8 +879,8 @@ fleet_event = {
 				}
 				distance = {
 					source = event_target:htbd_emrg_from
-					min_distance > 30
-					max_distance < 150
+					min_distance > 50
+					max_distance < 200
 					type = euclidean
 				}
 				calc_true_if = {
@@ -892,7 +892,6 @@ fleet_event = {
 						owner = { has_country_flag = htbd_dragon_scent }
 					}
 					htbd_avoid_system = no
-					is_bottleneck_system = no
 				}
 			}
 			save_event_target_as = htbd_emrg_to
