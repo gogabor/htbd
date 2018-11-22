@@ -902,23 +902,11 @@ fleet_event = {
 			event_target:htbd_emrg_from = {
 				event_target:htbd_emrg_to = {
 					prev = {
-						spawn_megastructure = {
-							type = htbd_hole
-							orbit_angle = 0
-							orbit_distance = 15
-							location = root.location
-							owner = root.owner
-						}
+						htbd_spawn_hole = yes
 						htbd_set_pass_timer = yes
 						set_star_flag = htbd_pass_from
 					}
-					spawn_megastructure = {
-						type = htbd_hole
-						orbit_angle = 170
-						orbit_distance = 15
-						location = root.location
-						owner = root.owner
-					}
+					htbd_spawn_hole = yes
 					htbd_set_pass_timer = yes
 					set_star_flag = htbd_pass_to
 				}

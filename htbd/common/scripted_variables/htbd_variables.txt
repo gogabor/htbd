@@ -27,3 +27,6 @@
 @htbd_pass_time_long = 5000
 @htbd_pass_time = 3000
 @htbd_pass_time_short = 1500
+
+@htbd_hole_angle = -15
+@htbd_hole_distance = 18

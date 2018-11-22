@@ -113,3 +113,10 @@ on_htbd_jump = {
 		htbd.142
 	}
 }
+
+on_fleet_combat_joined_defender = {
+	events = {
+		htbd_gl.52
+	}
+}
+

@@ -70,6 +70,7 @@ htbd_system_stats = {
 htbd_travel_debug = {
 	log = "[This.GetName] wants to leave [solar_system.GetName]"
 	solar_system = {
+		save_event_target_as = htbd_dbg_system
 		if = {
 			limit = {
 				exists = owner
@@ -119,6 +120,19 @@ htbd_travel_debug = {
 				max_steps = 1
 				limit = {
 					has_natural_wormhole = yes
+				}
+				log = "[Prev.GetName] has wormhole to [This.GetName]"
+				htbd_system_stats = yes
+			}
+			# OR maybe that way?
+			random_system = {
+				limit = {
+					has_natural_wormhole = yes
+					closest_system = {
+						min_steps = 1
+						max_steps = 1
+						is_same_value = event_target:htbd_dbg_system
+					}
 				}
 				log = "[Prev.GetName] has wormhole to [This.GetName]"
 				htbd_system_stats = yes

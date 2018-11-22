@@ -77,26 +77,7 @@ htbd_set_neutral_countries = {
 	every_country = {
 		if = {
 			limit = {
-				OR = {
-					is_country_type = enclave
-					is_country_type = guardian_sphere
-					is_country_type = guardian_dragon
-					is_country_type = guardian_hatchling
-					is_country_type = ldragon_country
-					is_country_type = guardian_elderly_tiyanki
-					AND = {
-						OR = {
-							is_country_type = fallen_empire
-							is_country_type = awakened_fallen_empire
-						}
-						OR = {
-							has_ethic = ethic_pacifist
-							has_ethic = ethic_fanatic_pacifist
-							has_ethic = ethic_xenophile
-							has_ethic = ethic_fanatic_xenophile
-						}
-					}
-				}
+				htbd_is_neutral_faction = yes
 			}
 			set_faction_hostility = {
 				target = event_target:htbd_country
@@ -406,3 +387,42 @@ htbd_report_hatching = {
 htbd_starbase_disable = {
 	set_disabled = yes
 }
+
+# system scope
+htbd_spawn_hole = {
+	random_system_planet = {
+		limit = {
+			is_star = yes
+			NOR = {
+				is_planet_class = pc_black_hole
+				is_planet_class = pc_pulsar
+				is_planet_class = pc_neutron_star
+			}
+		}
+		save_event_target_as = htbd_hole_star_0
+		set_planet_flag = htbd_ether_hole_star
+	}
+	spawn_megastructure = {
+		type = htbd_hole
+		orbit_angle = @htbd_hole_angle
+		orbit_distance = @htbd_hole_distance
+		location = event_target:htbd_hole_star_0
+		owner = event_target:htbd_country
+	}
+}
+
+# scope = system, from = owner
+htbd_spawn_stable_hole = {
+	random_system_planet = {
+		limit = { has_planet_flag = htbd_ether_hole_star }
+		save_event_target_as = htbd_hole_star_0
+	}
+	spawn_megastructure = {
+		type = htbd_hole_stabilized
+		orbit_angle = @htbd_hole_angle
+		orbit_distance = @htbd_hole_distance
+		location = event_target:htbd_hole_star_0
+		owner = from
+	}
+}
+

@@ -347,3 +347,33 @@ htbd_foe_way_is_done = {
 		}
 	}
 }
+
+htbd_is_neutral_faction = {
+	OR = {
+		is_country_type = enclave
+		is_country_type = guardian_sphere
+		is_country_type = guardian_dragon
+		is_country_type = guardian_hatchling
+		is_country_type = ldragon_country
+		is_country_type = guardian_elderly_tiyanki
+		AND = {
+			OR = {
+				is_country_type = fallen_empire
+				is_country_type = awakened_fallen_empire
+			}
+			OR = {
+				has_ethic = ethic_pacifist
+				has_ethic = ethic_fanatic_pacifist
+				has_ethic = ethic_xenophile
+				has_ethic = ethic_fanatic_xenophile
+			}
+		}
+		AND = {
+			has_global_flag = mem_surveyor_is_present
+			OR = {
+				is_country_type = mem_surveyor_country_green
+				is_country_type = mem_surveyor_country_yellow
+			}
+		}
+	}
+}
