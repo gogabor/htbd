@@ -175,5 +175,8 @@ htbd_ev.1.desc.4.alt:1 "$htbd_ev.1.pre.2$$htbd_ev.1.end.4$"
  htbd_ev.111.desc.3:0 "$htbd_ev.111.desc.1$ $htbd_ev.111.desc.add$"
  htbd_ev.111.desc.4:0 "$htbd_ev.111.desc.2$ $htbd_ev.111.desc.add$"
  htbd_ev.112.name:0 "Reveal Wormhole Mystery"
- htbd_ev.112.desc:0 "Mysterious wormholes around galaxy are made by Ether Dragons! Our sensors detected how [From.GetName] created new wormhole in [From.System.GetName]! This discovery opens new ways to better understand this phenomenon."
+ htbd_ev.112.desc.1:0 "Mysterious wormholes around galaxy are made by Ether Dragons! Our sensors detected how [From.GetName] created new wormhole in [From.System.GetName]! This discovery opens new ways to better understand this phenomenon."
+ htbd_ev.112.desc.2:0 "Our sensors detected how [From.GetName] created a small wormhole in [From.System.GetName]! We should better understand this phenomenon and this new wormhole type."
+
+
 

@@ -36,7 +36,7 @@ tech_htbd_hole_physic = {
 	is_rare = yes
 	is_reverse_engineerable = no
 	category = { field_manipulation }
-	ai_update_type = military
+	ai_update_type = all
 	weight = @tier3weight3
 	prerequisites = { "tech_hyper_drive_3" "tech_wormhole_stabilization" }
 
