@@ -260,318 +260,18 @@ htbd_stats_init = {
 			}
 		}
 		# log = "Drop [This.GetName] system stats"
-		set_variable = { which = htbd_system_like value = 1000 }
+		set_variable = { which = htbd_system_like value = 0 }
 	}
 }
 
 # This = Country
 # Prev = System
 htbd_add_waypoint = {
-	prev = { htbd_stats_init = yes }
-	if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.1 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.1
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.2 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.2
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.3 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.3
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.4 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.4
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.5 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.5
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.6 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.6
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.7 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.7
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.8 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.8
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.9 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.9
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.10 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.10
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.11 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.11
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.12 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.12
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.13 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.13
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.14 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.14
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.15 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.15
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.16 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.16
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.17 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.17
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.18 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.18
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.19 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.19
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_point_of_interest = { poi = htbd_way_poi.20 }
-			}
-		}
-		create_point_of_interest = {
-			id = htbd_way_poi.20
-			name = htbd_way_poi_title
-			desc = htbd_way_poi_desc
-			event_chain = htbd_way_chain
-			category = htbd_way
-			location = prev
-		}
-	}
-	else = {
+	prev = {
+		#htbd_stats_init = yes
 		if = {
-			limit = { htbd_debug = yes }
-			log = "Cannot add waypoint for [This.GetName]"
+			limit = { NOT = { has_star_flag = htbd_poi.@prev } }
+			set_star_flag = htbd_poi.@prev
 		}
 	}
 }
@@ -579,210 +279,15 @@ htbd_add_waypoint = {
 # This = System
 htbd_del_waypoint = {
 	if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.1
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.1 }
+		limit = { has_star_flag = htbd_poi.@prev }
+		remove_star_flag = htbd_poi.@prev
 	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.2
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.2 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.3
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.3 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.4
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.4 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.5
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.5 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.6
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.6 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.7
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.7 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.8
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.8 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.9
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.9 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.10
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.10 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.11
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.11 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.12
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.12 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.13
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.13 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.14
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.14 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.15
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.15 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.16
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.16 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.17
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.17 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.18
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.18 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.19
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.19 }
-	}
-	else_if = {
-		limit = {
-			is_point_of_interest = {
-				id = htbd_way_poi.20
-				event_chain = htbd_way_chain
-				owner = prev
-			}
-		}
-		prev = { remove_point_of_interest = htbd_way_poi.20 }
-	}
+
 	# check system stats
 	# log = "Check [This.GetName] system stats for [Prev.GetName]"
 	if = {
 		limit = {
-			check_variable = { which = htbd_system_like value > 1000 }
+			check_variable = { which = htbd_system_like value > 0 }
 			prev = { NOT = { has_country_flag = htbd_liked_systems_done } }
 		}
 		enable_special_project = {
@@ -794,7 +299,7 @@ htbd_del_waypoint = {
 
 	if = {
 		limit = {
-			check_variable = { which = htbd_system_like value < 1001 }
+			check_variable = { which = htbd_system_like value < 0 }
 			prev = { NOT = { has_country_flag = htbd_avoid_systems_done } }
 		}
 		enable_special_project = {
@@ -810,7 +315,7 @@ htbd_report_stay = {
 	solar_system = {
 		if = {
 			limit = {
-				root = { check_variable = { which = htbd_stay_level value > 20 }}
+				root = { check_variable = { which = htbd_stay_level value > 20 } }
 			}
 			if = {
 				limit = { htbd_debug = yes }
@@ -826,9 +331,7 @@ htbd_report_stay = {
 					is_country_type = default
 					has_event_chain = htbd_way_chain
 					intel_level = { level > medium system = prev }
-					prev = {
-						htbd_is_waypoint = yes
-					}
+					prev = { htbd_is_waypoint = yes	}
 				}
 				prev = { htbd_del_waypoint = yes }
 			}
@@ -905,6 +408,5 @@ htbd_report_hatching = {
 
 # Ship scope
 htbd_starbase_disable = {
-	#starbase = { set_starbase_size = starbase_outpost }
 	set_disabled = yes
 }
