@@ -148,15 +148,13 @@ fleet_event = {
 									if = {
 										limit = { owner = { num_fleets > 30 } }
 										set_timed_fleet_flag = { flag = htbd_no_egg days = @no_egg_days_long }
-										else = {
-											if = {
-												limit = { owner = { num_fleets < 10 } }
-												set_timed_fleet_flag = { flag = htbd_no_egg days = @no_egg_days_short }
-												else = {
-													set_timed_fleet_flag = { flag = htbd_no_egg days = @no_egg_days }
-												}
-											}
-										}
+									}
+									else_if = {
+										limit = { owner = { num_fleets < 10 } }
+										set_timed_fleet_flag = { flag = htbd_no_egg days = @no_egg_days_short }
+									}
+									else = {
+										set_timed_fleet_flag = { flag = htbd_no_egg days = @no_egg_days }
 									}
 									set_fleet_flag = htbd_hatching
 									if = {
@@ -656,11 +654,11 @@ fleet_event = {
 						flag = htbd_recent_star_@root
 						days = @recent_good_star
 					}
-					else = {
-						set_timed_star_flag = {
-							flag = htbd_recent_star_@root
-							days = @recent_star
-						}
+				}
+				else = {
+					set_timed_star_flag = {
+						flag = htbd_recent_star_@root
+						days = @recent_star
 					}
 				}
 			}
@@ -818,9 +816,9 @@ fleet_event = {
 								if = {
 									limit = { has_fleet_flag = htbd_stuck }
 									set_fleet_flag = htbd_stuck_stuck
-									else = {
-										set_fleet_flag = htbd_stuck
-									}
+								}
+								else = {
+									set_fleet_flag = htbd_stuck
 								}
 							}
 						}
@@ -828,22 +826,22 @@ fleet_event = {
 				}
 				}
 			}
-			else = {
-				if = {
-					limit = { htbd_debug = yes }
-					log = "[Root.GetName] is stuck at [Root.GetStarName]"
-				}
-				if = {
-					limit = { has_fleet_flag = htbd_stuck }
-					set_fleet_flag = htbd_stuck_stuck
-					else = {
-						set_fleet_flag = htbd_stuck
-					}
-				}
-				remove_fleet_flag = htbd_travel
-				remove_fleet_flag = htbd_cooldown
-				set_fleet_flag = htbd_idle
+		}
+		else = {
+			if = {
+				limit = { htbd_debug = yes }
+				log = "[Root.GetName] is stuck at [Root.GetStarName]"
 			}
+			if = {
+				limit = { has_fleet_flag = htbd_stuck }
+				set_fleet_flag = htbd_stuck_stuck
+			}
+			else = {
+				set_fleet_flag = htbd_stuck
+			}
+			remove_fleet_flag = htbd_travel
+			remove_fleet_flag = htbd_cooldown
+			set_fleet_flag = htbd_idle
 		}
 	}
 }
@@ -974,11 +972,11 @@ fleet_event = {
 					}
 				}
 			}
-			else = {
-				remove_fleet_flag = htbd_travel
-				remove_fleet_flag = htbd_cooldown
-				set_fleet_flag = htbd_idle
-			}
+		}
+		else = {
+			remove_fleet_flag = htbd_travel
+			remove_fleet_flag = htbd_cooldown
+			set_fleet_flag = htbd_idle
 		}
 	}
 }
@@ -1046,13 +1044,13 @@ fleet_event = {
 					clear_fleet_actions = this
 				}
 			}
-			else = {
-				# log = "[From.GetName] can't leave this system easily"
-				# just clear fleet actions and let it go to the star
-				remove_fleet_flag = htbd_cooldown
-				set_fleet_flag = htbd_idle
-				#clear_fleet_actions = this
-			}
+		}
+		else = {
+			# log = "[From.GetName] can't leave this system easily"
+			# just clear fleet actions and let it go to the star
+			remove_fleet_flag = htbd_cooldown
+			set_fleet_flag = htbd_idle
+			#clear_fleet_actions = this
 		}
 	}
 }
@@ -1083,17 +1081,15 @@ ship_event = {
 					root = { is_ship_size = space_dragon_kid }
 				}
 				htbd_dragon_teen = yes
-				else = {
-					if = {
-						limit = {
-							root = { is_ship_size = space_dragon_teen }
-						}
-						htbd_dragon_adult = yes
-						else = {
-							htbd_dragon_grand = yes
-						}
-					}
+			}
+			else_if = {
+				limit = {
+					root = { is_ship_size = space_dragon_teen }
 				}
+				htbd_dragon_adult = yes
+			}
+			else = {
+				htbd_dragon_grand = yes
 			}
 			remove_fleet_flag = htbd_roaming
 			remove_fleet_flag = htbd_cooldown

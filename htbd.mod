@@ -5,4 +5,4 @@ tags={
 }
 picture="htbd.png"
 remote_file_id="952438221"
-supported_version="2.1.*"
+supported_version="2.2.*"

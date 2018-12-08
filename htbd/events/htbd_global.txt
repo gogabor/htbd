@@ -534,10 +534,10 @@ fleet_event = {
 									}
 								}
 								log = "[Root.GetName] arrived at [This.GetName]"
-								else = {
-									# log = "[Root.GetName] can't move to [This.GetName]"
-									set_timed_star_flag = { flag = htbd_stop years = 3 }
-								}
+							}
+							else = {
+								# log = "[Root.GetName] can't move to [This.GetName]"
+								set_timed_star_flag = { flag = htbd_stop years = 3 }
 							}
 						}
 					}

@@ -11,14 +11,14 @@ htbd_system_stats = {
 			NOT = { exists = owner }
 		}
 		log = "[This.GetName] has no owner"
-		else = {
-			log = "[This.GetName] is owned by [This.Owner.GetName]"
-			if = {
-				limit = {
-					owner = { htbd_has_friend_edict = yes }
-				}
-				log = "		-> FRIEND"
+	}
+	else = {
+		log = "[This.GetName] is owned by [This.Owner.GetName]"
+		if = {
+			limit = {
+				owner = { htbd_has_friend_edict = yes }
 			}
+			log = "		-> FRIEND"
 		}
 	}
 	if = {
@@ -28,13 +28,12 @@ htbd_system_stats = {
 	if = {
 		limit = { htbd_has_fear_station = yes }
 		log = "		-> FEAR"
-		else = {
-			if = {
-				limit = { htbd_has_fear_aura = yes }
-				log = "		-> FEAR AURA"
-			}
-		}
 	}
+	else_if = {
+		limit = { htbd_has_fear_aura = yes }
+		log = "		-> FEAR AURA"
+	}
+
 	if = {
 		limit = { htbd_good_system = yes }
 		log = "		-> GOOD"

@@ -17,8 +17,16 @@ weapon_component_template = {
 	shield_damage = 1.2
 	armor_penetration = 0
 	tracking = 0.7
-	power = -25
-	cost = 25
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 15
+		}
+		upkeep = {
+			energy = 0.15
+			alloys = 0.01
+		}
+	}
 
 	prerequisites = { "tech_dragon_pd" }
 	component_set = "HTBD_PD_WEAPON"
@@ -58,8 +66,17 @@ weapon_component_template = {
 	shield_damage = 0.75
 	armor_damage = 2
 	tracking = 0
-	power = -300
-	cost = 300
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 300
+			rare_crystals = 5
+		}
+		upkeep = {
+			energy = 4
+			alloys = 0.8
+		}
+	}
 
 	prerequisites = { "tech_dragon_breath" }
 	component_set = "HTBD_XL_WEAPON"
@@ -88,7 +105,6 @@ utility_component_template = {
 	icon = "GFX_ship_part_aura_shield_recharger"
 	icon_frame = 1
 	power = 0
-	cost = 0
 
 	size_restriction = { space_dragon_grand space_dragon_adult space_dragon_teen }
 	component_set = "ship_aura_components"
@@ -131,7 +147,6 @@ utility_component_template = {
 	icon = "GFX_ship_part_aura_snare"
 	icon_frame = 1
 	power = 0
-	cost = 0
 
 	size_restriction = { space_dragon_grand space_dragon_adult }
 	component_set = "ship_aura_components"
@@ -175,7 +190,6 @@ utility_component_template = {
 	icon = "GFX_ship_part_enigmatic_disruption_field"
 	icon_frame = 1
 	power = 0
-	cost = 0
 
 	size_restriction = { space_dragon_grand space_dragon_adult }
 	component_set = "ship_aura_components"

@@ -47,7 +47,6 @@ htbd_create_country = {
 	}
 	last_created_country = {
 		set_country_flag = htbd_country
-		guardian_difficulty = yes
 		save_global_event_target_as = htbd_country
 	}
 }
@@ -60,17 +59,15 @@ htbd_set_pass_timer = {
 			root = { is_ship_size = space_dragon_grand }
 		}
 		set_timed_star_flag = { flag = htbd_pass_stay days = @htbd_pass_time_long }
-		else = {
-			if = {
-				limit = {
-					root = { is_ship_size = space_dragon_teen }
-				}
-				set_timed_star_flag = { flag = htbd_pass_stay days = @htbd_pass_time_short }
-				else = {
-					set_timed_star_flag = { flag = htbd_pass_stay days = @htbd_pass_time }
-				}
-			}
+	}
+	else_if = {
+		limit = {
+			root = { is_ship_size = space_dragon_teen }
 		}
+		set_timed_star_flag = { flag = htbd_pass_stay days = @htbd_pass_time_short }
+	}
+	else = {
+		set_timed_star_flag = { flag = htbd_pass_stay days = @htbd_pass_time }
 	}
 }
 
@@ -171,9 +168,9 @@ htbd_new_fleet = {
 htbd_new_leader = {
 	last_created_fleet = { save_event_target_as = last_fleet }
 	create_leader = {
-		type = admiral
+		class = admiral
 		species = owner_main_species
-		skill = 1
+		skill = 3
 		traits = {
 			trait = random_trait
 		}
@@ -285,9 +282,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.2 }
@@ -301,9 +297,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.3 }
@@ -317,9 +312,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.4 }
@@ -333,9 +327,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.5 }
@@ -349,9 +342,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.6 }
@@ -365,9 +357,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.7 }
@@ -381,9 +372,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.8 }
@@ -397,9 +387,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.9 }
@@ -413,9 +402,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.10 }
@@ -429,9 +417,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.11 }
@@ -445,9 +432,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.12 }
@@ -461,9 +447,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.13 }
@@ -477,9 +462,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.14 }
@@ -493,9 +477,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.15 }
@@ -509,9 +492,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.16 }
@@ -525,9 +507,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.17 }
@@ -541,9 +522,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.18 }
@@ -557,9 +537,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.19 }
@@ -573,9 +552,8 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
+	else_if = {
 		limit = {
 			NOT = {
 				has_point_of_interest = { poi = htbd_way_poi.20 }
@@ -589,11 +567,12 @@ htbd_add_waypoint = {
 			category = htbd_way
 			location = prev
 		}
-		break = yes
 	}
-	if = {
-		limit = { htbd_debug = yes }
-		log = "Cannot add waypoint for [This.GetName]"
+	else = {
+		if = {
+			limit = { htbd_debug = yes }
+			log = "Cannot add waypoint for [This.GetName]"
+		}
 	}
 }
 
@@ -609,7 +588,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.1 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.2
@@ -619,7 +598,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.2 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.3
@@ -629,7 +608,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.3 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.4
@@ -639,7 +618,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.4 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.5
@@ -649,7 +628,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.5 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.6
@@ -659,7 +638,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.6 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.7
@@ -669,7 +648,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.7 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.8
@@ -679,7 +658,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.8 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.9
@@ -689,7 +668,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.9 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.10
@@ -699,7 +678,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.10 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.11
@@ -709,7 +688,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.11 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.12
@@ -719,7 +698,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.12 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.13
@@ -729,7 +708,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.13 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.14
@@ -739,7 +718,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.14 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.15
@@ -749,7 +728,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.15 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.16
@@ -759,7 +738,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.16 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.17
@@ -769,7 +748,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.17 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.18
@@ -779,7 +758,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.18 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.19
@@ -789,7 +768,7 @@ htbd_del_waypoint = {
 		}
 		prev = { remove_point_of_interest = htbd_way_poi.19 }
 	}
-	if = {
+	else_if = {
 		limit = {
 			is_point_of_interest = {
 				id = htbd_way_poi.20
@@ -834,7 +813,7 @@ htbd_report_stay = {
 				root = { check_variable = { which = htbd_stay_level value > 20 }}
 			}
 			if = {
-				limit = { htbd_debug = yes}
+				limit = { htbd_debug = yes }
 				log = "[Root.GetName] likes system [This.GetName]"
 			}
 			change_variable = { which = htbd_system_like value = 2 }
@@ -869,13 +848,13 @@ htbd_report_leave = {
 				log = "[Prev.GetName] avoids system [This.GetName]"
 			}
 			change_variable = { which = htbd_system_like value = -2 }
-			else = {
-				if = {
-					limit = { htbd_debug = yes}
-					log = "[Prev.GetName] likes system [This.GetName]"
-				}
-				change_variable = { which = htbd_system_like value = 2 }
+		}
+		else = {
+			if = {
+				limit = { htbd_debug = yes }
+				log = "[Prev.GetName] likes system [This.GetName]"
 			}
+			change_variable = { which = htbd_system_like value = 2 }
 		}
 		random_system_planet = {
 			limit = { is_star = yes }

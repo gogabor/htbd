@@ -24,7 +24,6 @@ space_dragon_kid = {
 	modifier = {
 		ship_evasion_add = 45
 		ship_armor_add = 10000
-		ship_upkeep_mult = -1
 	}
 	max_hitpoints = 15000
 	combat_size_multiplier = 20
@@ -53,7 +52,6 @@ space_dragon_teen = {
 	modifier = {
 		ship_evasion_add = 35
 		ship_armor_add = 20000
-		ship_upkeep_mult = -1
 	}
 	max_hitpoints = 30000
 	combat_size_multiplier = 25
@@ -82,7 +80,6 @@ space_dragon_adult = {
 	modifier = {
 		ship_evasion_add = 25
 		ship_armor_add = 40000
-		ship_upkeep_mult = -1
 	}
 	max_hitpoints = 60000
 	combat_size_multiplier = 30
@@ -111,7 +108,6 @@ space_dragon_grand = {
 	modifier = {
 		ship_evasion_add = 15
 		ship_armor_add = 60000
-		ship_upkeep_mult = -1
 	}
 	max_hitpoints = 90000
 	combat_size_multiplier = 50
@@ -141,7 +137,6 @@ space_dragon_dwarf = {
 	modifier = {
 		ship_evasion_add = 25
 		ship_armor_add = 8000
-		ship_upkeep_mult = -1
 	}
 	max_hitpoints = 15000
 	size_multiplier = 16
