@@ -19,7 +19,9 @@ HTBD_names = {
 			"Y Ddraig Goch" Jormungandr Nídhogg Typhon Python Fafnir Deadmorozuma Preved "Fut's-Lung" Griffin
 			Hydra Leviathan Sirrush Ryu Mushussu Smaug Tarasque Jawzahr Apophis Pendragon Xiandu Norbert 
 			"Appa Tillia" Illiyena Bahamut Diaval Elliott Falkor Jabberwocky "Liu Kang" Saphira Shruikan Shenron
-			Moryo Aeralfos Argorok Aquamentus Alduin Paarthurnax Odahviing Icasaracht Gneeda Pchelkabzz
+			Moryo Aeralfos Argorok Aquamentus Alduin Paarthurnax Odahviing Icasaracht Gneeda Pchelkabzz Mirmulnir
+			Nahagliiv Sahloknir Viinturuth Vuljotnaak Vulthuryol Naaslaarum Numinex Durnehviir Krosulhah Voslaarum
+			Sahrotaar Krosulhah Kruziikrel Relonikiv
 		}
 	}
 
