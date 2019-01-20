@@ -8,7 +8,7 @@ htbd_debug = {
 htbd_is_inhibited = {
 	AND = {
 		htbd_has_ftl_inhibitor = yes
-		owner = { NOT = { has_country_flag = htbd_dragon_scent } }
+		space_owner = { NOT = { has_country_flag = htbd_dragon_scent } }
 	}
 }
 
@@ -42,7 +42,7 @@ htbd_not_recent_planet = {
 		has_planet_flag = htbd_recent
 		# if all planets are with recent flag, ignore that flag
 		solar_system = {
-			any_planet = {
+			any_system_planet = {
 				NOT = { has_planet_flag = htbd_recent }
 			}
 		}
@@ -143,7 +143,7 @@ htbd_has_fear_station = {
 			exists = starbase
 			starbase = { has_starbase_size > starbase_starport }
 		}
-		any_planet = {
+		any_system_planet = {
 			OR = {
 				is_planet_class = pc_habitat
 				has_building = building_fortress
@@ -188,19 +188,21 @@ htbd_avoid_system = {
 	}
 }
 
+
+htbd_friend_system = {
+	exists = space_owner
+	space_owner = { has_country_flag = htbd_dragon_scent }
+}
+
 htbd_good_system = {
-	NOR = {
-		htbd_bad_system = yes
-		htbd_avoid_system = yes
-		is_bottleneck_system = yes
-		AND = {
-			exists = owner
-			owner = { NOT = { has_country_flag = htbd_dragon_scent } }
-			any_planet = {
-				OR = {
-					is_capital = yes
-					is_colony = yes
-				}
+	htbd_bad_system = no
+	htbd_avoid_system = no
+	NAND = {
+		htbd_friend_system = no
+		any_system_planet = {
+			OR = {
+				is_capital = yes
+				is_colony = yes
 			}
 		}
 	}
@@ -208,13 +210,14 @@ htbd_good_system = {
 
 htbd_is_good_for_egg = {
 	htbd_good_system = yes
+	is_bottleneck_system = no
 	# too hot stars
 	NOR = {
 		is_star_class = sc_a
 		is_star_class = sc_b
 	}
 	# need molten for egg
-	any_planet = {
+	any_system_planet = {
 		is_planet_class = pc_molten
 	}
 }
@@ -261,22 +264,22 @@ htbd_need_armor = {
 htbd_has_starbase_ftl_inhibitor = {
 	exists = starbase
 	starbase = { has_starbase_size >= starbase_starport }
-	exists = owner
-	owner = {
+	exists = space_owner
+	space_owner = {
 		has_technology = "tech_ftl_inhibitor"
 	}
 }
 
 # This = system
 htbd_has_planetary_ftl_inhibitor = {
-	any_planet = {
+	any_system_planet = {
 		OR = {
 			has_building = building_stronghold
 			has_building = building_fortress
 		}
 	}
-	exists = owner
-	owner = {
+	exists = space_owner
+	space_owner = {
 		has_technology = "tech_ftl_inhibitor"
 	}
 }

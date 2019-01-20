@@ -100,9 +100,10 @@ htbd_travel_debug = {
 			}
 			htbd_system_stats = yes
 		}
-		log = "---------- by PURE DISTANCE 1 - 100:"
+		log = "---------- by PURE DISTANCE 1 - 100: (disabled)"
 		every_system = {
 			limit = {
+				always = no
 				NOT = { distance = { source = prev type = hyperlane min_jumps = 1 max_jumps = 3 } }
 				distance = { source = prev type=euclidean min_distance > 1 max_distance < 100 }
 			}
@@ -188,8 +189,8 @@ htbd_debug_setup = {
 				}
 				closest_system = {
 					limit = {
-						NOT = { any_planet = { is_capital = yes } }
-						any_planet = { is_planet_class = pc_molten }
+						NOT = { any_system_planet = { is_capital = yes } }
+						any_system_planet = { is_planet_class = pc_molten }
 					}
 					random_system_planet = {
 						htbd_new_fleet = yes
@@ -201,13 +202,13 @@ htbd_debug_setup = {
 				}
 				random_rim_system = {
 					limit = {
-						NOT = { any_planet = { is_capital = yes } }
+						NOT = { any_system_planet = { is_capital = yes } }
 						NOT = {
 							any_ship_in_system = {
 								owner = { is_country_type = htbd_horde }
 							}
 						}
-						any_planet = { is_planet_class = pc_molten }
+						any_system_planet = { is_planet_class = pc_molten }
 					}
 					random_system_planet = {
 						htbd_new_fleet = yes

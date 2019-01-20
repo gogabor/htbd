@@ -367,7 +367,7 @@ fleet_event = {
 				while = {
 					id = htbd.12.trigger.1
 					solar_system = {
-						any_planet = {
+						any_system_planet = {
 							has_planet_flag = egg_incubated
 						}
 					}
@@ -580,7 +580,7 @@ fleet_event = {
 		htbd_need_armor = yes
 		exists = solar_system
 		solar_system = {
-			any_planet = {
+			any_system_planet = {
 				is_asteroid = yes
 			}
 		}
@@ -757,6 +757,13 @@ fleet_event = {
 							}
 							htbd_may_travel_to = yes
 						}
+						weights = {
+							base = 1
+							modifier = {
+								mult = 5
+								htbd_friend_system = yes
+							}
+						}
 						if = {
 							limit = { htbd_debug = yes }
 							log = "[Root.GetName] may travel by ether hole to [This.GetName]!"
@@ -774,6 +781,13 @@ fleet_event = {
 					ignore_hyperlanes = no
 					limit = {
 						htbd_may_travel_to = yes
+					}
+					weights = {
+						base = 1
+						modifier = {
+							add = 50
+							htbd_friend_system = yes
+						}
 					}
 					save_event_target_as = htbd_ftl_system
 				}
@@ -872,7 +886,7 @@ fleet_event = {
 					has_star_flag = hostile_system
 					AND = {
 						htbd_has_ftl_inhibitor = yes
-						owner = { htbd_has_friend_edict = no }
+						space_owner = { htbd_has_friend_edict = no }
 					}
 				}
 				distance = {
@@ -884,12 +898,9 @@ fleet_event = {
 				calc_true_if = {
 					amount = 2
 					htbd_good_system = yes
-					NOT = { exists = owner }
-					AND = {
-						exists = owner
-						owner = { has_country_flag = htbd_dragon_scent }
-					}
-					htbd_avoid_system = no
+					NOT = { exists = space_owner }
+					htbd_friend_system = yes
+					htbd_bad_system = no
 				}
 			}
 			save_event_target_as = htbd_emrg_to
@@ -1118,7 +1129,7 @@ ship_event = {
 
 			exists = solar_system
 			solar_system = {
-				any_planet = { is_planet_class = pc_gas_giant }
+				any_system_planet = { is_planet_class = pc_gas_giant }
 			}
 		}
 		modifier = {
@@ -1126,7 +1137,7 @@ ship_event = {
 
 			exists = solar_system
 			solar_system = {
-				any_planet = { is_planet_class = pc_toxic }
+				any_system_planet = { is_planet_class = pc_toxic }
 			}
 		}
 		modifier = {
