@@ -8,17 +8,20 @@
 htbd_system_stats = {
 	if = {
 		limit = {
-			NOT = { exists = owner }
+			NOT = { exists = space_owner }
 		}
 		log = "[This.GetName] has no owner"
 	}
 	else = {
 		log = "[This.GetName] is owned by [This.Owner.GetName]"
+	}
+	if = {
+		limit = { htbd_friend_system = yes }
 		if = {
 			limit = {
-				owner = { htbd_has_friend_edict = yes }
+				space_owner = { htbd_has_friend_edict = yes }
 			}
-			log = "		-> FRIEND"
+			log = "		-> FRIEND (active edict)"
 		}
 	}
 	if = {
@@ -33,7 +36,6 @@ htbd_system_stats = {
 		limit = { htbd_has_fear_aura = yes }
 		log = "		-> FEAR AURA"
 	}
-
 	if = {
 		limit = { htbd_good_system = yes }
 		log = "		-> GOOD"
@@ -87,9 +89,7 @@ htbd_travel_debug = {
 		log = "---------- by HYPERLANES to:"
 		every_neighbor_system = {
 			ignore_hyperlanes = no
-			limit = {
-				always = yes
-			}
+			limit = { always = yes }
 			htbd_system_stats = yes
 		}
 		log = "---------- by NEIGHBORs (neighbors, excluding less than 3 HL):"
@@ -100,40 +100,41 @@ htbd_travel_debug = {
 			}
 			htbd_system_stats = yes
 		}
-		log = "---------- by PURE DISTANCE 1 - 100: (disabled)"
+		log = "---------- by PURE DISTANCE 1 - 50: (disabled)"
 		every_system = {
 			limit = {
 				always = no
 				NOT = { distance = { source = prev type = hyperlane min_jumps = 1 max_jumps = 3 } }
-				distance = { source = prev type=euclidean min_distance > 1 max_distance < 100 }
+				distance = { source = prev type = euclidean min_distance > 1 max_distance < 50 }
 			}
 			htbd_system_stats = yes
 		}
 		if = {
 			limit = {
-				OR = {
-					has_natural_wormhole = yes
-					has_star_flag = htbd_pass_stay
-				}
+				has_natural_wormhole = yes
 			}
-			log = "---------- by WORMHOLES:"
+			log = "[This.GetName] has WORMHOLE, try to find its pair by old way:"
 			closest_system = {
 				min_steps = 1
 				max_steps = 1
 				limit = {
-					OR = {
-						has_natural_wormhole = yes
-						AND = {
-							prev = { has_star_flag = htbd_pass_to }
-							has_star_flag = htbd_pass_from
-						}
-						AND = {
-							prev = { has_star_flag = htbd_pass_from }
-							has_star_flag = htbd_pass_to
-						}
-					}
+					has_natural_wormhole = yes
 				}
-				log = "Has wormhole to [This.GetName]"
+				log = "[Prev.GetName] has wormhole to [This.GetName]"
+				htbd_system_stats = yes
+			}
+		}
+		if = {
+			limit = {
+				has_natural_wormhole = yes
+			}
+			log = "[This.GetName] has WORMHOLE, try to find its pair by jump distance:"
+			random_system = {
+				limit = {
+					has_natural_wormhole = yes
+					distance = { source = prev use_bypasses = yes min_jumps = 1 max_jumps = 1 }
+				}
+				log = "[Prev.GetName] has wormhole to [This.GetName]"
 				htbd_system_stats = yes
 			}
 		}

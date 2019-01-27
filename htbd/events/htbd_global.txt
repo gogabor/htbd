@@ -7,7 +7,7 @@ namespace = htbd_gl
 
 @incubation_time = 5000
 # change together with one in htbd_compat.txt
-@mod_version = 202
+@mod_version = 223
 
 # Create dragon/country at game start
 event = {
@@ -48,6 +48,9 @@ country_event = {
 			days = -1
 		}
 
+		give_technology = { tech = tech_wormhole_stabilization message = no }
+		give_technology = { tech = tech_gateway_activation message = no }
+
 		# establish communications with all countries and make some neutral
 		every_country = {
 			establish_communications_no_message = root
@@ -63,28 +66,28 @@ country_event = {
 							always = yes
 							count = 750
 						}
-						num_fleets < 4
+						num_fleets < 7
 					}
 					AND = {
 						any_system = {
 							always = yes
 							count = 550
 						}
-						num_fleets < 3
+						num_fleets < 5
 					}
 					AND = {
 						any_system = {
 							always = yes
 							count = 350
 						}
-						num_fleets < 2
+						num_fleets < 4
 					}
 					AND = {
 						any_system = {
 							always = yes
 							count = 150
 						}
-						num_fleets < 1
+						num_fleets < 3
 					}
 				}
 			}
@@ -121,7 +124,7 @@ country_event = {
 						NOT = { has_planet_flag = egg_incubated }
 					}
 					random_list = {
-						30 = {
+						5 = {
 							modifier = {
 								factor = 2
 								root = {
@@ -135,7 +138,7 @@ country_event = {
 								log = "Wyrm [this.GetName] in [prev.GetName]"
 							}
 						}
-						40 = {
+						10 = {
 							htbd_new_fleet = yes
 							last_created_fleet = {
 								htbd_dragon_adult = yes
@@ -143,7 +146,7 @@ country_event = {
 								log = "Dragon [this.GetName] in [prev.GetName]"
 							}
 						}
-						20 = {
+						30 = {
 							htbd_new_fleet = yes
 							last_created_fleet = {
 								htbd_dragon_teen = yes
@@ -151,7 +154,7 @@ country_event = {
 								log = "Teen [this.GetName] in [prev.GetName]"
 							}
 						}
-						10 = {
+						50 = {
 							modifier = {
 								factor = 0.1
 
@@ -271,24 +274,18 @@ event = {
 
 	trigger = {
 		has_leviathans = yes
-		any_country = {
-			is_country_type = htbd_horde
-			num_fleets < 1
+		exists = event_target:htbd_country
+		event_target:htbd_country = {
+			NOT = { has_country_flag = htbd_lair_found }
+			num_fleets < 2
 		}
-		NOT = {
-			any_planet = {
-				has_planet_flag = egg_incubated
-			}
-		}
-		years_passed < 200
 	}
 
 	immediate = {
-		log = "try to re-create exterminated dragons"
+		log = "More dragons enter the galaxy"
 		random_system = {
 			limit = {
 				NOR = {
-					exists = owner
 					has_star_flag = guardian
 					has_star_flag = enclave
 					has_star_flag = hostile_system
@@ -297,15 +294,46 @@ event = {
 					is_star_class = sc_pulsar
 					is_star_class = sc_neutron_star
 				}
-				any_system_planet = {
-					is_planet_class = pc_molten
-				}
 			}
-			random_system_planet = {
-				limit = { is_planet_class = pc_molten }
-				set_planet_flag = egg_incubated
-				set_planet_flag = htbd_hidden_egg
-				# log = "Place Egg at [This.GetName] in [Prev.GetName] system"
+
+			spawn_megastructure = {
+				type = htbd_hole
+				orbit_angle = 0
+				orbit_distance = 15
+				location = this.location
+				owner = event_target:htbd_country
+			}
+			set_timed_star_flag = { flag = htbd_pass_stay days = @htbd_pass_time_long }
+			set_star_flag = htbd_pass_to
+
+			random_system_megastructure = {
+				limit = { is_megastructure_type = htbd_hole }
+				random_list = {
+					5 = {
+						htbd_new_fleet = yes
+						last_created_fleet = {
+							htbd_dragon_grand = yes
+							set_fleet_flag = htbd_idle
+							log = "Wyrm [this.GetName] in [prevprev.GetName]"
+						}
+					}
+					10 = {
+						htbd_new_fleet = yes
+						last_created_fleet = {
+							htbd_dragon_adult = yes
+							set_fleet_flag = htbd_idle
+							log = "Dragon [this.GetName] in [prevprev.GetName]"
+						}
+					}
+					30 = {
+						htbd_new_fleet = yes
+						last_created_fleet = {
+							htbd_dragon_teen = yes
+							set_fleet_flag = htbd_idle
+							log = "Teen [this.GetName] in [prevprev.GetName]"
+						}
+					}
+				}
 			}
 		}
 	}
@@ -765,3 +793,4 @@ event = {
 		}
 	}
 }
+

@@ -26,6 +26,10 @@ on_monthly_pulse = {
 		htbd_gl.7
 		htbd_ai.1
 	}
+	random_events = {
+		100 = 0
+		10 = htbd_gl.2
+	}
 }
 
 

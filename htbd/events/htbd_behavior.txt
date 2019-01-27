@@ -707,19 +707,35 @@ fleet_event = {
 		# set ftl_system to the current just to distinguish failed case
 		solar_system = {
 			save_event_target_as = htbd_ftl_system
+			### Wormhole travel doesn't work since 2.2.* because it is impossible to find WH pair.
 			if = {
 				limit = {
-					OR = {
-						has_natural_wormhole = yes
-						has_star_flag = htbd_pass_stay
-					}
+					has_natural_wormhole = yes
 				}
-				closest_system = {
+				closest_system = { # this ignores bypasses and wormholes since 2.2
 					min_steps = 1
 					max_steps = 1
 					limit = {
+						has_natural_wormhole = yes
+						htbd_may_travel_to = yes
+					}
+					if = {
+						limit = { htbd_debug = yes }
+						log = "[Root.GetName] may travel by wormhole to [This.GetName]!"
+					}
+					save_event_target_as = htbd_ftl_system
+				}
+			}
+
+			# Check ether holes if no new target yet
+			if = {
+				limit = {
+					is_same_value = event_target:htbd_ftl_system
+					has_star_flag = htbd_pass_stay
+				}
+				random_system = {
+					limit = {
 						OR = {
-							has_natural_wormhole = yes
 							AND = {
 								prev = { has_star_flag = htbd_pass_to }
 								has_star_flag = htbd_pass_from
@@ -731,47 +747,21 @@ fleet_event = {
 						}
 						htbd_may_travel_to = yes
 					}
+					weights = {
+						base = 1
+						modifier = {
+							mult = 3
+							htbd_friend_system = yes
+						}
+					}
 					if = {
 						limit = { htbd_debug = yes }
-						log = "[Root.GetName] may travel by wormhole to [This.GetName]!"
+						log = "[Root.GetName] may travel by ether hole to [This.GetName]!"
 					}
 					save_event_target_as = htbd_ftl_system
 				}
-				# closest_system doesn't check ether holes yet
-				if = {
-					limit = {
-						is_same_value = event_target:htbd_ftl_system
-						has_star_flag = htbd_pass_stay
-					}
-					random_system = {
-						limit = {
-							OR = {
-								AND = {
-									prev = { has_star_flag = htbd_pass_to }
-									has_star_flag = htbd_pass_from
-								}
-								AND = {
-									prev = { has_star_flag = htbd_pass_from }
-									has_star_flag = htbd_pass_to
-								}
-							}
-							htbd_may_travel_to = yes
-						}
-						weights = {
-							base = 1
-							modifier = {
-								mult = 5
-								htbd_friend_system = yes
-							}
-						}
-						if = {
-							limit = { htbd_debug = yes }
-							log = "[Root.GetName] may travel by ether hole to [This.GetName]!"
-						}
-						save_event_target_as = htbd_ftl_system
-					}
-				}
 			}
+
 			# wormholes weren't used, take random neighbor system
 			if = {
 				limit = {
@@ -785,7 +775,7 @@ fleet_event = {
 					weights = {
 						base = 1
 						modifier = {
-							add = 50
+							mult = 3
 							htbd_friend_system = yes
 						}
 					}
@@ -886,7 +876,7 @@ fleet_event = {
 					has_star_flag = hostile_system
 					AND = {
 						htbd_has_ftl_inhibitor = yes
-						space_owner = { htbd_has_friend_edict = no }
+						htbd_friend_system = no
 					}
 				}
 				distance = {

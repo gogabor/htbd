@@ -1997,10 +1997,7 @@ country_event = {
 	immediate = {
 		# log = "112: [this.GetName] has seen how [from.GetName] created Ether hole in [From.System.GetName] system"
 		set_country_flag = htbd_pass_origin_known
-        if = {
-            limit = { NOT = { has_seen_any_bypass = wormhole } }
-            set_country_flag = htbd_pass_seen
-        }
+        set_country_flag = htbd_pass_seen
 	}
 
 	option = {

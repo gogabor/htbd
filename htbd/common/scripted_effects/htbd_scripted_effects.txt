@@ -156,10 +156,6 @@ htbd_new_fleet = {
 			set_owner = event_target:htbd_country
 			# set_fleet_flag = dragon_fleet
 			set_location = prev
-			if = {
-				limit = { htbd_debug = yes }
-				log = "New dragon [This.GetName] was born at [Root.GetName]"
-			}
 			htbd_new_character = yes
 		}
 	}
@@ -357,7 +353,7 @@ htbd_report_leave = {
 				limit = { htbd_debug = yes }
 				log = "[Prev.GetName] likes system [This.GetName]"
 			}
-			change_variable = { which = htbd_system_like value = 2 }
+			change_variable = { which = htbd_system_like value = 3 }
 		}
 		random_system_planet = {
 			limit = { is_star = yes }
