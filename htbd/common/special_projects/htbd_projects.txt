@@ -341,7 +341,7 @@ special_project = {
 
 	on_success = {
 		random_list = {
-			80 = {
+			60 = {
 				modifier = {
 					factor = 0
 					from = { NOT = { has_planet_flag = egg_incubated } }
