@@ -368,12 +368,11 @@ htbd_is_neutral_faction = {
 				has_ethic = ethic_fanatic_xenophile
 			}
 		}
+		# special case for MEM surveyor probe, it is too strong and literally eliminate all dragons from galaxy
 		AND = {
 			has_global_flag = mem_surveyor_is_present
-			OR = {
-				is_country_type = mem_surveyor_country_green
-				is_country_type = mem_surveyor_country_yellow
-			}
+			NOT = { has_global_flag = mem_surveyor_went_berserk }
+			has_country_flag = mem_surveyor_country
 		}
 	}
 }
