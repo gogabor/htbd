@@ -90,6 +90,28 @@ htbd_set_neutral_countries = {
 	}
 }
 
+# scope fleet
+htbd_iam_superworm = {
+	while = {
+		count = 3
+		random_list = {
+			20 = {}
+			1 = { add_modifier = { modifier = "htbd_var_hulk_1" days = -1 } }
+			1 = { add_modifier = { modifier = "htbd_var_hulk_2" days = -1 } }
+			1 = { add_modifier = { modifier = "htbd_var_hulk_3" days = -1 } }
+			1 = { add_modifier = { modifier = "htbd_var_ironman_1" days = -1 } }
+			1 = { add_modifier = { modifier = "htbd_var_ironman_2" days = -1 } }
+			1 = { add_modifier = { modifier = "htbd_var_ironman_3" days = -1 } }
+			1 = { add_modifier = { modifier = "htbd_var_wolverine_1" days = -1 } }
+			1 = { add_modifier = { modifier = "htbd_var_wolverine_2" days = -1 } }
+			1 = { add_modifier = { modifier = "htbd_var_wolverine_3" days = -1 } }
+			1 = { add_modifier = { modifier = "htbd_var_hitman_1" days = -1 } }
+			1 = { add_modifier = { modifier = "htbd_var_hitman_2" days = -1 } }
+			1 = { add_modifier = { modifier = "htbd_var_hitman_3" days = -1 } }
+		}
+	}
+}
+
 # character pairs table:
 # curious - caution: like or dislike to travel and visit 'avoided' systems
 # apathic - mad: stay longer or shorted near stars/planets and in systems
@@ -164,6 +186,7 @@ htbd_dragon_kid = {
 		prefix = no
 		upgradable = no
 	}
+	htbd_iam_superworm = yes
 }
 
 htbd_dragon_teen = {
@@ -172,6 +195,7 @@ htbd_dragon_teen = {
 		prefix = no
 		upgradable = no
 	}
+	htbd_iam_superworm = yes
 }
 
 htbd_dragon_adult = {
@@ -181,6 +205,7 @@ htbd_dragon_adult = {
 		upgradable = no
 	}
 	set_aggro_range = 100
+	htbd_iam_superworm = yes
 }
 
 htbd_dragon_grand = {
@@ -191,6 +216,7 @@ htbd_dragon_grand = {
 	}
 	set_fleet_flag = dragon_mother
 	set_aggro_range = 200
+	htbd_iam_superworm = yes
 }
 
 htbd_exile_dwarf = {
@@ -218,6 +244,7 @@ htbd_exile_dwarf = {
 			set_fleet_stance = passive
 			set_aggro_range = 0
 			set_fleet_flag = dragon_mother
+			htbd_iam_superworm = yes
 		}
 	}
 }

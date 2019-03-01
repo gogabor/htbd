@@ -1781,6 +1781,7 @@ planet_event = {
 					upgradable = no
 				}
 				set_location = root
+				htbd_iam_superworm = yes
 			}
 		}
 	}
@@ -1820,6 +1821,7 @@ planet_event = {
 				set_location = root
 				set_fleet_flag = dragon_mother
 				set_fleet_flag = htbd_idle
+				htbd_iam_superworm = yes
 			}
 		}
 	}
