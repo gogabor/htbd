@@ -25,9 +25,22 @@ htbd_pass = {
 				AND = {
 					has_technology = tech_htbd_hole_physic
 					OR = {
+						# no owner
 						NOT = { exists = from }
+						# has owner and borders are not closed and not hostile
 						from = {
-							NOT = { has_closed_borders = root }
+							NOR = {
+								has_closed_borders = root
+								is_hostile = root
+							}
+						}
+						# has hostile owner or at war and owner can't block bypass
+						from = {
+							NOT = { has_technology = tech_htbd_hole_iff }
+							OR = {
+								is_hostile = root
+								is_at_war_with = root
+							}
 						}
 					}
 				}
@@ -38,7 +51,9 @@ htbd_pass = {
 	scripted_connection = {
 		# defines endpoints that can only reach the "nexus"
 		node = {
-			has_star_flag = htbd_pass_from
+			OR = {
+				has_star_flag = htbd_pass_from
+			}
 		}
 		# defines endpoint(s) that can reach all "nodes" (but not other nexuses)
 		nexus = {

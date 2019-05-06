@@ -178,7 +178,11 @@ htbd_ev.1.desc.4.alt:1 "$htbd_ev.1.pre.2$$htbd_ev.1.end.4$"
  tech_htbd_hole_sustenance_desc:0 "Sustain Ether Dragons Wormhole in opened state. The researching it will allow us to keep Ether Dragon's Wormholes opened for our needs and use whole Ether network for traveling."
  feature_htbd_hole_sustenance:0 "§SUnlocks Feature:§! Ether Wormholes Sustenance"
  feature_htbd_hole_sustenance_desc:0 "Sustain an opened Ether Dragon Wormhole as long as we need."
-
+ tech_htbd_hole_iff:0 "Ether Wormhole Identification Friend or Foe"
+ tech_htbd_hole_iff_desc:0 "Keeping Ether Wormholes at opened state always is dangerous idea and it could be kept in non-stable state to prevent travels but we have to develop means to identify friendly incoming vessels properly."
+ feature_htbd_hole_iff:0 "§SUnlocks Feature:§! Ether Wormholes Identification Friend or Foe"
+ feature_htbd_hole_iff_desc:0 "Identify friendly incoming vessels and stabilize wormhole only on short period to let them pass. Foe vessels will not be able to reach our side."
+ 
  htbd_ev.111.name:0 "Strange Wormhole"
  htbd_ev.111.desc.1:0 "This system has mysterious formation near the star. We don't know what is it but we will find out eventually."
  htbd_ev.111.desc.2:0 "This system has unusual small wormhole near the star. We don't know is it another type of natural wormholes or artificial object and why it is located near the star but not outside a gravity well as ordinary wormholes."

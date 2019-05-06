@@ -320,10 +320,11 @@ fleet_event = {
 						orbit = { is_star = yes }
 					}
 					fleet_event = { id = htbd.141 }
-					else = {
-						remove_fleet_flag = htbd_idle
-						set_fleet_flag = htbd_travel
-						solar_system = {
+				}
+				else = {
+					remove_fleet_flag = htbd_idle
+					set_fleet_flag = htbd_travel
+					solar_system = {
 						random_system_planet = {
 							limit = { is_star = yes }
 							root = {
@@ -338,7 +339,6 @@ fleet_event = {
 									}
 								}
 							}
-						}
 						}
 					}
 				}

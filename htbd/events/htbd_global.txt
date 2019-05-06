@@ -56,7 +56,6 @@ country_event = {
 				set_neutral = yes
 				set_friendly = no
 			}
-			set_country_flag = htbd_dragon_scent
 		}
 	}
 }
@@ -714,13 +713,15 @@ country_event = {
 	hide_window = yes
 
 	trigger = {
-		has_country_flag = htbd_dragon_friend
+		NOT = { is_country_type = htbd_horde }
+		htbd_is_neutral_faction = no
 		NOT = { is_hostile = event_target:htbd_country }
 		htbd_has_friend_edict = no
 		NOT = {	has_country_flag = htbd_dragon_scent }
 		NOT = { has_country_flag = htbd_dragon_trust }
 	}
 	immediate = {
+		#log = "Dragons are hostile to [This.GetName] now"
 		set_faction_hostility = {
 			target = event_target:htbd_country
 			set_hostile = yes

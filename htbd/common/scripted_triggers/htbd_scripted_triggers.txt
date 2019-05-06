@@ -232,19 +232,24 @@ htbd_may_travel_to = {
 		is_same_value = root.solar_system
 	}
 	OR = {
-		NOT = { has_star_flag = htbd_recent_star_@root }
-		root = { has_fleet_flag = htbd_ignore_recent }
-		#root = { has_fleet_flag = htbd_stuck }
-	}
-	OR = {
-		NOT = { htbd_bad_system = yes }
-		root = { has_fleet_flag = htbd_mad }
-		#root = { has_fleet_flag = htbd_stuck_stuck }
-	}
-	OR = {
-		NOT = { htbd_avoid_system = yes }
-		root = { has_fleet_flag = htbd_curiousity }
-		#root = { has_fleet_flag = htbd_stuck }
+		AND = {
+			OR = {
+				NOT = { has_star_flag = htbd_recent_star_@root }
+				root = { has_fleet_flag = htbd_ignore_recent }
+			}
+			OR = {
+				NOT = { htbd_bad_system = yes }
+				root = { has_fleet_flag = htbd_mad }
+			}
+			OR = {
+				NOT = { htbd_avoid_system = yes }
+				root = { has_fleet_flag = htbd_curiousity }
+			}
+		}
+		AND = {
+			root = { has_fleet_flag = htbd_stuck }
+			has_star_flag = htbd_pass_stay
+		}
 	}
 }
 
@@ -356,6 +361,7 @@ htbd_is_neutral_faction = {
 		is_country_type = guardian_hatchling
 		is_country_type = ldragon_country
 		is_country_type = guardian_elderly_tiyanki
+		is_country_type = enigmatic_cache
 		AND = {
 			OR = {
 				is_country_type = fallen_empire
