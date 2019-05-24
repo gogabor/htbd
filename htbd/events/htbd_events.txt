@@ -1399,7 +1399,7 @@ country_event = {
 	id = htbd_ev.82
 	title = "htbd_ev.82.name"
 	desc = "htbd_ev.82.desc"
-	picture = GFX_evt_molten
+	picture = GFX_evt_molten_planet
 	is_triggered_only = yes
 	location = from
 
@@ -1429,7 +1429,7 @@ country_event = {
 	id = htbd_ev.83
 	title = "htbd_ev.83.name"
 	desc = "htbd_ev.83.desc"
-	picture = GFX_evt_molten
+	picture = GFX_evt_molten_planet
 	location = event_target:egg_planet
 
 	is_triggered_only = yes
@@ -1562,7 +1562,7 @@ ship_event = {
 	id = htbd_ev.92
 	title = "htbd_ev.9.name"
 	desc = "htbd_ev.9.desc"
-	picture = GFX_evt_molten
+	picture = GFX_evt_molten_planet
 	is_triggered_only = yes
 	location = fromfrom
 
@@ -1701,7 +1701,7 @@ ship_event = {
 	id = htbd_ev.91
 	title = "htbd_ev.91.name"
 	desc = "htbd_ev.91.desc"
-	picture = GFX_evt_molten
+	picture = GFX_evt_molten_planet
 	is_triggered_only = yes
 
 	trigger = {
